@@ -28,6 +28,8 @@ func NewParser() *Parser {
 			parsers.NewFieldDataParser(),
 			parsers.NewFieldValueParser(),
 			parsers.NewFieldOrientationParser(),
+			parsers.NewHexEscapeParser(),
+			parsers.NewMaxicodeParser(),
 		},
 	}
 }

@@ -7,7 +7,7 @@ import (
 
 func NewGraphicBoxDrawer() *ElementDrawer {
 	return &ElementDrawer{
-		Draw: func(gCtx *gg.Context, element interface{}) error {
+		Draw: func(gCtx *gg.Context, element interface{}, _ DrawerOptions) error {
 			box, ok := element.(*elements.GraphicBox)
 			if !ok {
 				return nil

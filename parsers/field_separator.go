@@ -16,6 +16,7 @@ func NewFieldSeparatorParser() *CommandParser {
 			printer.NextElementFieldData = nil
 			printer.NextFont = nil
 			printer.NextElementFieldReverse = false
+			printer.NextHexEscapeChar = 0
 			printer.DefaultAlignment = elements.TextAlignmentLeft
 			printer.DefaultOrientation = elements.FieldOrientationNormal
 
