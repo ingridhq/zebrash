@@ -7,7 +7,7 @@ import (
 )
 
 type ElementDrawer struct {
-	Draw func(gCtx *gg.Context, element interface{}) error
+	Draw func(gCtx *gg.Context, element interface{}, options DrawerOptions) error
 }
 
 func drawRectangle(gCtx *gg.Context, x, y, w, h float64) {

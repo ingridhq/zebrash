@@ -12,6 +12,7 @@ type VirtualPrinter struct {
 	NextElementFieldData    interface{}
 	NextFont                *elements.FontInfo
 	NextDownloadFormatName  string
+	NextHexEscapeChar       byte
 	NextElementFieldReverse bool
 	LabelReverse            bool
 }

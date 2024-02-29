@@ -4,10 +4,12 @@ import (
 	"bytes"
 	"os"
 	"testing"
+
+	"github.com/ingridhq/zebrash/drawers"
 )
 
 func TestParser(t *testing.T) {
-	file, err := os.ReadFile("./testdata/fedex.zpl")
+	file, err := os.ReadFile("./testdata/ups.zpl")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,7 +25,7 @@ func TestParser(t *testing.T) {
 
 	drawer := NewDrawer()
 
-	err = drawer.DrawLabelAsPng(res[0], &buff, DrawerOptions{})
+	err = drawer.DrawLabelAsPng(res[0], &buff, drawers.DrawerOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}
