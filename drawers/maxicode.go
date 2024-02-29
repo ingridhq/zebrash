@@ -40,7 +40,7 @@ func NewMaxicodeDrawer() *ElementDrawer {
 				return fmt.Errorf("failed to convert maxicode png to image: %w", err)
 			}
 
-			gCtx.DrawImage(img, barcode.Pos.X, barcode.Pos.Y)
+			gCtx.DrawImage(img, barcode.Position.X, barcode.Position.Y)
 
 			return nil
 		},

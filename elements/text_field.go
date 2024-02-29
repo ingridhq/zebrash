@@ -2,7 +2,7 @@ package elements
 
 type TextField struct {
 	Font         FontInfo
-	Pos          LabelPosition
+	Position     LabelPosition
 	Orientation  FieldOrientation
 	Alignment    TextAlignment
 	Text         string

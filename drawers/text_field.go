@@ -31,8 +31,8 @@ func NewTextFieldDrawer() *ElementDrawer {
 			gCtx.SetFontFace(face)
 			setLineColor(gCtx, elements.LineColorBlack)
 
-			x := float64(text.Pos.X)
-			y := float64(text.Pos.Y) + fontSize/4.0
+			x := float64(text.Position.X)
+			y := float64(text.Position.Y) + fontSize/4.0
 			ax := 0.0
 
 			if rotate := text.Orientation.GetDegrees(); rotate != 0 {

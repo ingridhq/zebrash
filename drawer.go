@@ -18,6 +18,8 @@ func NewDrawer() *Drawer {
 	return &Drawer{
 		elementDrawers: []*drawers.ElementDrawer{
 			drawers.NewGraphicBoxDrawer(),
+			drawers.NewGraphicCircleDrawer(),
+			drawers.NewGraphicFieldDrawer(),
 			drawers.NewTextFieldDrawer(),
 			drawers.NewMaxicodeDrawer(),
 		},

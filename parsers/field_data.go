@@ -29,9 +29,9 @@ func NewFieldDataParser() *CommandParser {
 				switch fd := printer.NextElementFieldData.(type) {
 				case *elements.Maxicode:
 					return &elements.MaxicodeWithData{
-						Code: *fd,
-						Pos:  printer.NextElementPosition,
-						Data: text,
+						Code:     *fd,
+						Position: printer.NextElementPosition,
+						Data:     text,
 					}, nil
 				}
 			}
@@ -42,7 +42,7 @@ func NewFieldDataParser() *CommandParser {
 
 			return &elements.TextField{
 				Font:         font,
-				Pos:          pos,
+				Position:     pos,
 				Orientation:  printer.DefaultOrientation,
 				Alignment:    printer.DefaultAlignment,
 				Text:         text,
