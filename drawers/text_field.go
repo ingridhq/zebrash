@@ -20,6 +20,7 @@ func NewTextFieldDrawer() *ElementDrawer {
 				return nil
 			}
 
+			fontWidth := float64(text.Font.Width)
 			fontSize := float64(text.Font.GetSize())
 
 			font := font0
@@ -34,15 +35,27 @@ func NewTextFieldDrawer() *ElementDrawer {
 			x := float64(text.Position.X)
 			y := float64(text.Position.Y) + fontSize/4.0
 			ax := 0.0
+			ay := 0.5
+
+			if fontWidth != fontSize {
+				gCtx.ScaleAbout(fontWidth/fontSize, 1, x, y)
+			}
 
 			if rotate := text.Orientation.GetDegrees(); rotate != 0 {
-				if text.Orientation == elements.FieldOrientation270 {
+				switch text.Orientation {
+				case elements.FieldOrientation90:
+					ay = 0
+				case elements.FieldOrientation270:
 					ax = 1.0
+				case elements.FieldOrientation180:
+					ax = 1.0
+					ay = 0
 				}
 
 				gCtx.RotateAbout(gg.Radians(rotate), x, y)
-				defer gCtx.Identity()
 			}
+
+			defer gCtx.Identity()
 
 			if text.Block != nil {
 				align := gg.AlignLeft
@@ -54,9 +67,9 @@ func NewTextFieldDrawer() *ElementDrawer {
 					align = gg.AlignCenter
 				}
 
-				gCtx.DrawStringWrapped(text.Text, x, y, ax, 0.5, float64(text.Block.MaxWidth), float64(text.Block.LineSpacing), align)
+				gCtx.DrawStringWrapped(text.Text, x, y, ax, ay, float64(text.Block.MaxWidth), float64(text.Block.LineSpacing), align)
 			} else {
-				gCtx.DrawStringAnchored(text.Text, x, y, ax, 0.5)
+				gCtx.DrawStringAnchored(text.Text, x, y, ax, ay)
 			}
 
 			return nil

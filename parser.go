@@ -18,6 +18,7 @@ func NewParser() *Parser {
 	return &Parser{
 		printer: printers.NewVirtualPrinter(),
 		commandParsers: []*parsers.CommandParser{
+			parsers.NewLabelHomeParser(),
 			parsers.NewGraphicBoxParser(),
 			parsers.NewGraphicCircleParser(),
 			parsers.NewGraphicFieldParser(),
@@ -31,6 +32,7 @@ func NewParser() *Parser {
 			parsers.NewFieldOrientationParser(),
 			parsers.NewHexEscapeParser(),
 			parsers.NewMaxicodeParser(),
+			parsers.NewBarcodePdf417Parser(),
 		},
 	}
 }

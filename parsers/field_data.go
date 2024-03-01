@@ -33,6 +33,12 @@ func NewFieldDataParser() *CommandParser {
 						Position: printer.NextElementPosition,
 						Data:     text,
 					}, nil
+				case *elements.BarcodePdf417:
+					return &elements.BarcodePdf417WithData{
+						Code:     *fd,
+						Position: printer.NextElementPosition,
+						Data:     text,
+					}, nil
 				}
 			}
 

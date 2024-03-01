@@ -53,3 +53,7 @@ func toTextAlignment(alignment byte) elements.TextAlignment {
 		return elements.TextAlignmentLeft
 	}
 }
+
+func toBoolField(value byte) bool {
+	return value == 'Y'
+}

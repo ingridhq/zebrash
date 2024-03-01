@@ -12,9 +12,13 @@ func NewHexEscapeParser() *CommandParser {
 		Parse: func(command string, printer *printers.VirtualPrinter) (interface{}, error) {
 			text := commandText(command, code)
 
+			char := byte('_')
+
 			if len(text) > 0 {
-				printer.NextHexEscapeChar = text[0]
+				char = text[0]
 			}
+
+			printer.NextHexEscapeChar = char
 
 			return nil, nil
 		},

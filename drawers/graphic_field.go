@@ -28,7 +28,7 @@ func NewGraphicFieldDrawer() *ElementDrawer {
 
 			for y := 0; y < height; y++ {
 				for x := 0; x < width; x++ {
-					// Width for out bitmap data is in bits because each pixel is represented by one bit
+					// Width for our bitmap data is in bits because each pixel is represented by one bit
 					// but the actual data we have is in bytes
 					// Here we access the value of each bit and check if it is 1 or 0
 					val := ((field.Data[y*(width/8)+x/8]) >> (7 - x%8)) & 0xF

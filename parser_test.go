@@ -9,7 +9,7 @@ import (
 )
 
 func TestParser(t *testing.T) {
-	file, err := os.ReadFile("./testdata/ups.zpl")
+	file, err := os.ReadFile("./testdata/fedex.zpl")
 	if err != nil {
 		t.Fatal(err)
 	}
