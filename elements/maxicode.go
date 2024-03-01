@@ -17,9 +17,9 @@ type Maxicode struct {
 }
 
 type MaxicodeWithData struct {
-	Code Maxicode
-	Pos  LabelPosition
-	Data string
+	Code     Maxicode
+	Position LabelPosition
+	Data     string
 }
 
 func (barcode *MaxicodeWithData) GetInputData() (string, error) {

@@ -20,6 +20,7 @@ func NewParser() *Parser {
 		commandParsers: []*parsers.CommandParser{
 			parsers.NewGraphicBoxParser(),
 			parsers.NewGraphicCircleParser(),
+			parsers.NewGraphicFieldParser(),
 			parsers.NewChangeDefaultFontParser(),
 			parsers.NewChangeFontParser(),
 			parsers.NewFieldOriginParser(),
