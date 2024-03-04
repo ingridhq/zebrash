@@ -36,4 +36,10 @@ type GraphicField struct {
 	// The image data, in the format specified in the first parameter.
 	// There is no default value
 	Data []byte
+
+	// The horizontal magnification to apply to the image. Any number between 1 and 10 may be used. The default value is 1.
+	MagnificationX int
+
+	// The vertical magnification to apply to the image. Any number between 1 and 10 may be used. The default value is 1.
+	MagnificationY int
 }

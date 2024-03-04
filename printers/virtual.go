@@ -3,6 +3,7 @@ package printers
 import "github.com/ingridhq/zebrash/elements"
 
 type VirtualPrinter struct {
+	StoredGraphics          map[string]elements.StoredGraphics
 	LabelHomePosition       elements.LabelPosition
 	NextElementPosition     elements.LabelPosition
 	DefaultFont             elements.FontInfo
@@ -19,6 +20,7 @@ type VirtualPrinter struct {
 
 func NewVirtualPrinter() *VirtualPrinter {
 	return &VirtualPrinter{
+		StoredGraphics: map[string]elements.StoredGraphics{},
 		DefaultFont: elements.FontInfo{
 			Name:   "0",
 			Width:  0,

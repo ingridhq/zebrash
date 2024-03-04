@@ -33,6 +33,8 @@ func NewParser() *Parser {
 			parsers.NewHexEscapeParser(),
 			parsers.NewMaxicodeParser(),
 			parsers.NewBarcodePdf417Parser(),
+			parsers.NewDownloadGraphicsParser(),
+			parsers.NewRecallGraphicsParser(),
 		},
 	}
 }
