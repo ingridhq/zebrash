@@ -17,7 +17,9 @@ func NewGraphicFieldParser() *CommandParser {
 		CommandCode: code,
 		Parse: func(command string, printer *printers.VirtualPrinter) (interface{}, error) {
 			result := &elements.GraphicField{
-				Position: printer.NextElementPosition,
+				Position:       printer.NextElementPosition,
+				MagnificationX: 1,
+				MagnificationY: 1,
 			}
 
 			parts := splitCommand(command, code, 0)
