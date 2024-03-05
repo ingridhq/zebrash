@@ -21,7 +21,7 @@ func setLineColor(gCtx *gg.Context, color elements.LineColor) {
 	switch color {
 	case elements.LineColorBlack:
 		gCtx.SetRGB(0, 0, 0)
-	case elements.LineColorWhile:
+	case elements.LineColorWhite:
 		gCtx.SetRGB(1, 1, 1)
 	}
 }

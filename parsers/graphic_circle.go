@@ -34,7 +34,7 @@ func NewGraphicCircleParser() *CommandParser {
 			}
 
 			if len(parts) > 2 && parts[2] == "W" {
-				result.LineColor = elements.LineColorWhile
+				result.LineColor = elements.LineColorWhite
 			}
 
 			return result, nil

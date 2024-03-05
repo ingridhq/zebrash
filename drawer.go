@@ -22,6 +22,7 @@ func NewDrawer() *Drawer {
 			drawers.NewGraphicFieldDrawer(),
 			drawers.NewTextFieldDrawer(),
 			drawers.NewMaxicodeDrawer(),
+			drawers.NewBarcode128Drawer(),
 			drawers.NewBarcodePdf417Drawer(),
 		},
 	}
