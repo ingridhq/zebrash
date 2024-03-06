@@ -30,6 +30,41 @@ func TestDrawLabelAsPng(t *testing.T) {
 			srcPath: "bstc.zpl",
 			dstPath: "bstc.png",
 		},
+		{
+			name:    "Barcode128 with 'line' and 'line above' set",
+			srcPath: "barcode128_line_above.zpl",
+			dstPath: "barcode128_line_above.png",
+		},
+		{
+			name:    "Barcode128 with 'line' set",
+			srcPath: "barcode128_line.zpl",
+			dstPath: "barcode128_line.png",
+		},
+		{
+			name:    "Barcode128 mode a",
+			srcPath: "barcode128_mode_a.zpl",
+			dstPath: "barcode128_mode_a.png",
+		},
+		{
+			name:    "Barcode128 mode d",
+			srcPath: "barcode128_mode_d.zpl",
+			dstPath: "barcode128_mode_d.png",
+		},
+		{
+			name:    "Barcode128 mode u",
+			srcPath: "barcode128_mode_u.zpl",
+			dstPath: "barcode128_mode_u.png",
+		},
+		{
+			name:    "Barcode128 mode n",
+			srcPath: "barcode128_mode_n.zpl",
+			dstPath: "barcode128_mode_n.png",
+		},
+		{
+			name:    "Barcode128 180 degrees rotated",
+			srcPath: "barcode128_rotated.zpl",
+			dstPath: "barcode128_rotated.png",
+		},
 	}
 
 	for _, tC := range testCases {

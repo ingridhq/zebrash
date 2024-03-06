@@ -32,6 +32,7 @@ func NewParser() *Parser {
 			parsers.NewFieldOrientationParser(),
 			parsers.NewHexEscapeParser(),
 			parsers.NewMaxicodeParser(),
+			parsers.NewBarcode128Parser(),
 			parsers.NewBarcodePdf417Parser(),
 			parsers.NewDownloadGraphicsParser(),
 			parsers.NewRecallGraphicsParser(),

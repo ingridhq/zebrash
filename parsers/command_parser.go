@@ -54,6 +54,19 @@ func toTextAlignment(alignment byte) elements.TextAlignment {
 	}
 }
 
+func toFieldBarcodeMode(mode byte) elements.BarcodeMode {
+	switch mode {
+	case 'U':
+		return elements.BarcodeModeUcc
+	case 'A':
+		return elements.BarcodeModeAutomatic
+	case 'D':
+		return elements.BarcodeModeEan
+	default:
+		return elements.BarcodeModeNormal
+	}
+}
+
 func toBoolField(value byte) bool {
 	return value == 'Y'
 }

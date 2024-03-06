@@ -30,6 +30,7 @@ type Barcode128 struct {
 	// Whether or not to calculate a GS1 (UCC) Mod 10 check digit.
 	// Valid values are Y and N.
 	// The default value is N (GS1 check digit is not calculated).
+	// TODO: Figure out if it should be implemented, as it's part of the interface but reference libraries disregard this value.
 	CheckDigit bool
 	// The mode to use to encode the bar code data.
 	// Valid values are N (no mode, subsets are specified explicitly as part of the field data),
@@ -38,4 +39,10 @@ type Barcode128 struct {
 	// and D (UCC/EAN mode, field data must contain GS1 numbers).
 	// The default value is N (no mode, subsets are specified explicitly as part of the field data).
 	Mode BarcodeMode
+}
+
+type Barcode128WithData struct {
+	Barcode128
+	Position LabelPosition
+	Data     string
 }

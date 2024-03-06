@@ -16,6 +16,7 @@ type VirtualPrinter struct {
 	NextHexEscapeChar       byte
 	NextElementFieldReverse bool
 	LabelReverse            bool
+	// TODO: Add barcode field default handling
 }
 
 func NewVirtualPrinter() *VirtualPrinter {

@@ -43,7 +43,7 @@ func NewGraphicBoxParser() *CommandParser {
 			}
 
 			if len(parts) > 3 && parts[3] == "W" {
-				result.LineColor = elements.LineColorWhile
+				result.LineColor = elements.LineColorWhite
 			}
 
 			if len(parts) > 4 {
