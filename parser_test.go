@@ -61,6 +61,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			dstPath: "barcode128_mode_n.png",
 		},
 		{
+			name:    "Barcode128 default width set",
+			srcPath: "barcode128_default_width.zpl",
+			dstPath: "barcode128_default_width.png",
+		},
+		{
 			name:    "Barcode128 180 degrees rotated",
 			srcPath: "barcode128_rotated.zpl",
 			dstPath: "barcode128_rotated.png",
@@ -101,6 +106,52 @@ func TestDrawLabelAsPng(t *testing.T) {
 
 			if diff := cmp.Diff(buff.Bytes(), expectedPng); diff != "" {
 				t.Errorf("mismatched png output (-got,+want):\n %s", diff)
+			}
+		})
+	}
+}
+
+func TestDrawLabelAsPng_Barcode128(t *testing.T) {
+	filenames := []string{
+		"barcode128_line_above",
+		"barcode128_line",
+		"barcode128_mode_a",
+		"barcode128_mode_d",
+		"barcode128_mode_n",
+		"barcode128_mode_u",
+		"barcode128_rotated",
+	}
+
+	for _, filename := range filenames {
+		t.Run(filename, func(t *testing.T) {
+			file, err := os.ReadFile("./testdata/" + filename + ".zpl")
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			expectedPng, err := os.ReadFile("./testdata/" + filename + ".png")
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			parser := NewParser()
+
+			res, err := parser.Parse(file)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			var buff bytes.Buffer
+
+			drawer := NewDrawer()
+
+			err = drawer.DrawLabelAsPng(res[0], &buff, drawers.DrawerOptions{})
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if diff := cmp.Diff(buff.Bytes(), expectedPng); diff != "" {
+				t.Fatalf("unexpected output label, diff(+got,-want): %s", diff)
 			}
 		})
 	}

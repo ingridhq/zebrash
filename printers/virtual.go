@@ -3,20 +3,21 @@ package printers
 import "github.com/ingridhq/zebrash/elements"
 
 type VirtualPrinter struct {
-	StoredGraphics          map[string]elements.StoredGraphics
-	LabelHomePosition       elements.LabelPosition
-	NextElementPosition     elements.LabelPosition
-	DefaultFont             elements.FontInfo
-	DefaultOrientation      elements.FieldOrientation
-	DefaultAlignment        elements.TextAlignment
-	NextElementFieldBlock   *elements.FieldBlock
-	NextElementFieldData    interface{}
-	NextFont                *elements.FontInfo
-	NextDownloadFormatName  string
-	NextHexEscapeChar       byte
-	NextElementFieldReverse bool
-	LabelReverse            bool
-	// TODO: Add barcode field default handling
+	StoredGraphics            map[string]elements.StoredGraphics
+	LabelHomePosition         elements.LabelPosition
+	NextElementPosition       elements.LabelPosition
+	DefaultFont               elements.FontInfo
+	DefaultOrientation        elements.FieldOrientation
+	DefaultAlignment          elements.TextAlignment
+	NextElementFieldBlock     *elements.FieldBlock
+	NextElementFieldData      interface{}
+	NextFont                  *elements.FontInfo
+	NextDownloadFormatName    string
+	NextHexEscapeChar         byte
+	NextElementFieldReverse   bool
+	LabelReverse              bool
+	DefaultBarcodeModuleWidth int
+	DefaultBarcodeHeight      int
 }
 
 func NewVirtualPrinter() *VirtualPrinter {
@@ -27,6 +28,8 @@ func NewVirtualPrinter() *VirtualPrinter {
 			Width:  0,
 			Height: 9,
 		},
+		DefaultBarcodeModuleWidth: 2,
+		DefaultBarcodeHeight:      10,
 	}
 }
 
