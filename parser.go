@@ -36,6 +36,7 @@ func NewParser() *Parser {
 			parsers.NewBarcodePdf417Parser(),
 			parsers.NewDownloadGraphicsParser(),
 			parsers.NewRecallGraphicsParser(),
+			parsers.NewBarcodeFieldDefaults(),
 		},
 	}
 }

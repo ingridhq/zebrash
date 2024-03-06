@@ -14,7 +14,6 @@ import (
 	"github.com/ingridhq/zebrash/elements"
 )
 
-const barcodeLibraryWidthScaleFactor = 2
 const barcodeLineFontSizeScaleFactor = 20
 
 var startCodeRegex = regexp.MustCompile(`^(>[9:;])`)
@@ -45,8 +44,7 @@ func NewBarcode128Drawer() *ElementDrawer {
 			if err != nil {
 				return fmt.Errorf("failed to encode barcode: %s", err.Error())
 			}
-			// TODO: Replace with a Width from BY command
-			scaledBarcode, err := barcodeLib.Scale(encodedBarcode, encodedBarcode.Bounds().Size().X*barcodeLibraryWidthScaleFactor, barcode.Height*encodedBarcode.Bounds().Max.Y)
+			scaledBarcode, err := barcodeLib.Scale(encodedBarcode, encodedBarcode.Bounds().Size().X*barcode.Width, encodedBarcode.Bounds().Max.Y*barcode.Height)
 			if err != nil {
 				return fmt.Errorf("failed to scale barcode: %s", err.Error())
 			}

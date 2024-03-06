@@ -61,6 +61,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			dstPath: "barcode128_mode_n.png",
 		},
 		{
+			name:    "Barcode128 default width set",
+			srcPath: "barcode128_default_width.zpl",
+			dstPath: "barcode128_default_width.png",
+		},
+		{
 			name:    "Barcode128 180 degrees rotated",
 			srcPath: "barcode128_rotated.zpl",
 			dstPath: "barcode128_rotated.png",
