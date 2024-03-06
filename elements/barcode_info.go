@@ -1,6 +1,6 @@
 package elements
 
-type BarcodeInfo struct {
-	DefaultModuleWidth int
-	DefaultHeight      int
+type BarcodeDimensions struct {
+	ModuleWidth int
+	Height      int
 }

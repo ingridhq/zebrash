@@ -42,7 +42,7 @@ func NewFieldDataParser() *CommandParser {
 				case *elements.Barcode128:
 					return &elements.Barcode128WithData{
 						Barcode128: *fd,
-						Width:      printer.BarcodeInfo.DefaultModuleWidth,
+						Width:      printer.DefaultBarcodeDimensions.ModuleWidth,
 						Position:   printer.NextElementPosition,
 						Data:       text,
 					}, nil

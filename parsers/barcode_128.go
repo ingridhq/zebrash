@@ -15,7 +15,7 @@ func NewBarcode128Parser() *CommandParser {
 		Parse: func(command string, printer *printers.VirtualPrinter) (interface{}, error) {
 			barcode := &elements.Barcode128{
 				Orientation: printer.DefaultOrientation,
-				Height:      printer.BarcodeInfo.DefaultHeight,
+				Height:      printer.DefaultBarcodeDimensions.Height,
 				Line:        true,
 			}
 
