@@ -18,7 +18,7 @@ func NewFieldValueParser() *CommandParser {
 				case *elements.Barcode128:
 					return &elements.Barcode128WithData{
 						Barcode128: *fd,
-						Width:      printer.DefaultBarcodeModuleWidth,
+						Width:      printer.BarcodeInfo.DefaultModuleWidth,
 						Position:   printer.NextElementPosition,
 						Data:       text,
 					}, nil

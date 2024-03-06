@@ -15,7 +15,7 @@ func NewBarcodeFieldDefaults() *CommandParser {
 			parts := splitCommand(command, code, 0)
 			if len(parts) > 0 {
 				if v, err := strconv.Atoi(parts[0]); err == nil {
-					printer.DefaultBarcodeModuleWidth = v
+					printer.BarcodeInfo.DefaultModuleWidth = v
 				}
 			}
 			// TODO: We should be parsing WideBarToNarrowBarWidthRatio from parts[1], but:
@@ -23,7 +23,7 @@ func NewBarcodeFieldDefaults() *CommandParser {
 			// 2. We don't need it at the moment
 			if len(parts) > 2 {
 				if v, err := strconv.Atoi(parts[2]); err == nil {
-					printer.DefaultBarcodeHeight = v
+					printer.BarcodeInfo.DefaultHeight = v
 				}
 			}
 
