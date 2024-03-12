@@ -35,9 +35,9 @@ func NewFieldDataParser() *CommandParser {
 					}, nil
 				case *elements.BarcodePdf417:
 					return &elements.BarcodePdf417WithData{
-						Code:     *fd,
-						Position: printer.NextElementPosition,
-						Data:     text,
+						BarcodePdf417: *fd,
+						Position:      printer.NextElementPosition,
+						Data:          text,
 					}, nil
 				case *elements.Barcode128:
 					return &elements.Barcode128WithData{
@@ -45,6 +45,12 @@ func NewFieldDataParser() *CommandParser {
 						Width:      printer.DefaultBarcodeDimensions.ModuleWidth,
 						Position:   printer.NextElementPosition,
 						Data:       text,
+					}, nil
+				case *elements.BarcodeAztec:
+					return &elements.BarcodeAztecWithData{
+						BarcodeAztec: *fd,
+						Position:     printer.NextElementPosition,
+						Data:         text,
 					}, nil
 				}
 			}
@@ -57,7 +63,7 @@ func NewFieldDataParser() *CommandParser {
 				Font:         font,
 				Position:     pos,
 				Orientation:  printer.DefaultOrientation,
-				Alignment:    printer.DefaultAlignment,
+				Alignment:    printer.GetNextElementAlignmentOrDefault(),
 				Text:         text,
 				Block:        printer.NextElementFieldBlock,
 				ReversePrint: reversePrint,

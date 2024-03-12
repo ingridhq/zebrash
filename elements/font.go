@@ -6,11 +6,3 @@ type FontInfo struct {
 	Height      int
 	Orientation FieldOrientation
 }
-
-func (f FontInfo) GetSize() int {
-	if f.Height > 0 {
-		return f.Height
-	}
-
-	return f.Width
-}

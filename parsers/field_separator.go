@@ -14,12 +14,10 @@ func NewFieldSeparatorParser() *CommandParser {
 			printer.NextElementPosition = elements.LabelPosition{}
 			printer.NextElementFieldBlock = nil
 			printer.NextElementFieldData = nil
+			printer.NextElementAlignment = nil
 			printer.NextFont = nil
 			printer.NextElementFieldReverse = false
 			printer.NextHexEscapeChar = 0
-			printer.DefaultAlignment = elements.TextAlignmentLeft
-			printer.DefaultOrientation = elements.FieldOrientationNormal
-
 			return nil, nil
 		},
 	}

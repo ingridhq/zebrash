@@ -11,9 +11,10 @@ import (
 
 func TestDrawLabelAsPng(t *testing.T) {
 	testCases := []struct {
-		name    string
-		srcPath string
-		dstPath string
+		name     string
+		srcPath  string
+		dstPath  string
+		labelIdx int
 	}{
 		{
 			name:    "UPS label",
@@ -29,6 +30,17 @@ func TestDrawLabelAsPng(t *testing.T) {
 			name:    "Label converted from PDF via zplgrf",
 			srcPath: "bstc.zpl",
 			dstPath: "bstc.png",
+		},
+		{
+			name:    "Postnord DPD label",
+			srcPath: "pnldpd.zpl",
+			dstPath: "pnldpd.png",
+		},
+		{
+			name:     "Postnord DPD label Page 2",
+			srcPath:  "pnldpd.zpl",
+			dstPath:  "pnldpd_page_2.png",
+			labelIdx: 1,
 		},
 		{
 			name:    "Barcode128 with 'line' and 'line above' set",
@@ -79,11 +91,6 @@ func TestDrawLabelAsPng(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			expectedPng, err := os.ReadFile("./testdata/" + tC.dstPath)
-			if err != nil {
-				t.Fatal(err)
-			}
-
 			parser := NewParser()
 
 			res, err := parser.Parse(file)
@@ -99,7 +106,12 @@ func TestDrawLabelAsPng(t *testing.T) {
 				t.Fatal("no labels in the response")
 			}
 
-			err = drawer.DrawLabelAsPng(res[0], &buff, drawers.DrawerOptions{})
+			err = drawer.DrawLabelAsPng(res[tC.labelIdx], &buff, drawers.DrawerOptions{})
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			expectedPng, err := os.ReadFile("./testdata/" + tC.dstPath)
 			if err != nil {
 				t.Fatal(err)
 			}

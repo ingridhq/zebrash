@@ -29,6 +29,22 @@ func NewFieldOriginParser() *CommandParser {
 				}
 			}
 
+			if len(parts) > 2 {
+				if v, err := strconv.Atoi(parts[2]); err == nil {
+					switch v {
+					case 0:
+						val := elements.TextAlignmentLeft
+						printer.NextElementAlignment = &val
+					case 1:
+						val := elements.TextAlignmentRight
+						printer.NextElementAlignment = &val
+					case 2:
+						val := elements.TextAlignmentJustified
+						printer.NextElementAlignment = &val
+					}
+				}
+			}
+
 			printer.NextElementPosition = pos.Add(printer.LabelHomePosition)
 
 			return nil, nil

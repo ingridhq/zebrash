@@ -9,6 +9,7 @@ type VirtualPrinter struct {
 	DefaultFont              elements.FontInfo
 	DefaultOrientation       elements.FieldOrientation
 	DefaultAlignment         elements.TextAlignment
+	NextElementAlignment     *elements.TextAlignment
 	NextElementFieldBlock    *elements.FieldBlock
 	NextElementFieldData     interface{}
 	NextFont                 *elements.FontInfo
@@ -40,6 +41,14 @@ func (p *VirtualPrinter) GetNextFontOrDefault() elements.FontInfo {
 	}
 
 	return p.DefaultFont
+}
+
+func (p *VirtualPrinter) GetNextElementAlignmentOrDefault() elements.TextAlignment {
+	if p.NextElementAlignment != nil {
+		return *p.NextElementAlignment
+	}
+
+	return p.DefaultAlignment
 }
 
 func (p *VirtualPrinter) IsReversePrint() bool {
