@@ -28,14 +28,15 @@ func (barcode *MaxicodeWithData) GetInputData() (string, error) {
 	const codeHeader = "[)>" + RS + "01" + GS
 	const headerLen = 9
 
-	headerPos := strings.Index(barcode.Data, codeHeader)
+	data := strings.ReplaceAll(barcode.Data, "\r", "")
+	headerPos := strings.Index(data, codeHeader)
 
-	if headerPos < 0 || len(barcode.Data) < headerPos+headerLen {
+	if headerPos < 0 || len(data) < headerPos+headerLen {
 		return "", fmt.Errorf("invalid length of maxicode data")
 	}
 
-	mainData := barcode.Data[:headerPos]
-	addData := barcode.Data[headerPos:]
+	mainData := data[:headerPos]
+	addData := data[headerPos:]
 	headerData := addData[0:headerLen]
 
 	// ZPL commands have maxicode data as 2 separate sections

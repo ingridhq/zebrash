@@ -49,6 +49,8 @@ func toTextAlignment(alignment byte) elements.TextAlignment {
 		return elements.TextAlignmentRight
 	case 'J':
 		return elements.TextAlignmentJustified
+	case 'C':
+		return elements.TextAlignmentCenter
 	default:
 		return elements.TextAlignmentLeft
 	}

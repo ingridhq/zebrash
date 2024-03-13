@@ -21,7 +21,7 @@ func NewTextFieldDrawer() *ElementDrawer {
 			}
 
 			fontWidth := float64(text.Font.Width)
-			fontSize := float64(text.Font.GetSize())
+			fontSize := getTextFontSize(text)
 
 			font := font0
 			if text.Font.Name != "0" {
@@ -34,45 +34,81 @@ func NewTextFieldDrawer() *ElementDrawer {
 
 			x := float64(text.Position.X)
 			y := float64(text.Position.Y) + fontSize/4.0
-			ax := 0.0
-			ay := 0.5
+
+			ax, ay := getTextAxAy(text)
+			scaleX := 1.0
 
 			if fontWidth != fontSize {
-				gCtx.ScaleAbout(fontWidth/fontSize, 1, x, y)
+				scaleX = fontWidth / fontSize
+				gCtx.ScaleAbout(scaleX, 1, x, y)
 			}
 
 			if rotate := text.Orientation.GetDegrees(); rotate != 0 {
-				switch text.Orientation {
-				case elements.FieldOrientation90:
-					ay = 0
-				case elements.FieldOrientation270:
-					ax = 1.0
-				case elements.FieldOrientation180:
-					ax = 1.0
-					ay = 0
-				}
-
 				gCtx.RotateAbout(gg.Radians(rotate), x, y)
 			}
 
 			defer gCtx.Identity()
 
 			if text.Block != nil {
-				align := gg.AlignLeft
-
-				switch text.Block.Alignment {
-				case elements.TextAlignmentRight:
-					align = gg.AlignRight
-				case elements.TextAlignmentJustified:
-					align = gg.AlignCenter
-				}
-
-				gCtx.DrawStringWrapped(text.Text, x, y, ax, ay, float64(text.Block.MaxWidth), float64(text.Block.LineSpacing), align)
+				maxWidth := float64(text.Block.MaxWidth) / scaleX
+				align := getTextBlockAlign(text.Block)
+				gCtx.DrawStringWrapped(text.Text, x, y, ax, ay, maxWidth, float64(text.Block.LineSpacing), align)
 			} else {
 				gCtx.DrawStringAnchored(text.Text, x, y, ax, ay)
 			}
 
 			return nil
 		},
+	}
+}
+
+func getTextFontSize(text *elements.TextField) float64 {
+	w := float64(text.Font.Width)
+	h := float64(text.Font.Height)
+
+	switch text.Orientation {
+	case elements.FieldOrientation90, elements.FieldOrientation270:
+		return w
+	default:
+		return h
+	}
+}
+
+func getTextAxAy(text *elements.TextField) (float64, float64) {
+	ax := 0.0
+	ay := 0.5
+
+	switch text.Alignment {
+	case elements.TextAlignmentLeft:
+		ax = 0
+	case elements.TextAlignmentRight:
+		ax = 1
+	case elements.TextAlignmentJustified, elements.TextAlignmentCenter:
+		ax = 0.5
+	}
+
+	if rotate := text.Orientation.GetDegrees(); rotate != 0 {
+		switch text.Orientation {
+		case elements.FieldOrientation90:
+			ay = 0
+		case elements.FieldOrientation270:
+			ax = 1.0
+		case elements.FieldOrientation180:
+			ax = 1.0
+			ay = 0
+		}
+	}
+
+	return ax, ay
+}
+
+func getTextBlockAlign(block *elements.FieldBlock) gg.Align {
+	switch block.Alignment {
+	case elements.TextAlignmentRight:
+		return gg.AlignRight
+	case elements.TextAlignmentJustified, elements.TextAlignmentCenter:
+		return gg.AlignCenter
+	default:
+		return gg.AlignLeft
 	}
 }

@@ -1,12 +1,12 @@
 package parsers
 
 import (
-	hx "encoding/hex"
 	"fmt"
 	"strconv"
 	"strings"
 
 	"github.com/ingridhq/zebrash/elements"
+	"github.com/ingridhq/zebrash/hex"
 	"github.com/ingridhq/zebrash/printers"
 )
 
@@ -57,7 +57,7 @@ func NewGraphicFieldParser() *CommandParser {
 
 				switch result.Format {
 				case elements.GraphicFieldFormatHex:
-					v, err := hx.DecodeString(data)
+					v, err := hex.DecodeGraphicFieldData(data, result.RowBytes)
 					if err != nil {
 						return nil, fmt.Errorf("failed to decode hex string: %w", err)
 					}
