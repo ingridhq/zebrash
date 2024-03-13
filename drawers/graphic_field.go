@@ -24,7 +24,7 @@ func NewGraphicFieldDrawer() *ElementDrawer {
 			width := field.RowBytes * 8
 			height := field.DataBytes / field.RowBytes
 
-			img := image.NewGray(image.Rect(0, 0, width, height))
+			img := image.NewGray16(image.Rect(0, 0, width, height))
 
 			for y := 0; y < height; y++ {
 				for x := 0; x < width; x++ {
@@ -34,14 +34,14 @@ func NewGraphicFieldDrawer() *ElementDrawer {
 					val := ((field.Data[y*(width/8)+x/8]) >> (7 - x%8)) & 1
 
 					if val != 0 {
-						img.SetGray(x, y, color.Gray{Y: 0})
+						img.SetGray16(x, y, color.Black)
 					} else {
-						img.SetGray(x, y, color.Gray{Y: 255})
+						img.SetGray16(x, y, color.White)
 					}
 				}
 			}
 
-			gCtx.DrawImage(img, field.Position.X, field.Position.Y)
+			drawImage(gCtx, img, field.Position.X, field.Position.Y)
 
 			return nil
 		},
