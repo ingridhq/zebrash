@@ -47,7 +47,7 @@ func NewBarcodeAztecDrawer() *ElementDrawer {
 
 			defer gCtx.Identity()
 
-			gCtx.DrawImage(img, barcode.Position.X, barcode.Position.Y)
+			drawImage(gCtx, img, barcode.Position.X, barcode.Position.Y)
 
 			return nil
 		},

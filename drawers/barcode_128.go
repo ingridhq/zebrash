@@ -54,7 +54,7 @@ func NewBarcode128Drawer() *ElementDrawer {
 			applyBarcodeRotationToCtx(gCtx, barcode, width, height)
 			defer gCtx.Identity()
 
-			gCtx.DrawImage(scaledBarcode, barcode.Position.X, barcode.Position.Y)
+			drawImage(gCtx, scaledBarcode, barcode.Position.X, barcode.Position.Y)
 			if barcode.Line {
 				applyLineTextToCtx(gCtx, content, barcode, width, height)
 			}
