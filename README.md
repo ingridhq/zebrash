@@ -2,7 +2,7 @@
 Library for rendering ZPL (Zebra Programming Language) files as raster images
 
 - Partially based on https://github.com/BinaryKits/BinaryKits.Zpl
-- Uses slightly modified implementation of PDF417 barcode from https://github.com/boombuler/barcode/
+- Uses slightly modified implementation of PDF417 and Aztec barcodes from https://github.com/boombuler/barcode/
 
 ## Usage:
 

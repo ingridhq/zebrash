@@ -1,4 +1,4 @@
-package pdf417
+package utils
 
 // BitList is a list that contains bits
 type BitList struct {

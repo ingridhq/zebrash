@@ -3,9 +3,8 @@ package drawers
 import (
 	"fmt"
 
-	barcodeLib "github.com/boombuler/barcode"
-	"github.com/boombuler/barcode/aztec"
 	"github.com/fogleman/gg"
+	"github.com/ingridhq/zebrash/barcodes/aztec"
 	"github.com/ingridhq/zebrash/elements"
 )
 
@@ -33,21 +32,16 @@ func NewBarcodeAztecDrawer() *ElementDrawer {
 				}
 			}
 
-			img, err := aztec.Encode([]byte(barcode.Data), 0, layers)
+			img, err := aztec.Encode([]byte(barcode.Data), 0, layers, barcode.Magnification)
 			if err != nil {
 				return fmt.Errorf("failed to encode aztec barcode: %w", err)
-			}
-
-			img, err = barcodeLib.Scale(img, barcode.Magnification*img.Bounds().Dx(), barcode.Magnification*img.Bounds().Dy())
-			if err != nil {
-				return fmt.Errorf("failed to scale barcode: %s", err.Error())
 			}
 
 			rotateImage(gCtx, img, barcode.Position, barcode.Orientation)
 
 			defer gCtx.Identity()
 
-			drawImage(gCtx, img, barcode.Position.X, barcode.Position.Y)
+			gCtx.DrawImage(img, barcode.Position.X, barcode.Position.Y)
 
 			return nil
 		},

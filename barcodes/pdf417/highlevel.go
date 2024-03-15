@@ -3,6 +3,8 @@ package pdf417
 import (
 	"errors"
 	"math/big"
+
+	"github.com/ingridhq/zebrash/barcodes/utils"
 )
 
 type encodingMode byte
@@ -60,7 +62,7 @@ func init() {
 func determineConsecutiveDigitCount(data []rune) int {
 	cnt := 0
 	for _, r := range data {
-		if runeToInt(r) == -1 {
+		if utils.RuneToInt(r) == -1 {
 			break
 		}
 		cnt++
@@ -343,13 +345,4 @@ func highlevelEncode(dataStr string) ([]int, error) {
 	}
 
 	return result, nil
-}
-
-// runeToInt converts a rune between '0' and '9' to an integer between 0 and 9
-// If the rune is outside of this range -1 is returned.
-func runeToInt(r rune) int {
-	if r >= '0' && r <= '9' {
-		return int(r - '0')
-	}
-	return -1
 }
