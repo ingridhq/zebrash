@@ -3,6 +3,9 @@ package pdf417
 import (
 	"fmt"
 	"image"
+
+	"github.com/ingridhq/zebrash/barcodes/utils"
+	"github.com/ingridhq/zebrash/images"
 )
 
 const (
@@ -67,13 +70,13 @@ func Encode(data string, securityLevel byte, targetRowHeight, targetColumns int)
 		scaleY = float64(rows*targetRowHeight) / float64(height)
 	}
 
-	return &pdfBarcode{
-		width:        (columns+4)*17 + 1,
-		height:       height,
-		code:         codeData,
-		scaleFactorX: 2,
-		scaleFactorY: scaleY,
-	}, nil
+	barcode := &pdfBarcode{
+		width:  (columns+4)*17 + 1,
+		height: height,
+		code:   codeData,
+	}
+
+	return images.NewScaled(barcode, 2, scaleY), nil
 }
 
 func encodeData(dataWords []int, columns int, sl securitylevel) ([]int, error) {
@@ -145,8 +148,8 @@ func getPadding(dataCount int, ecCount int, columns int) []int {
 	return padding
 }
 
-func renderBarcode(codes [][]int) *BitList {
-	bl := new(BitList)
+func renderBarcode(codes [][]int) *utils.BitList {
+	bl := new(utils.BitList)
 	for _, row := range codes {
 		lastIdx := len(row) - 1
 		for i, col := range row {

@@ -12,11 +12,6 @@ type ElementDrawer struct {
 	Draw func(gCtx *gg.Context, element interface{}, options DrawerOptions) error
 }
 
-func drawImage(gCtx *gg.Context, img image.Image, xo, yo int) {
-	imgWrap := &transparentImgWrap{img: img}
-	gCtx.DrawImage(imgWrap, xo, yo)
-}
-
 func rotateImage(gCtx *gg.Context, img image.Image, pos elements.LabelPosition, ori elements.FieldOrientation) {
 	width := float64(img.Bounds().Dx())
 	height := float64(img.Bounds().Dy())

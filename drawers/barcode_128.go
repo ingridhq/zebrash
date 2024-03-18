@@ -2,23 +2,30 @@ package drawers
 
 import (
 	"fmt"
+	"image"
 	"image/color"
 	"regexp"
 	"strconv"
 	"strings"
 
-	barcodeLib "github.com/boombuler/barcode"
-	"github.com/boombuler/barcode/code128"
 	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
 	"github.com/ingridhq/zebrash/elements"
+	"github.com/ingridhq/zebrash/images"
+	"github.com/makiuchi-d/gozxing"
+	"github.com/makiuchi-d/gozxing/oned"
 )
 
-const barcodeLineFontSizeScaleFactor = 20
+const (
+	barcodeLineFontSizeScaleFactor = 20
+	// FNC1 - Special Function 1
+	barcode128FNC1 = "\u00f1"
+)
 
-var startCodeRegex = regexp.MustCompile(`^(>[9:;])`)
-
-var invalidStartInvocationRegex = regexp.MustCompile(`^.+>[9:;]`)
+var (
+	startCodeRegex              = regexp.MustCompile(`^(>[9:;])`)
+	invalidStartInvocationRegex = regexp.MustCompile(`^.+>[9:;]`)
+)
 
 func NewBarcode128Drawer() *ElementDrawer {
 	return &ElementDrawer{
@@ -40,42 +47,35 @@ func NewBarcode128Drawer() *ElementDrawer {
 				// DO NOTHING with the content
 				// subset prefixes like `>;` will not be skipped and encoded as label content
 			}
-			encodedBarcode, err := code128.Encode(content)
+
+			var (
+				img image.Image
+				err error
+			)
+
+			enc := oned.NewCode128Writer()
+			img, err = enc.Encode(content, gozxing.BarcodeFormat_CODE_128, 0, barcode.Height, nil)
 			if err != nil {
 				return fmt.Errorf("failed to encode barcode: %s", err.Error())
 			}
-			scaledBarcode, err := barcodeLib.Scale(encodedBarcode, encodedBarcode.Bounds().Size().X*barcode.Width, encodedBarcode.Bounds().Max.Y*barcode.Height)
-			if err != nil {
-				return fmt.Errorf("failed to scale barcode: %s", err.Error())
-			}
 
-			width := float64(scaledBarcode.Bounds().Dx())
-			height := float64(scaledBarcode.Bounds().Dy())
-			applyBarcodeRotationToCtx(gCtx, barcode, width, height)
+			img = images.NewShifted(img, -4, 0)
+			img = images.NewScaled(img, float64(barcode.Width), 1)
+
+			width := float64(img.Bounds().Dx())
+			height := float64(img.Bounds().Dy())
+
+			rotateImage(gCtx, img, barcode.Position, barcode.Orientation)
+
 			defer gCtx.Identity()
 
-			drawImage(gCtx, scaledBarcode, barcode.Position.X, barcode.Position.Y)
+			gCtx.DrawImage(images.NewTransparent(img), barcode.Position.X, barcode.Position.Y)
 			if barcode.Line {
 				applyLineTextToCtx(gCtx, content, barcode, width, height)
 			}
 
 			return nil
 		},
-	}
-}
-
-func applyBarcodeRotationToCtx(gCtx *gg.Context, barcodeElement *elements.Barcode128WithData, width, height float64) {
-	if rotate := barcodeElement.Orientation.GetDegrees(); rotate != 0 {
-		gCtx.RotateAbout(gg.Radians(rotate), float64(barcodeElement.Position.X), float64(barcodeElement.Position.Y))
-
-		switch barcodeElement.Orientation {
-		case elements.FieldOrientation90:
-			gCtx.Translate(0, -height)
-		case elements.FieldOrientation180:
-			gCtx.Translate(-width, -height)
-		case elements.FieldOrientation270:
-			gCtx.Translate(-width, 0)
-		}
 	}
 }
 
@@ -98,13 +98,13 @@ func modifyBarcodeContentNormalMode(content string) string {
 	// replace beginning if it's a match
 	content = startCodeRegex.ReplaceAllString(content, "")
 	// support hand-rolled GS1
-	return strings.ReplaceAll(content, `>8`, string(code128.FNC1))
+	return strings.ReplaceAll(content, `>8`, barcode128FNC1)
 }
 
 func modifyBarcodeContentEanMode(content string) string {
-	content = strings.ReplaceAll(content, `>8`, string(code128.FNC1))
-	if !strings.HasPrefix(content, string(code128.FNC1)) {
-		content = string(code128.FNC1) + content
+	content = strings.ReplaceAll(content, `>8`, barcode128FNC1)
+	if !strings.HasPrefix(content, barcode128FNC1) {
+		content = barcode128FNC1 + content
 	}
 	return content
 }
@@ -113,7 +113,7 @@ func modifyBarcodeContentUccMode(content string) string {
 	content = addZerosPrefix(content)
 	content = content[:19]
 	checksumDigit := calculateUccBarcodeChecksumDigit(content)
-	return string(code128.FNC1) + content + strconv.Itoa(checksumDigit)
+	return barcode128FNC1 + content + strconv.Itoa(checksumDigit)
 }
 
 func addZerosPrefix(in string) string {

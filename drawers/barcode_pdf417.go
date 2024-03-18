@@ -25,7 +25,7 @@ func NewBarcodePdf417Drawer() *ElementDrawer {
 
 			defer gCtx.Identity()
 
-			drawImage(gCtx, img, barcode.Position.X, barcode.Position.Y)
+			gCtx.DrawImage(img, barcode.Position.X, barcode.Position.Y)
 
 			return nil
 		},
