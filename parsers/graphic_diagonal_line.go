@@ -7,18 +7,17 @@ import (
 	"github.com/ingridhq/zebrash/printers"
 )
 
-func NewGraphicBoxParser() *CommandParser {
-	const code = "^GB"
+func NewGraphicDiagonalLineParser() *CommandParser {
+	const code = "^GD"
 
 	return &CommandParser{
 		CommandCode: code,
 		Parse: func(command string, printer *printers.VirtualPrinter) (interface{}, error) {
-			result := &elements.GraphicBox{
+			result := &elements.GraphicDiagonalLine{
 				Position:        printer.NextElementPosition,
 				Width:           1,
 				Height:          1,
 				BorderThickness: 1,
-				CornerRounding:  0,
 				LineColor:       elements.LineColorBlack,
 				ReversePrint:    printer.GetReversePrint(),
 			}
@@ -47,9 +46,7 @@ func NewGraphicBoxParser() *CommandParser {
 			}
 
 			if len(parts) > 4 {
-				if v, err := strconv.Atoi(parts[4]); err == nil {
-					result.CornerRounding = v
-				}
+				result.TopToBottom = (parts[4] == "L")
 			}
 
 			return result, nil

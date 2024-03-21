@@ -30,11 +30,10 @@ func NewTextFieldDrawer() *ElementDrawer {
 
 			face := truetype.NewFace(font, &truetype.Options{Size: fontSize})
 			gCtx.SetFontFace(face)
+
 			setLineColor(gCtx, elements.LineColorBlack)
 
-			x := float64(text.Position.X)
-			y := float64(text.Position.Y) + fontSize/4.0
-
+			x, y := getTextTopLeftPos(gCtx, text)
 			ax, ay := getTextAxAy(text)
 			scaleX := 1.0
 
@@ -43,7 +42,7 @@ func NewTextFieldDrawer() *ElementDrawer {
 				gCtx.ScaleAbout(scaleX, 1, x, y)
 			}
 
-			if rotate := text.Orientation.GetDegrees(); rotate != 0 {
+			if rotate := text.Font.Orientation.GetDegrees(); rotate != 0 {
 				gCtx.RotateAbout(gg.Radians(rotate), x, y)
 			}
 
@@ -62,11 +61,50 @@ func NewTextFieldDrawer() *ElementDrawer {
 	}
 }
 
+func getTextTopLeftPos(gCtx *gg.Context, text *elements.TextField) (float64, float64) {
+	x := float64(text.Position.X)
+	y := float64(text.Position.Y)
+
+	w, h := getTextDimensions(gCtx, text)
+
+	if !text.Position.CalculateFromBottom {
+		switch text.Font.Orientation {
+		case elements.FieldOrientation90:
+			return x + 3*h/4, y
+		case elements.FieldOrientation180:
+			return x + w, y + 3*h/4
+		case elements.FieldOrientation270:
+			return x + h/4, y + w
+		default:
+			return x, y + h/4
+		}
+	}
+
+	switch text.Font.Orientation {
+	case elements.FieldOrientation90:
+		return x + h/2, y
+	case elements.FieldOrientation180:
+		return x, y + h/2
+	case elements.FieldOrientation270:
+		return x - h/2, y
+	default:
+		return x, y - h/2
+	}
+}
+
+func getTextDimensions(gCtx *gg.Context, text *elements.TextField) (float64, float64) {
+	if text.Block != nil {
+		return gCtx.MeasureMultilineString(text.Text, float64(text.Block.LineSpacing))
+	}
+
+	return gCtx.MeasureString(text.Text)
+}
+
 func getTextFontSize(text *elements.TextField) float64 {
 	w := float64(text.Font.Width)
 	h := float64(text.Font.Height)
 
-	switch text.Orientation {
+	switch text.Font.Orientation {
 	case elements.FieldOrientation90, elements.FieldOrientation270:
 		return w
 	default:
@@ -85,18 +123,6 @@ func getTextAxAy(text *elements.TextField) (float64, float64) {
 		ax = 1
 	case elements.TextAlignmentJustified, elements.TextAlignmentCenter:
 		ax = 0.5
-	}
-
-	if rotate := text.Orientation.GetDegrees(); rotate != 0 {
-		switch text.Orientation {
-		case elements.FieldOrientation90:
-			ay = 0
-		case elements.FieldOrientation270:
-			ax = 1.0
-		case elements.FieldOrientation180:
-			ax = 1.0
-			ay = 0
-		}
 	}
 
 	return ax, ay

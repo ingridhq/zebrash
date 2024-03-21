@@ -1,11 +1,11 @@
 package elements
 
 type TextField struct {
-	Font         FontInfo
-	Position     LabelPosition
-	Orientation  FieldOrientation
-	Alignment    TextAlignment
-	Text         string
-	Block        *FieldBlock
-	ReversePrint bool
+	ReversePrint
+
+	Font      FontInfo
+	Position  LabelPosition
+	Alignment TextAlignment
+	Text      string
+	Block     *FieldBlock
 }

@@ -17,7 +17,7 @@ func NewChangeDefaultFontParser() *CommandParser {
 				Name:        "0",
 				Width:       0,
 				Height:      9,
-				Orientation: elements.FieldOrientationNormal,
+				Orientation: printer.DefaultOrientation,
 			}
 
 			parts := splitCommand(command, code, 0)

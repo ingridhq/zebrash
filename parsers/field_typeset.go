@@ -7,14 +7,14 @@ import (
 	"github.com/ingridhq/zebrash/printers"
 )
 
-func NewFieldOriginParser() *CommandParser {
-	const code = "^FO"
+func NewFieldTypesetParser() *CommandParser {
+	const code = "^FT"
 
 	return &CommandParser{
 		CommandCode: code,
 		Parse: func(command string, printer *printers.VirtualPrinter) (interface{}, error) {
 			pos := elements.LabelPosition{
-				CalculateFromBottom: false,
+				CalculateFromBottom: true,
 			}
 
 			parts := splitCommand(command, code, 0)

@@ -18,6 +18,7 @@ func NewGraphicCircleParser() *CommandParser {
 				CircleDiameter:  3,
 				BorderThickness: 1,
 				LineColor:       elements.LineColorBlack,
+				ReversePrint:    printer.GetReversePrint(),
 			}
 
 			parts := splitCommand(command, code, 0)

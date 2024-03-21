@@ -1,6 +1,8 @@
 package elements
 
 type GraphicCircle struct {
+	ReversePrint
+
 	Position LabelPosition
 
 	// The diameter of the circle, in dots.

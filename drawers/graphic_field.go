@@ -7,6 +7,7 @@ import (
 
 	"github.com/fogleman/gg"
 	"github.com/ingridhq/zebrash/elements"
+	"github.com/ingridhq/zebrash/images"
 )
 
 func NewGraphicFieldDrawer() *ElementDrawer {
@@ -41,7 +42,8 @@ func NewGraphicFieldDrawer() *ElementDrawer {
 				}
 			}
 
-			gCtx.DrawImage(img, field.Position.X, field.Position.Y)
+			imgScaled := images.NewScaled(img, float64(field.MagnificationX), float64(field.MagnificationY))
+			gCtx.DrawImage(imgScaled, field.Position.X, field.Position.Y)
 
 			return nil
 		},

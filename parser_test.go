@@ -43,6 +43,56 @@ func TestDrawLabelAsPng(t *testing.T) {
 			labelIdx: 1,
 		},
 		{
+			name:    "DHL Paket",
+			srcPath: "dhlpaket.zpl",
+			dstPath: "dhlpaket.png",
+		},
+		{
+			name:    "Reverse print",
+			srcPath: "reverse.zpl",
+			dstPath: "reverse.png",
+		},
+		{
+			name:    "Text Field Typeset Normal rotation",
+			srcPath: "text_ft_n.zpl",
+			dstPath: "text_ft_n.png",
+		},
+		{
+			name:    "Text Field Typeset 90 degrees rotation",
+			srcPath: "text_ft_r.zpl",
+			dstPath: "text_ft_r.png",
+		},
+		{
+			name:    "Text Field Typeset 180 degrees rotation",
+			srcPath: "text_ft_i.zpl",
+			dstPath: "text_ft_i.png",
+		},
+		{
+			name:    "Text Field Typeset 270 degrees rotation",
+			srcPath: "text_ft_b.zpl",
+			dstPath: "text_ft_b.png",
+		},
+		{
+			name:    "Text Field Origin Normal rotation",
+			srcPath: "text_fo_n.zpl",
+			dstPath: "text_fo_n.png",
+		},
+		{
+			name:    "Text Field Origin 90 degrees rotation",
+			srcPath: "text_fo_r.zpl",
+			dstPath: "text_fo_r.png",
+		},
+		{
+			name:    "Text Field Origin 180 degrees rotation",
+			srcPath: "text_fo_i.zpl",
+			dstPath: "text_fo_i.png",
+		},
+		{
+			name:    "Text Field Origin 270 degrees rotation",
+			srcPath: "text_fo_b.zpl",
+			dstPath: "text_fo_b.png",
+		},
+		{
 			name:    "Barcode128 with 'line' and 'line above' set",
 			srcPath: "barcode128_line_above.zpl",
 			dstPath: "barcode128_line_above.png",

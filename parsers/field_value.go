@@ -28,11 +28,10 @@ func NewFieldValueParser() *CommandParser {
 			return &elements.TextField{
 				Font:         printer.GetNextFontOrDefault(),
 				Position:     printer.NextElementPosition,
-				Orientation:  printer.DefaultOrientation,
 				Alignment:    printer.DefaultAlignment,
-				Text:         commandText(command, code),
+				Text:         text,
 				Block:        printer.NextElementFieldBlock,
-				ReversePrint: printer.IsReversePrint(),
+				ReversePrint: printer.GetReversePrint(),
 			}, nil
 		},
 	}

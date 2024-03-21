@@ -20,6 +20,7 @@ func NewGraphicFieldParser() *CommandParser {
 				Position:       printer.NextElementPosition,
 				MagnificationX: 1,
 				MagnificationY: 1,
+				ReversePrint:   printer.GetReversePrint(),
 			}
 
 			parts := splitCommand(command, code, 0)
