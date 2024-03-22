@@ -13,8 +13,12 @@ type ScaledImgWrap struct {
 	scaleFactorY float64
 }
 
-func NewScaled(img image.Image, scaleFactorX, scaleFactorY float64) *ScaledImgWrap {
+func NewScaled(img image.Image, scaleFactorX, scaleFactorY float64) image.Image {
 	bounds := img.Bounds()
+
+	if scaleFactorX == 1 && scaleFactorY == 1 {
+		return img
+	}
 
 	width := int(math.Round(float64(bounds.Dx()) * scaleFactorX))
 	height := int(math.Round(float64(bounds.Dy()) * scaleFactorY))

@@ -18,6 +18,7 @@ func NewRecallGraphicsParser() *CommandParser {
 			result := &elements.GraphicField{
 				MagnificationX: 1,
 				MagnificationY: 1,
+				ReversePrint:   printer.GetReversePrint(),
 			}
 
 			path := elements.StoredGraphicsDefaultPath

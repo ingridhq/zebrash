@@ -9,6 +9,8 @@ const (
 )
 
 type GraphicField struct {
+	ReversePrint
+
 	Position LabelPosition
 
 	// The format of the image data contained in the fifth parameter.

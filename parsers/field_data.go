@@ -55,18 +55,16 @@ func NewFieldDataParser() *CommandParser {
 				}
 			}
 
-			reversePrint := printer.IsReversePrint()
 			font := printer.GetNextFontOrDefault()
 			pos := printer.NextElementPosition
 
 			return &elements.TextField{
 				Font:         font,
 				Position:     pos,
-				Orientation:  printer.DefaultOrientation,
 				Alignment:    printer.GetNextElementAlignmentOrDefault(),
 				Text:         text,
 				Block:        printer.NextElementFieldBlock,
-				ReversePrint: reversePrint,
+				ReversePrint: printer.GetReversePrint(),
 			}, nil
 		},
 	}

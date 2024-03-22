@@ -35,6 +35,14 @@ func NewVirtualPrinter() *VirtualPrinter {
 	}
 }
 
+func (p *VirtualPrinter) SetDefaultOrientation(orientation elements.FieldOrientation) {
+	p.DefaultOrientation = orientation
+	p.DefaultFont.Orientation = orientation
+	if p.NextFont != nil {
+		p.NextFont.Orientation = orientation
+	}
+}
+
 func (p *VirtualPrinter) GetNextFontOrDefault() elements.FontInfo {
 	if p.NextFont != nil {
 		return *p.NextFont
@@ -51,6 +59,8 @@ func (p *VirtualPrinter) GetNextElementAlignmentOrDefault() elements.TextAlignme
 	return p.DefaultAlignment
 }
 
-func (p *VirtualPrinter) IsReversePrint() bool {
-	return p.NextElementFieldReverse || p.LabelReverse
+func (p *VirtualPrinter) GetReversePrint() elements.ReversePrint {
+	return elements.ReversePrint{
+		Value: p.NextElementFieldReverse || p.LabelReverse,
+	}
 }

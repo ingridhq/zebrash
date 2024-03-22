@@ -3,7 +3,6 @@ package parsers
 import (
 	"strconv"
 
-	"github.com/ingridhq/zebrash/elements"
 	"github.com/ingridhq/zebrash/printers"
 )
 
@@ -13,12 +12,7 @@ func NewChangeFontParser() *CommandParser {
 	return &CommandParser{
 		CommandCode: code,
 		Parse: func(command string, printer *printers.VirtualPrinter) (interface{}, error) {
-			font := elements.FontInfo{
-				Name:        printer.DefaultFont.Name,
-				Width:       printer.DefaultFont.Width,
-				Height:      printer.DefaultFont.Height,
-				Orientation: elements.FieldOrientationNormal,
-			}
+			font := printer.DefaultFont
 
 			parts := splitCommand(command, code, 0)
 			if len(parts) > 0 && len(parts[0]) > 1 {
@@ -35,6 +29,10 @@ func NewChangeFontParser() *CommandParser {
 			if len(parts) > 2 {
 				if v, err := strconv.Atoi(parts[2]); err == nil {
 					font.Width = v
+
+					if parts[1] == "" {
+						font.Height = v
+					}
 				}
 			}
 

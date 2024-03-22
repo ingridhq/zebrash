@@ -8,7 +8,12 @@ import (
 	"github.com/fogleman/gg"
 	"github.com/ingridhq/zebrash/drawers"
 	"github.com/ingridhq/zebrash/elements"
+	"github.com/ingridhq/zebrash/images"
 )
+
+type reversePrintable interface {
+	IsReversePrint() bool
+}
 
 type Drawer struct {
 	elementDrawers []*drawers.ElementDrawer
@@ -20,6 +25,7 @@ func NewDrawer() *Drawer {
 			drawers.NewGraphicBoxDrawer(),
 			drawers.NewGraphicCircleDrawer(),
 			drawers.NewGraphicFieldDrawer(),
+			drawers.NewGraphicDiagonalLineDrawer(),
 			drawers.NewTextFieldDrawer(),
 			drawers.NewMaxicodeDrawer(),
 			drawers.NewBarcode128Drawer(),
@@ -44,10 +50,27 @@ func (d *Drawer) DrawLabelAsPng(label elements.LabelInfo, output io.Writer, opti
 	gCtx.Clear()
 
 	for _, element := range label.Elements {
+		reversePrint := false
+
+		if el, ok := element.(reversePrintable); ok {
+			reversePrint = el.IsReversePrint()
+		}
+
+		gCtx2 := gCtx
+		if reversePrint {
+			gCtx2 = gg.NewContext(int(imageWidth), int(imageHeight))
+		}
+
 		for _, drawer := range d.elementDrawers {
-			err := drawer.Draw(gCtx, element, options)
+			err := drawer.Draw(gCtx2, element, options)
 			if err != nil {
 				return fmt.Errorf("failed to draw zpl element: %w", err)
+			}
+		}
+
+		if reversePrint {
+			if err := images.ReversePrint(gCtx2.Image(), gCtx.Image()); err != nil {
+				return err
 			}
 		}
 	}
