@@ -1,6 +1,8 @@
 package drawers
 
 import (
+	"strings"
+
 	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
 	"github.com/ingridhq/zebrash/assets"
@@ -10,6 +12,7 @@ import (
 var (
 	font0 = mustLoadFont(assets.FontHelveticaBold)
 	font1 = mustLoadFont(assets.FontDejavuSansMono)
+	fontB = mustLoadFont(assets.FontDejavuSansMonoBold)
 )
 
 func NewTextFieldDrawer() *ElementDrawer {
@@ -20,15 +23,10 @@ func NewTextFieldDrawer() *ElementDrawer {
 				return nil
 			}
 
-			fontWidth := float64(text.Font.Width)
-			fontSize := getTextFontSize(text)
+			text = adjustTextField(text)
 
-			font := font0
-			if text.Font.Name != "0" {
-				font = font1
-			}
-
-			face := truetype.NewFace(font, &truetype.Options{Size: fontSize})
+			fontSize := text.Font.GetSize()
+			face := truetype.NewFace(getTffFont(text.Font), &truetype.Options{Size: fontSize})
 			gCtx.SetFontFace(face)
 
 			setLineColor(gCtx, elements.LineColorBlack)
@@ -37,8 +35,8 @@ func NewTextFieldDrawer() *ElementDrawer {
 			ax, ay := getTextAxAy(text)
 			scaleX := 1.0
 
-			if fontWidth != fontSize {
-				scaleX = fontWidth / fontSize
+			if text.Font.Width != 0 {
+				scaleX = text.Font.Width / fontSize
 				gCtx.ScaleAbout(scaleX, 1, x, y)
 			}
 
@@ -58,6 +56,35 @@ func NewTextFieldDrawer() *ElementDrawer {
 
 			return nil
 		},
+	}
+}
+
+func adjustTextField(text *elements.TextField) *elements.TextField {
+	fontName := text.Font.Name
+	res := *text
+
+	if fontName != "0" {
+		// For some reason width of DejavuSansMono needs to be scaled by 2
+		res.Font.Width *= 2
+	}
+
+	switch fontName {
+	case "B":
+		// Bold font, text in all uppercase
+		res.Text = strings.ToUpper(res.Text)
+	}
+
+	return &res
+}
+
+func getTffFont(font elements.FontInfo) *truetype.Font {
+	switch font.Name {
+	case "0":
+		return font0
+	case "B":
+		return fontB
+	default:
+		return font1
 	}
 }
 
@@ -98,18 +125,6 @@ func getTextDimensions(gCtx *gg.Context, text *elements.TextField) (float64, flo
 	}
 
 	return gCtx.MeasureString(text.Text)
-}
-
-func getTextFontSize(text *elements.TextField) float64 {
-	w := float64(text.Font.Width)
-	h := float64(text.Font.Height)
-
-	switch text.Font.Orientation {
-	case elements.FieldOrientation90, elements.FieldOrientation270:
-		return w
-	default:
-		return h
-	}
 }
 
 func getTextAxAy(text *elements.TextField) (float64, float64) {

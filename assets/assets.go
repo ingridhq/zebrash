@@ -9,3 +9,6 @@ var FontHelveticaBold []byte
 
 //go:embed fonts/DejaVuSansMono.ttf
 var FontDejavuSansMono []byte
+
+//go:embed fonts/DejaVuSansMonoBold.ttf
+var FontDejavuSansMonoBold []byte
