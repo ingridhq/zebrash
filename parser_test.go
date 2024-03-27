@@ -48,6 +48,16 @@ func TestDrawLabelAsPng(t *testing.T) {
 			dstPath: "dhlpaket.png",
 		},
 		{
+			name:    "ICA Paket",
+			srcPath: "icapaket.zpl",
+			dstPath: "icapaket.png",
+		},
+		{
+			name:    "DB Schenker",
+			srcPath: "dbs.zpl",
+			dstPath: "dbs.png",
+		},
+		{
 			name:    "Reverse print",
 			srcPath: "reverse.zpl",
 			dstPath: "reverse.png",

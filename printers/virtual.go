@@ -24,10 +24,8 @@ func NewVirtualPrinter() *VirtualPrinter {
 	return &VirtualPrinter{
 		StoredGraphics: map[string]elements.StoredGraphics{},
 		DefaultFont: elements.FontInfo{
-			Name:   "0",
-			Width:  0,
-			Height: 9,
-		},
+			Name: "A",
+		}.WithAdjustedSizes(),
 		DefaultBarcodeDimensions: elements.BarcodeDimensions{
 			ModuleWidth: 2,
 			Height:      10,

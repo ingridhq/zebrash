@@ -9,12 +9,14 @@ type DrawerOptions struct {
 func (d DrawerOptions) WithDefaults() DrawerOptions {
 	res := d
 
+	// by default produce 4x8 inches 203 dpi label
+
 	if res.LabelWidthMm == 0 {
 		res.LabelWidthMm = 101.6
 	}
 
 	if res.LabelHeightMm == 0 {
-		res.LabelHeightMm = 152.4
+		res.LabelHeightMm = 203.2
 	}
 
 	if res.Dpmm == 0 {
