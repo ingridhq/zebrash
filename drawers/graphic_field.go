@@ -17,8 +17,13 @@ func NewGraphicFieldDrawer() *ElementDrawer {
 				return nil
 			}
 
+			dataLen := len(field.Data)
+			if field.DataBytes > 0 {
+				dataLen = min(field.DataBytes, dataLen)
+			}
+
 			width := field.RowBytes * 8
-			height := len(field.Data) / field.RowBytes
+			height := dataLen / field.RowBytes
 
 			img := image.NewRGBA(image.Rect(0, 0, width, height))
 
