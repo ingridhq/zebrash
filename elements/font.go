@@ -29,11 +29,15 @@ var bitmapFontSizes = map[string][2]float64{
 	"H": {21, 13},
 }
 
+// Bitmap fonts (everything other than font 0)
+// cannot be freely scaled
+// their size should always divide by their base size without remainder
+// so we need to adjust them
+// NOTE: in order to emulate Zebra fonts 0, A-H we use only 2 different TTF fonts
+// so don't confuse Zebra and our fonts, they are not the same thing
 func (font FontInfo) WithAdjustedSizes() FontInfo {
 	orgSize, ok := bitmapFontSizes[font.Name]
 	if !ok {
-		// Not a bitmap font, for example 0 which is scalable font
-		// so it does not have incremental size increases
 		return font
 	}
 

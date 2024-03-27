@@ -19,19 +19,34 @@ func NewGraphicDiagonalLineDrawer() *ElementDrawer {
 			height := float64(line.Height)
 			border := float64(line.BorderThickness)
 
-			if line.TopToBottom {
-				gCtx.DrawLine(x, y, x+width, y+height)
-			} else {
-				gCtx.DrawLine(x+width, y, x, y+height)
-			}
+			drawDiagonalLine(gCtx, x, y, width, height, border, line.TopToBottom)
 
 			setLineColor(gCtx, line.LineColor)
-
+			gCtx.SetLineWidth(1)
 			gCtx.SetLineCapSquare()
-			gCtx.SetLineWidth(border)
-			gCtx.Stroke()
+			gCtx.Fill()
 
 			return nil
 		},
 	}
+}
+
+func drawDiagonalLine(gCtx *gg.Context, x, y, w, h, b float64, bottomToTop bool) {
+	gCtx.NewSubPath()
+	defer gCtx.ClosePath()
+
+	if bottomToTop {
+		gCtx.MoveTo(x, y)
+		gCtx.LineTo(x+b, y)
+		gCtx.LineTo(x+b+w, y+h)
+		gCtx.LineTo(x+w, y+h)
+		gCtx.LineTo(x, y)
+		return
+	}
+
+	gCtx.MoveTo(x, y+h)
+	gCtx.LineTo(x+b, y+h)
+	gCtx.LineTo(x+b+w, y)
+	gCtx.LineTo(x+w, y)
+	gCtx.LineTo(x, y+h)
 }
