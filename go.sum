@@ -4,8 +4,8 @@ github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 h1:DACJavvAHhabrF0
 github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0/go.mod h1:E/TSTwGwJL78qG/PmXZO1EjYhfJinVAhrmmHX6Z8B9k=
 github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=
 github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
-github.com/ingridhq/maxicode v1.0.0 h1:t68DlgFp2a4dYiZsiz2YH7la5JeWc8WZuTNVBWPyQfo=
-github.com/ingridhq/maxicode v1.0.0/go.mod h1:1E1m149yMlza9CQ/39m9BpWpKUggkLj8XFo/Z6X9FQY=
+github.com/ingridhq/maxicode v1.2.0 h1:kdr056MywBiEf1iy4E3kQFfZcTe0EFwnbhJosChbXrw=
+github.com/ingridhq/maxicode v1.2.0/go.mod h1:yA5/d2AMBkWjZse4MTe9KnqjPKT/p/5+1nBxDuUv+f0=
 github.com/makiuchi-d/gozxing v0.1.1 h1:xxqijhoedi+/lZlhINteGbywIrewVdVv2wl9r5O9S1I=
 github.com/makiuchi-d/gozxing v0.1.1/go.mod h1:eRIHbOjX7QWxLIDJoQuMLhuXg9LAuw6znsUtRkNw9DU=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
