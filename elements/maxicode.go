@@ -28,7 +28,7 @@ func (barcode *MaxicodeWithData) GetInputData() (string, error) {
 	const codeHeader = "[)>" + RS + "01" + GS
 	const headerLen = 9
 
-	data := strings.ReplaceAll(barcode.Data, "\r", "")
+	data := barcode.Data
 	headerPos := strings.Index(data, codeHeader)
 
 	if headerPos < 0 || len(data) < headerPos+headerLen {
