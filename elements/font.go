@@ -1,6 +1,8 @@
 package elements
 
-import "math"
+import (
+	"math"
+)
 
 type FontInfo struct {
 	Name        string
@@ -37,7 +39,17 @@ var bitmapFontSizes = map[string][2]float64{
 // so don't confuse Zebra and our fonts, they are not the same thing
 func (font FontInfo) WithAdjustedSizes() FontInfo {
 	orgSize, ok := bitmapFontSizes[font.Name]
+	// Scalable font
+	// Just set width and height to the same value if one of them is zero
 	if !ok {
+		if font.Width == 0 {
+			font.Width = font.Height
+		}
+
+		if font.Height == 0 {
+			font.Height = font.Width
+		}
+
 		return font
 	}
 
