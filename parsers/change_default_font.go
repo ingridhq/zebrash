@@ -32,10 +32,6 @@ func NewChangeDefaultFontParser() *CommandParser {
 			if len(parts) > 2 {
 				v, _ := strconv.Atoi(parts[2])
 				font.Width = float64(v)
-
-				if font.Height == 0 {
-					font.Height = font.Width
-				}
 			}
 
 			printer.DefaultFont = font.WithAdjustedSizes()
