@@ -3,7 +3,7 @@ package elements
 type BarcodeMode int
 
 const (
-	BarcodeModeNormal    BarcodeMode = 0
+	BarcodeModeNo        BarcodeMode = 0
 	BarcodeModeUcc       BarcodeMode = 1
 	BarcodeModeAutomatic BarcodeMode = 2
 	BarcodeModeEan       BarcodeMode = 3

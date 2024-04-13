@@ -2,7 +2,6 @@ package drawers
 
 import (
 	"image"
-	"image/color"
 
 	"github.com/fogleman/gg"
 	"github.com/ingridhq/zebrash/elements"
@@ -39,7 +38,7 @@ func NewGraphicFieldDrawer() *ElementDrawer {
 					// Here we access the value of each bit and check if it is 1 or 0
 					val := ((field.Data[idx]) >> (7 - x%8)) & 1
 					if val != 0 {
-						img.SetRGBA(x, y, color.RGBA{A: 255})
+						img.SetRGBA(x, y, images.ColorBlack)
 					}
 				}
 			}

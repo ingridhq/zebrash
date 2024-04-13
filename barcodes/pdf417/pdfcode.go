@@ -5,6 +5,7 @@ import (
 	"image/color"
 
 	"github.com/ingridhq/zebrash/barcodes/utils"
+	"github.com/ingridhq/zebrash/images"
 )
 
 type pdfBarcode struct {
@@ -23,7 +24,7 @@ func (c *pdfBarcode) Bounds() image.Rectangle {
 
 func (c *pdfBarcode) At(x, y int) color.Color {
 	if c.code.GetBit(y*c.width + x) {
-		return color.RGBA{A: 255}
+		return images.ColorBlack
 	}
-	return color.RGBA{A: 0}
+	return images.ColorTransparent
 }

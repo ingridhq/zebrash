@@ -5,6 +5,7 @@ import (
 	"image/color"
 
 	"github.com/ingridhq/zebrash/barcodes/utils"
+	"github.com/ingridhq/zebrash/images"
 )
 
 type aztecCode struct {
@@ -27,9 +28,9 @@ func (c *aztecCode) Bounds() image.Rectangle {
 
 func (c *aztecCode) At(x, y int) color.Color {
 	if c.GetBit(x*c.size + y) {
-		return color.RGBA{A: 255}
+		return images.ColorBlack
 	}
-	return color.RGBA{A: 0}
+	return images.ColorTransparent
 }
 
 func (c *aztecCode) set(x, y int) {

@@ -65,7 +65,7 @@ func toFieldBarcodeMode(mode byte) elements.BarcodeMode {
 	case 'D':
 		return elements.BarcodeModeEan
 	default:
-		return elements.BarcodeModeNormal
+		return elements.BarcodeModeNo
 	}
 }
 

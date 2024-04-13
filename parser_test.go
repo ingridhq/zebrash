@@ -58,6 +58,21 @@ func TestDrawLabelAsPng(t *testing.T) {
 			dstPath: "dbs.png",
 		},
 		{
+			name:    "JCPenney",
+			srcPath: "jcpenney.zpl",
+			dstPath: "jcpenney.png",
+		},
+		{
+			name:    "Kmart",
+			srcPath: "kmart.zpl",
+			dstPath: "kmart.png",
+		},
+		{
+			name:    "Labelary",
+			srcPath: "labelary.zpl",
+			dstPath: "labelary.png",
+		},
+		{
 			name:    "Reverse print",
 			srcPath: "reverse.zpl",
 			dstPath: "reverse.png",
@@ -131,6 +146,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			name:    "Barcode128 mode n",
 			srcPath: "barcode128_mode_n.zpl",
 			dstPath: "barcode128_mode_n.png",
+		},
+		{
+			name:    "Barcode128 mode n switching from subset C to B to A",
+			srcPath: "barcode128_mode_n_cba_sets.zpl",
+			dstPath: "barcode128_mode_n_cba_sets.png",
 		},
 		{
 			name:    "Barcode128 default width set",
