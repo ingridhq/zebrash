@@ -1,8 +1,21 @@
-# zebrash
+# Zebrash
+
 Library for rendering ZPL (Zebra Programming Language) files as raster images
 
 - Partially based on https://github.com/BinaryKits/BinaryKits.Zpl
-- Uses slightly modified implementation of PDF417 and Aztec barcodes from https://github.com/boombuler/barcode/
+- Uses slightly modified implementations of:
+	- PDF417 and Aztec barcodes from https://github.com/boombuler/barcode/
+	- Code 128 from https://github.com/makiuchi-d/gozxing
+
+## Description
+
+This library emulates subset of ZPL engine and allows you to view most of the ZPL labels that are used by carriers such as Fedex, UPS or DHL as PNGs without the need to possess physical Zebra-compatible printer.
+Think of https://labelary.com/viewer.html except it is completely free for commercial use, has no API limits and can easily be self-hosted or plugged into existing Go application so you don't need to send labels with real customers information to some 3rd-party servers
+
+Example of the output (more examples can be found inside `testdata` folder):
+
+![UPS label](testdata/ups.png)
+
 
 ## Usage:
 
@@ -24,7 +37,11 @@ Library for rendering ZPL (Zebra Programming Language) files as raster images
 
 	drawer := zebrash.NewDrawer()
 
-	err = drawer.DrawLabelAsPng(res[0], &buff, drawers.DrawerOptions{})
+	err = drawer.DrawLabelAsPng(res[0], &buff, drawers.DrawerOptions{
+		LabelWidthMm:  101.6,
+		LabelHeightMm: 203.2,
+		Dpmm:          8,
+	})
 	if err != nil {
 		t.Fatal(err)
 	}

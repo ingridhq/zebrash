@@ -6,6 +6,7 @@ import (
 	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
 	"github.com/ingridhq/zebrash/elements"
+	"github.com/ingridhq/zebrash/images"
 )
 
 type ElementDrawer struct {
@@ -43,9 +44,9 @@ func drawRectangle(gCtx *gg.Context, x, y, w, h float64) {
 func setLineColor(gCtx *gg.Context, color elements.LineColor) {
 	switch color {
 	case elements.LineColorBlack:
-		gCtx.SetRGB(0, 0, 0)
+		gCtx.SetColor(images.ColorBlack)
 	case elements.LineColorWhite:
-		gCtx.SetRGB(1, 1, 1)
+		gCtx.SetColor(images.ColorWhite)
 	}
 }
 

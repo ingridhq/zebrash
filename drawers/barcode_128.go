@@ -10,21 +10,18 @@ import (
 
 	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
+	"github.com/ingridhq/zebrash/barcodes/code128"
 	"github.com/ingridhq/zebrash/elements"
-	"github.com/ingridhq/zebrash/images"
-	"github.com/makiuchi-d/gozxing"
-	"github.com/makiuchi-d/gozxing/oned"
 )
 
 const (
 	barcodeLineFontSizeScaleFactor = 20
-	// FNC1 - Special Function 1
-	barcode128FNC1 = "\u00f1"
 )
 
 var (
-	startCodeRegex              = regexp.MustCompile(`^(>[9:;])`)
-	invalidStartInvocationRegex = regexp.MustCompile(`^.+>[9:;]`)
+	barcode128FNC1 = string(code128.ESCAPE_FNC_1)
+
+	parenthesisAndSpacesRegex = regexp.MustCompile(`[\(\)\s]`)
 )
 
 func NewBarcode128Drawer() *ElementDrawer {
@@ -35,17 +32,19 @@ func NewBarcode128Drawer() *ElementDrawer {
 				return nil
 			}
 
-			content := invalidStartInvocationRegex.ReplaceAllString(barcode.Data, "")
+			// data to encode into barcode
+			content := barcode.Data
+			// human-readable text
+			text := barcode.Data
+
 			switch barcode.Mode {
-			case elements.BarcodeModeNormal:
-				content = modifyBarcodeContentNormalMode(content)
 			case elements.BarcodeModeEan:
-				content = modifyBarcodeContentEanMode(content)
+				content, text = modifyBarcodeContentEanMode(content)
 			case elements.BarcodeModeUcc:
 				content = modifyBarcodeContentUccMode(content)
 			case elements.BarcodeModeAutomatic:
 				// DO NOTHING with the content
-				// subset prefixes like `>;` will not be skipped and encoded as label content
+				// invocation codes like `>;` will not be skipped and instead will be encoded as label content
 			}
 
 			var (
@@ -53,14 +52,16 @@ func NewBarcode128Drawer() *ElementDrawer {
 				err error
 			)
 
-			enc := oned.NewCode128Writer()
-			img, err = enc.Encode(content, gozxing.BarcodeFormat_CODE_128, 0, barcode.Height, nil)
-			if err != nil {
-				return fmt.Errorf("failed to encode barcode: %s", err.Error())
+			switch barcode.Mode {
+			case elements.BarcodeModeNo:
+				img, text, err = code128.EncodeNoMode(content, barcode.Height, barcode.Width)
+			default:
+				img, err = code128.EncodeAuto(content, barcode.Height, barcode.Width)
 			}
 
-			img = images.NewShifted(img, -4, 0)
-			img = images.NewScaled(img, float64(barcode.Width), 1)
+			if err != nil {
+				return fmt.Errorf("failed to encode barcode: %w", err)
+			}
 
 			width := float64(img.Bounds().Dx())
 			height := float64(img.Bounds().Dy())
@@ -69,9 +70,9 @@ func NewBarcode128Drawer() *ElementDrawer {
 
 			defer gCtx.Identity()
 
-			gCtx.DrawImage(images.NewTransparent(img), barcode.Position.X, barcode.Position.Y)
+			gCtx.DrawImage(img, barcode.Position.X, barcode.Position.Y)
 			if barcode.Line {
-				applyLineTextToCtx(gCtx, content, barcode, width, height)
+				applyLineTextToCtx(gCtx, text, barcode, width, height)
 			}
 
 			return nil
@@ -94,21 +95,27 @@ func applyLineTextToCtx(gCtx *gg.Context, content string, barcodeElement *elemen
 	gCtx.DrawStringAnchored(content, x, y, 0.5, 0.5)
 }
 
-func modifyBarcodeContentNormalMode(content string) string {
-	// replace beginning if it's a match
-	content = startCodeRegex.ReplaceAllString(content, "")
-	// support hand-rolled GS1
-	return strings.ReplaceAll(content, `>8`, barcode128FNC1)
-}
+// Allows dealing with UCC/EAN with and without chained application identifiers.
+// The code starts in the appropriate subset followed by FNC1 to indicate a UCC/EAN 128 barcode.
+// The printer automatically strips out parenthesis and spaces for encoding but prints them in the human-readable section.
+// The printer automatically determines if a check digit is required, calculates it, and prints it.
+func modifyBarcodeContentEanMode(content string) (string, string) {
+	// Don't show special functions in human-readable text
+	text := strings.ReplaceAll(content, ">8", "")
 
-func modifyBarcodeContentEanMode(content string) string {
-	content = strings.ReplaceAll(content, `>8`, barcode128FNC1)
+	content = parenthesisAndSpacesRegex.ReplaceAllString(content, "")
+	content = strings.ReplaceAll(content, ">8", barcode128FNC1)
 	if !strings.HasPrefix(content, barcode128FNC1) {
 		content = barcode128FNC1 + content
 	}
-	return content
+
+	return content, text
 }
 
+// Content must contain 19 numeric digits.
+// Subset C using FNC1 values is automatically selected.
+// Excess digits (above 19) in ^FD or ^SN will be eliminated.
+// Below 19 digits in ^FD or ^SN adds zeros to right to bring count to 19.
 func modifyBarcodeContentUccMode(content string) string {
 	content = addZerosPrefix(content)
 	content = content[:19]

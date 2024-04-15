@@ -46,7 +46,7 @@ func (d *Drawer) DrawLabelAsPng(label elements.LabelInfo, output io.Writer, opti
 	imageHeight := math.Ceil(heightMm * float64(dpmm))
 
 	gCtx := gg.NewContext(int(imageWidth), int(imageHeight))
-	gCtx.SetRGB(1, 1, 1)
+	gCtx.SetColor(images.ColorWhite)
 	gCtx.Clear()
 
 	for _, element := range label.Elements {
