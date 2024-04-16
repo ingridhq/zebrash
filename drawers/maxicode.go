@@ -1,9 +1,7 @@
 package drawers
 
 import (
-	"bytes"
 	"fmt"
-	"image"
 
 	"github.com/fogleman/gg"
 	"github.com/ingridhq/maxicode"
@@ -28,17 +26,7 @@ func NewMaxicodeDrawer() *ElementDrawer {
 				return fmt.Errorf("failed to encode maxicode grid: %w", err)
 			}
 
-			var buff bytes.Buffer
-
-			err = grid.Draw(float64(options.Dpmm)).EncodePNG(&buff)
-			if err != nil {
-				return fmt.Errorf("failed to encode maxicode png: %w", err)
-			}
-
-			img, _, err := image.Decode(&buff)
-			if err != nil {
-				return fmt.Errorf("failed to convert maxicode png to image: %w", err)
-			}
+			img := grid.Draw(float64(options.Dpmm)).Image()
 
 			gCtx.DrawImage(img, barcode.Position.X, barcode.Position.Y)
 
