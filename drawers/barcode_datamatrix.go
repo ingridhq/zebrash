@@ -5,7 +5,6 @@ import (
 
 	"github.com/fogleman/gg"
 	"github.com/ingridhq/zebrash/elements"
-	"github.com/ingridhq/zebrash/images"
 	"github.com/makiuchi-d/gozxing"
 	"github.com/makiuchi-d/gozxing/datamatrix"
 	"github.com/makiuchi-d/gozxing/datamatrix/encoder"
@@ -21,7 +20,14 @@ func NewBarcodeDatamatrixDrawer() *ElementDrawer {
 
 			enc := datamatrix.NewDataMatrixWriter()
 
-			hints := make(map[gozxing.EncodeHintType]interface{})
+			dims, err := gozxing.NewDimension(barcode.Columns, barcode.Rows)
+			if err != nil {
+				return fmt.Errorf("failed to create datamatrix dimensions: %w", err)
+			}
+
+			hints := map[gozxing.EncodeHintType]interface{}{
+				gozxing.EncodeHintType_MIN_SIZE: dims,
+			}
 
 			switch barcode.Ratio {
 			case elements.DatamatrixRatioSquare:
@@ -30,20 +36,18 @@ func NewBarcodeDatamatrixDrawer() *ElementDrawer {
 				hints[gozxing.EncodeHintType_DATA_MATRIX_SHAPE] = encoder.SymbolShapeHint_FORCE_RECTANGLE
 			}
 
-			img, err := enc.Encode(barcode.Data, gozxing.BarcodeFormat_DATA_MATRIX, barcode.Columns, barcode.Rows, hints)
+			ratio := max(barcode.Height, 1)
+
+			img, err := enc.Encode(barcode.Data, gozxing.BarcodeFormat_DATA_MATRIX, ratio*barcode.Columns, ratio*barcode.Rows, hints)
 			if err != nil {
 				return fmt.Errorf("failed to encode datamatrix barcode: %w", err)
 			}
 
-			ratio := float64(max(barcode.Height, 1))
-
-			scaledImg := images.NewScaled(img, ratio, ratio)
-
-			rotateImage(gCtx, scaledImg, barcode.Position, barcode.Orientation)
+			rotateImage(gCtx, img, barcode.Position, barcode.Orientation)
 
 			defer gCtx.Identity()
 
-			gCtx.DrawImage(scaledImg, barcode.Position.X, barcode.Position.Y)
+			gCtx.DrawImage(img, barcode.Position.X, barcode.Position.Y)
 
 			return nil
 		},

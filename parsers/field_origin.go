@@ -1,9 +1,7 @@
 package parsers
 
 import (
-	"math"
 	"strconv"
-	"strings"
 
 	"github.com/ingridhq/zebrash/elements"
 	"github.com/ingridhq/zebrash/printers"
@@ -22,14 +20,14 @@ func NewFieldOriginParser() *CommandParser {
 			parts := splitCommand(command, code, 0)
 
 			if len(parts) > 0 {
-				if v, err := strconv.ParseFloat(strings.Trim(parts[0], " "), 32); err == nil {
-					pos.X = int(math.Abs(math.Ceil(v)))
+				if v, err := toPositiveIntField(parts[0]); err == nil {
+					pos.X = v
 				}
 			}
 
 			if len(parts) > 1 {
-				if v, err := strconv.ParseFloat(strings.Trim(parts[1], " "), 32); err == nil {
-					pos.Y = int(math.Abs(math.Ceil(v)))
+				if v, err := toPositiveIntField(parts[1]); err == nil {
+					pos.Y = v
 				}
 			}
 
