@@ -74,32 +74,7 @@ func adjustTextField(text *elements.TextField) *elements.TextField {
 		res.Text = strings.ToUpper(res.Text)
 	}
 
-	if fontName == "0" {
-		// Temporary fix for Polish characters that our font does not support
-		res.Text = replaceAllChars(res.Text, map[rune]rune{
-			'ż': 'z',
-			'Ż': 'Z',
-			'Ś': 'S',
-			'ś': 's',
-		})
-	}
-
 	return &res
-}
-
-func replaceAllChars(text string, replacements map[rune]rune) string {
-	var res strings.Builder
-
-	for _, r := range text {
-		v, ok := replacements[r]
-		if !ok {
-			v = r
-		}
-
-		res.WriteRune(v)
-	}
-
-	return res.String()
 }
 
 func getTffFont(font elements.FontInfo) *truetype.Font {
