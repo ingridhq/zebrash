@@ -1,7 +1,6 @@
 package parsers
 
 import (
-	"math"
 	"strconv"
 
 	"github.com/ingridhq/zebrash/elements"
@@ -26,19 +25,19 @@ func NewGraphicBoxParser() *CommandParser {
 
 			parts := splitCommand(command, code, 0)
 			if len(parts) > 0 {
-				if v, err := strconv.ParseFloat(parts[0], 32); err == nil && v > 0 {
-					result.Width = int(math.Ceil(v))
+				if v, err := toPositiveIntField(parts[0]); err == nil && v > 0 {
+					result.Width = v
 				}
 			}
 
 			if len(parts) > 1 {
-				if v, err := strconv.ParseFloat(parts[1], 32); err == nil && v > 0 {
-					result.Height = int(math.Ceil(v))
+				if v, err := toPositiveIntField(parts[1]); err == nil && v > 0 {
+					result.Height = v
 				}
 			}
 
 			if len(parts) > 2 {
-				if v, err := strconv.Atoi(parts[2]); err == nil && v > 0 {
+				if v, err := toPositiveIntField(parts[2]); err == nil && v > 0 {
 					result.BorderThickness = v
 				}
 			}

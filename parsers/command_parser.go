@@ -1,6 +1,8 @@
 package parsers
 
 import (
+	"math"
+	"strconv"
 	"strings"
 
 	"github.com/ingridhq/zebrash/elements"
@@ -71,4 +73,13 @@ func toFieldBarcodeMode(mode byte) elements.BarcodeMode {
 
 func toBoolField(value byte) bool {
 	return value == 'Y'
+}
+
+func toPositiveIntField(value string) (int, error) {
+	v, err := strconv.ParseFloat(strings.Trim(value, " "), 32)
+	if err != nil {
+		return 0, err
+	}
+
+	return int(math.Abs(math.Round(v))), nil
 }
