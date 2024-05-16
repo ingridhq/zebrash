@@ -73,6 +73,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			dstPath: "labelary.png",
 		},
 		{
+			name:    "Polish Post Pocztex",
+			srcPath: "pocztex.zpl",
+			dstPath: "pocztex.png",
+		},
+		{
 			name:    "Reverse print",
 			srcPath: "reverse.zpl",
 			dstPath: "reverse.png",

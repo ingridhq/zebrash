@@ -1,7 +1,9 @@
 package parsers
 
 import (
+	"math"
 	"strconv"
+	"strings"
 
 	"github.com/ingridhq/zebrash/elements"
 	"github.com/ingridhq/zebrash/printers"
@@ -25,8 +27,8 @@ func NewBarcode128Parser() *CommandParser {
 			}
 
 			if len(parts) > 1 {
-				if v, err := strconv.Atoi(parts[1]); err == nil {
-					barcode.Height = v
+				if v, err := strconv.ParseFloat(strings.Trim(parts[1], " "), 32); err == nil {
+					barcode.Height = int(math.Ceil(v))
 				}
 			}
 

@@ -39,6 +39,7 @@ func NewParser() *Parser {
 			parsers.NewBarcode128Parser(),
 			parsers.NewBarcodePdf417Parser(),
 			parsers.NewBarcodeAztecParser(),
+			parsers.NewBarcodeDatamatrixParser(),
 			parsers.NewDownloadGraphicsParser(),
 			parsers.NewRecallGraphicsParser(),
 			parsers.NewBarcodeFieldDefaults(),
