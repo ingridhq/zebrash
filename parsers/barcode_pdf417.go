@@ -51,7 +51,7 @@ func NewBarcodePdf417Parser() *CommandParser {
 				barcode.Truncate = toBoolField(parts[5][0])
 			}
 
-			printer.NextElementFieldData = barcode
+			printer.NextElementFieldElement = barcode
 
 			return nil, nil
 		},
