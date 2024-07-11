@@ -51,7 +51,7 @@ func NewFieldBlockParser() *CommandParser {
 				}
 			}
 
-			printer.NextElementFieldBlock = &block
+			printer.NextElementFieldElement = &block
 
 			return nil, nil
 		},

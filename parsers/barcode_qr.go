@@ -7,19 +7,22 @@ import (
 	"github.com/ingridhq/zebrash/printers"
 )
 
-func NewMaxicodeParser() *CommandParser {
-	const code = "^BD"
+// ^BQ orientation, model, magnification, errorCorrection, mask
+func NewBarcodeQrParser() *CommandParser {
+	const code = "^BQ"
 
 	return &CommandParser{
 		CommandCode: code,
 		Parse: func(command string, printer *printers.VirtualPrinter) (interface{}, error) {
-			barcode := &elements.Maxicode{}
+			barcode := &elements.BarcodeQr{
+				Magnification: 1,
+			}
 
 			parts := splitCommand(command, code, 0)
 
-			if len(parts) > 0 {
-				if v, err := strconv.Atoi(parts[0]); err == nil {
-					barcode.Mode = v
+			if len(parts) > 2 {
+				if v, err := strconv.Atoi(parts[2]); err == nil {
+					barcode.Magnification = min(max(v, 1), 10)
 				}
 			}
 

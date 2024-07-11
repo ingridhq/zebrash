@@ -32,6 +32,7 @@ func NewDrawer() *Drawer {
 			drawers.NewBarcodePdf417Drawer(),
 			drawers.NewBarcodeAztecDrawer(),
 			drawers.NewBarcodeDatamatrixDrawer(),
+			drawers.NewBarcodeQrDrawer(),
 		},
 	}
 }

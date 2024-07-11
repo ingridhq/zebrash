@@ -36,7 +36,7 @@ func NewBarcodeAztecParser() *CommandParser {
 				}
 			}
 
-			printer.NextElementFieldData = barcode
+			printer.NextElementFieldElement = barcode
 
 			return nil, nil
 		},

@@ -10,8 +10,8 @@ type VirtualPrinter struct {
 	DefaultOrientation       elements.FieldOrientation
 	DefaultAlignment         elements.TextAlignment
 	NextElementAlignment     *elements.TextAlignment
-	NextElementFieldBlock    *elements.FieldBlock
-	NextElementFieldData     interface{}
+	NextElementFieldElement  interface{}
+	NextElementFieldData     string
 	NextFont                 *elements.FontInfo
 	NextDownloadFormatName   string
 	NextHexEscapeChar        byte
@@ -61,4 +61,14 @@ func (p *VirtualPrinter) GetReversePrint() elements.ReversePrint {
 	return elements.ReversePrint{
 		Value: p.NextElementFieldReverse || p.LabelReverse,
 	}
+}
+
+func (p *VirtualPrinter) ResetState() {
+	p.NextElementPosition = elements.LabelPosition{}
+	p.NextElementFieldElement = nil
+	p.NextElementFieldData = ""
+	p.NextElementAlignment = nil
+	p.NextFont = nil
+	p.NextElementFieldReverse = false
+	p.NextHexEscapeChar = 0
 }

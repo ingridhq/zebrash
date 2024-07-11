@@ -3,7 +3,6 @@ package parsers
 import (
 	"fmt"
 
-	"github.com/ingridhq/zebrash/elements"
 	"github.com/ingridhq/zebrash/hex"
 	"github.com/ingridhq/zebrash/printers"
 )
@@ -25,53 +24,9 @@ func NewFieldDataParser() *CommandParser {
 				}
 			}
 
-			if printer.NextElementFieldData != nil {
-				switch fd := printer.NextElementFieldData.(type) {
-				case *elements.Maxicode:
-					return &elements.MaxicodeWithData{
-						Code:     *fd,
-						Position: printer.NextElementPosition,
-						Data:     text,
-					}, nil
-				case *elements.BarcodePdf417:
-					return &elements.BarcodePdf417WithData{
-						BarcodePdf417: *fd,
-						Position:      printer.NextElementPosition,
-						Data:          text,
-					}, nil
-				case *elements.Barcode128:
-					return &elements.Barcode128WithData{
-						Barcode128: *fd,
-						Width:      printer.DefaultBarcodeDimensions.ModuleWidth,
-						Position:   printer.NextElementPosition,
-						Data:       text,
-					}, nil
-				case *elements.BarcodeAztec:
-					return &elements.BarcodeAztecWithData{
-						BarcodeAztec: *fd,
-						Position:     printer.NextElementPosition,
-						Data:         text,
-					}, nil
-				case *elements.BarcodeDatamatrix:
-					return &elements.BarcodeDatamatrixWithData{
-						BarcodeDatamatrix: *fd,
-						Position:          printer.NextElementPosition,
-						Data:              text,
-					}, nil
-				}
-			}
+			printer.NextElementFieldData = text
 
-			font := printer.GetNextFontOrDefault()
-			pos := printer.NextElementPosition
-
-			return &elements.TextField{
-				Font:         font,
-				Position:     pos,
-				Alignment:    printer.GetNextElementAlignmentOrDefault(),
-				Text:         text,
-				Block:        printer.NextElementFieldBlock,
-				ReversePrint: printer.GetReversePrint(),
-			}, nil
+			return nil, nil
 		},
 	}
 }

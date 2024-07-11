@@ -46,7 +46,7 @@ func NewBarcode128Parser() *CommandParser {
 				barcode.Mode = toFieldBarcodeMode(parts[5][0])
 			}
 
-			printer.NextElementFieldData = barcode
+			printer.NextElementFieldElement = barcode
 
 			return nil, nil
 		},
