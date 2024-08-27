@@ -32,29 +32,8 @@ func DecodeEscapedString(value string, escapeChar byte) (string, error) {
 }
 
 func DecodeEmbeddedImage(value string) ([]byte, error) {
-	const z64Prefix = ":Z64:"
-	if strings.HasPrefix(value, z64Prefix) {
-		value = strings.TrimPrefix(value, z64Prefix)
-
-		idx := strings.LastIndex(value, ":")
-		if idx >= 0 {
-			value = value[:idx]
-		}
-
-		dec, err := base64.StdEncoding.DecodeString(value)
-		if err != nil {
-			return nil, err
-		}
-
-		b := bytes.NewReader(dec)
-		z, err := zlib.NewReader(b)
-		if err != nil {
-			return nil, err
-		}
-
-		defer z.Close()
-
-		return io.ReadAll(z)
+	if z64Encoded(value) {
+		return decodeZ64(value)
 	}
 
 	return hx.DecodeString(value)
@@ -103,6 +82,10 @@ var compressCounts = map[byte]int{
 }
 
 func DecodeGraphicFieldData(data string, rowBytes int) ([]byte, error) {
+	if z64Encoded(data) {
+		return decodeZ64(data)
+	}
+
 	var (
 		result strings.Builder
 		line   strings.Builder
@@ -153,4 +136,34 @@ func DecodeGraphicFieldData(data string, rowBytes int) ([]byte, error) {
 	}
 
 	return hx.DecodeString(result.String())
+}
+
+const z64Prefix = ":Z64:"
+
+func z64Encoded(value string) bool {
+	return strings.HasPrefix(value, z64Prefix)
+}
+
+func decodeZ64(value string) ([]byte, error) {
+	value = strings.TrimPrefix(value, z64Prefix)
+
+	idx := strings.LastIndex(value, ":")
+	if idx >= 0 {
+		value = value[:idx]
+	}
+
+	dec, err := base64.StdEncoding.DecodeString(value)
+	if err != nil {
+		return nil, err
+	}
+
+	b := bytes.NewReader(dec)
+	z, err := zlib.NewReader(b)
+	if err != nil {
+		return nil, err
+	}
+
+	defer z.Close()
+
+	return io.ReadAll(z)
 }
