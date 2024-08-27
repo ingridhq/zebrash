@@ -43,6 +43,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			labelIdx: 1,
 		},
 		{
+			name:    "DPD Poland",
+			srcPath: "dpdpl.zpl",
+			dstPath: "dpdpl.png",
+		},
+		{
 			name:    "DHL Paket",
 			srcPath: "dhlpaket.zpl",
 			dstPath: "dhlpaket.png",
