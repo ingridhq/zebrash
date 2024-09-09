@@ -77,5 +77,5 @@ func (d *Drawer) DrawLabelAsPng(label elements.LabelInfo, output io.Writer, opti
 		}
 	}
 
-	return gCtx.EncodePNG(output)
+	return images.EncodeMonochrome(output, gCtx.Image())
 }
