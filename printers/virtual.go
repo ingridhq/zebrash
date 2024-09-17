@@ -1,6 +1,8 @@
 package printers
 
-import "github.com/ingridhq/zebrash/elements"
+import (
+	"github.com/ingridhq/zebrash/elements"
+)
 
 type VirtualPrinter struct {
 	StoredGraphics           map[string]elements.StoredGraphics
@@ -18,6 +20,7 @@ type VirtualPrinter struct {
 	NextElementFieldReverse  bool
 	LabelReverse             bool
 	DefaultBarcodeDimensions elements.BarcodeDimensions
+	CurrentCharset           int
 }
 
 func NewVirtualPrinter() *VirtualPrinter {

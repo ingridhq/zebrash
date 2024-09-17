@@ -26,6 +26,7 @@ func NewParser() *Parser {
 			parsers.NewGraphicDiagonalLineParser(),
 			parsers.NewChangeDefaultFontParser(),
 			parsers.NewChangeFontParser(),
+			parsers.NewChangeCharsetParser(),
 			parsers.NewFieldOriginParser(),
 			parsers.NewFieldTypesetParser(),
 			parsers.NewFieldBlockParser(),
@@ -67,10 +68,12 @@ func (p *Parser) Parse(zplData []byte) ([]elements.LabelInfo, error) {
 		}
 
 		if strings.ToUpper(command) == endCode {
-			results = append(results, elements.LabelInfo{
-				DownloadFormatName: p.printer.NextDownloadFormatName,
-				Elements:           resultElements,
-			})
+			if len(resultElements) > 0 {
+				results = append(results, elements.LabelInfo{
+					DownloadFormatName: p.printer.NextDownloadFormatName,
+					Elements:           resultElements,
+				})
+			}
 
 			resultElements = nil
 			continue

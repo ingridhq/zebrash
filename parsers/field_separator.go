@@ -1,8 +1,11 @@
 package parsers
 
 import (
+	"fmt"
+
 	"github.com/ingridhq/zebrash/elements"
 	"github.com/ingridhq/zebrash/printers"
+	"golang.org/x/text/encoding/charmap"
 )
 
 func NewFieldSeparatorParser() *CommandParser {
@@ -58,24 +61,38 @@ func NewFieldSeparatorParser() *CommandParser {
 						Data:      text,
 					}, nil
 				case *elements.FieldBlock:
-					return &elements.TextField{
-						Font:         printer.GetNextFontOrDefault(),
-						Position:     printer.NextElementPosition,
-						Alignment:    printer.GetNextElementAlignmentOrDefault(),
-						Text:         text,
-						Block:        fe,
-						ReversePrint: printer.GetReversePrint(),
-					}, nil
+					return toTextField(text, printer, fe)
 				}
 			}
 
-			return &elements.TextField{
-				Font:         printer.GetNextFontOrDefault(),
-				Position:     printer.NextElementPosition,
-				Alignment:    printer.GetNextElementAlignmentOrDefault(),
-				Text:         text,
-				ReversePrint: printer.GetReversePrint(),
-			}, nil
+			return toTextField(text, printer, nil)
 		},
+	}
+}
+
+func toTextField(text string, printer *printers.VirtualPrinter, fe *elements.FieldBlock) (*elements.TextField, error) {
+	unicodeText, err := toUnicodeText(text, printer)
+	if err != nil {
+		return nil, fmt.Errorf("failed to convert to unicode text: %w", err)
+	}
+
+	return &elements.TextField{
+		Font:         printer.GetNextFontOrDefault(),
+		Position:     printer.NextElementPosition,
+		Alignment:    printer.GetNextElementAlignmentOrDefault(),
+		Text:         unicodeText,
+		Block:        fe,
+		ReversePrint: printer.GetReversePrint(),
+	}, nil
+}
+
+func toUnicodeText(text string, printer *printers.VirtualPrinter) (string, error) {
+	switch printer.CurrentCharset {
+	case 0:
+		return charmap.CodePage850.NewDecoder().String(text)
+	case 27:
+		return charmap.Windows1252.NewDecoder().String(text)
+	default:
+		return text, nil
 	}
 }
