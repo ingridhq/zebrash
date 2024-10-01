@@ -17,7 +17,7 @@ var (
 
 func NewTextFieldDrawer() *ElementDrawer {
 	return &ElementDrawer{
-		Draw: func(gCtx *gg.Context, element interface{}, _ DrawerOptions) error {
+		Draw: func(gCtx *gg.Context, element interface{}, _ DrawerOptions, state *DrawerState) error {
 			text, ok := element.(*elements.TextField)
 			if !ok {
 				return nil
@@ -26,16 +26,20 @@ func NewTextFieldDrawer() *ElementDrawer {
 			text = adjustTextField(text)
 
 			fontSize := text.Font.GetSize()
+			scaleX := text.Font.GetScaleX()
 			face := truetype.NewFace(getTffFont(text.Font), &truetype.Options{Size: fontSize})
 			gCtx.SetFontFace(face)
 
 			setLineColor(gCtx, elements.LineColorBlack)
 
-			x, y := getTextTopLeftPos(gCtx, text)
-			ax, ay := getTextAxAy(text)
-			scaleX := 1.0
+			w, h := gCtx.MeasureString(text.Text)
 
-			if text.Font.Width != 0 {
+			x, y := getTextTopLeftPos(text, w, h, state)
+			state.UpdateAutomaticTextPosition(text, w, scaleX)
+
+			ax, ay := getTextAxAy(text)
+
+			if scaleX != 1.0 {
 				scaleX = text.Font.Width / fontSize
 				gCtx.ScaleAbout(scaleX, 1, x, y)
 			}
@@ -63,7 +67,7 @@ func adjustTextField(text *elements.TextField) *elements.TextField {
 	fontName := text.Font.Name
 	res := *text
 
-	if fontName != "0" {
+	if fontName != "0" && fontName != "GS" {
 		// For some reason width of DejavuSansMono needs to be scaled by 2
 		res.Font.Width *= 2
 	}
@@ -88,11 +92,8 @@ func getTffFont(font elements.FontInfo) *truetype.Font {
 	}
 }
 
-func getTextTopLeftPos(gCtx *gg.Context, text *elements.TextField) (float64, float64) {
-	x := float64(text.Position.X)
-	y := float64(text.Position.Y)
-
-	w, h := gCtx.MeasureString(text.Text)
+func getTextTopLeftPos(text *elements.TextField, w, h float64, state *DrawerState) (float64, float64) {
+	x, y := state.GetTextPosition(text)
 
 	if !text.Position.CalculateFromBottom {
 		switch text.Font.Orientation {

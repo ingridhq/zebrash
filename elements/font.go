@@ -20,15 +20,25 @@ func (font FontInfo) GetSize() float64 {
 	}
 }
 
+func (font FontInfo) GetScaleX() float64 {
+	scaleX := 1.0
+	if font.Width != 0 {
+		scaleX = font.Width / font.GetSize()
+	}
+
+	return scaleX
+}
+
 var bitmapFontSizes = map[string][2]float64{
-	"A": {9, 5},
-	"B": {11, 7},
-	"C": {18, 10},
-	"D": {18, 10},
-	"E": {28, 15},
-	"F": {26, 13},
-	"G": {60, 40},
-	"H": {21, 13},
+	"A":  {9, 5},
+	"B":  {11, 7},
+	"C":  {18, 10},
+	"D":  {18, 10},
+	"E":  {28, 15},
+	"F":  {26, 13},
+	"G":  {60, 40},
+	"H":  {21, 13},
+	"GS": {24, 24},
 }
 
 // Bitmap fonts (everything other than font 0)
@@ -60,15 +70,15 @@ func (font FontInfo) WithAdjustedSizes() FontInfo {
 	}
 
 	if font.Width == 0 {
-		font.Width = orgSize[1] * math.Round(font.Height/orgSize[0])
+		font.Width = orgSize[1] * max(math.Round(font.Height/orgSize[0]), 1)
 	} else {
-		font.Width = orgSize[1] * math.Round(font.Width/orgSize[1])
+		font.Width = orgSize[1] * max(math.Round(font.Width/orgSize[1]), 1)
 	}
 
 	if font.Height == 0 {
-		font.Height = orgSize[0] * math.Round(font.Width/orgSize[1])
+		font.Height = orgSize[0] * max(math.Round(font.Width/orgSize[1]), 1)
 	} else {
-		font.Height = orgSize[0] * math.Round(font.Height/orgSize[0])
+		font.Height = orgSize[0] * max(math.Round(font.Height/orgSize[0]), 1)
 	}
 
 	return font

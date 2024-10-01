@@ -39,6 +39,7 @@ func NewDrawer() *Drawer {
 
 func (d *Drawer) DrawLabelAsPng(label elements.LabelInfo, output io.Writer, options drawers.DrawerOptions) error {
 	options = options.WithDefaults()
+	state := &drawers.DrawerState{}
 
 	widthMm := options.LabelWidthMm
 	heightMm := options.LabelHeightMm
@@ -64,7 +65,7 @@ func (d *Drawer) DrawLabelAsPng(label elements.LabelInfo, output io.Writer, opti
 		}
 
 		for _, drawer := range d.elementDrawers {
-			err := drawer.Draw(gCtx2, element, options)
+			err := drawer.Draw(gCtx2, element, options, state)
 			if err != nil {
 				return fmt.Errorf("failed to draw zpl element: %w", err)
 			}

@@ -13,21 +13,24 @@ func NewFieldTypesetParser() *CommandParser {
 	return &CommandParser{
 		CommandCode: code,
 		Parse: func(command string, printer *printers.VirtualPrinter) (interface{}, error) {
+			parts := splitCommand(command, code, 0)
+
 			pos := elements.LabelPosition{
 				CalculateFromBottom: true,
+				AutomaticPosition:   true,
 			}
-
-			parts := splitCommand(command, code, 0)
 
 			if len(parts) > 0 {
 				if v, err := toPositiveIntField(parts[0]); err == nil {
 					pos.X = v
+					pos.AutomaticPosition = false
 				}
 			}
 
 			if len(parts) > 1 {
 				if v, err := toPositiveIntField(parts[1]); err == nil {
 					pos.Y = v
+					pos.AutomaticPosition = false
 				}
 			}
 
