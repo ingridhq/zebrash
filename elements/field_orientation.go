@@ -9,7 +9,7 @@ const (
 	FieldOrientation90 FieldOrientation = 1
 	// rotate 180° clockwise
 	FieldOrientation180 FieldOrientation = 2
-	// otate 270° clockwise
+	// rotate 270° clockwise
 	FieldOrientation270 FieldOrientation = 3
 )
 

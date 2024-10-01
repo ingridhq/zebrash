@@ -92,7 +92,7 @@ func getTextTopLeftPos(gCtx *gg.Context, text *elements.TextField) (float64, flo
 	x := float64(text.Position.X)
 	y := float64(text.Position.Y)
 
-	w, h := getTextDimensions(gCtx, text)
+	w, h := gCtx.MeasureString(text.Text)
 
 	if !text.Position.CalculateFromBottom {
 		switch text.Font.Orientation {
@@ -107,24 +107,26 @@ func getTextTopLeftPos(gCtx *gg.Context, text *elements.TextField) (float64, flo
 		}
 	}
 
+	lines := 1.0
+	spacing := 0.0
+
+	if text.Block != nil {
+		lines = float64(max(text.Block.MaxLines, 1))
+		spacing = float64(text.Block.LineSpacing)
+	}
+
+	offset := h/2 + (lines-1)*(h+spacing)
+
 	switch text.Font.Orientation {
 	case elements.FieldOrientation90:
-		return x + h/2, y
+		return x + offset, y
 	case elements.FieldOrientation180:
-		return x, y + h/2
+		return x, y + offset
 	case elements.FieldOrientation270:
-		return x - h/2, y
+		return x - offset, y
 	default:
-		return x, y - h/2
+		return x, y - offset
 	}
-}
-
-func getTextDimensions(gCtx *gg.Context, text *elements.TextField) (float64, float64) {
-	if text.Block != nil {
-		return gCtx.MeasureMultilineString(text.Text, float64(text.Block.LineSpacing))
-	}
-
-	return gCtx.MeasureString(text.Text)
 }
 
 func getTextAxAy(text *elements.TextField) (float64, float64) {
