@@ -22,7 +22,8 @@ func NewChangeFontParser() *CommandParser {
 			}
 
 			font := elements.FontInfo{
-				Name: strings.ToUpper(string(parts[0][0])),
+				Name:        strings.ToUpper(string(parts[0][0])),
+				Orientation: printer.DefaultFont.Orientation,
 			}
 
 			if len(parts[0]) > 1 {
