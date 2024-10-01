@@ -10,7 +10,7 @@ import (
 
 func NewMaxicodeDrawer() *ElementDrawer {
 	return &ElementDrawer{
-		Draw: func(gCtx *gg.Context, element interface{}, options DrawerOptions) error {
+		Draw: func(gCtx *gg.Context, element interface{}, options DrawerOptions, _ *DrawerState) error {
 			barcode, ok := element.(*elements.MaxicodeWithData)
 			if !ok {
 				return nil

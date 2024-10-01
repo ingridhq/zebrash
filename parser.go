@@ -24,6 +24,7 @@ func NewParser() *Parser {
 			parsers.NewGraphicCircleParser(),
 			parsers.NewGraphicFieldParser(),
 			parsers.NewGraphicDiagonalLineParser(),
+			parsers.NewGraphicSymbolParser(),
 			parsers.NewChangeDefaultFontParser(),
 			parsers.NewChangeFontParser(),
 			parsers.NewChangeCharsetParser(),

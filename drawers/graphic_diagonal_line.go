@@ -7,7 +7,7 @@ import (
 
 func NewGraphicDiagonalLineDrawer() *ElementDrawer {
 	return &ElementDrawer{
-		Draw: func(gCtx *gg.Context, element interface{}, _ DrawerOptions) error {
+		Draw: func(gCtx *gg.Context, element interface{}, _ DrawerOptions, _ *DrawerState) error {
 			line, ok := element.(*elements.GraphicDiagonalLine)
 			if !ok {
 				return nil

@@ -123,6 +123,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			dstPath: "text_ft_b.png",
 		},
 		{
+			name:    "Text Field Typeset automatic position",
+			srcPath: "text_ft_auto_pos.zpl",
+			dstPath: "text_ft_auto_pos.png",
+		},
+		{
 			name:    "Text Field Origin Normal rotation",
 			srcPath: "text_fo_n.zpl",
 			dstPath: "text_fo_n.png",

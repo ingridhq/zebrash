@@ -10,7 +10,7 @@ import (
 )
 
 type ElementDrawer struct {
-	Draw func(gCtx *gg.Context, element interface{}, options DrawerOptions) error
+	Draw func(gCtx *gg.Context, element interface{}, options DrawerOptions, state *DrawerState) error
 }
 
 func rotateImage(gCtx *gg.Context, img image.Image, pos elements.LabelPosition, ori elements.FieldOrientation) {

@@ -10,7 +10,7 @@ import (
 
 func NewGraphicFieldDrawer() *ElementDrawer {
 	return &ElementDrawer{
-		Draw: func(gCtx *gg.Context, element interface{}, _ DrawerOptions) error {
+		Draw: func(gCtx *gg.Context, element interface{}, _ DrawerOptions, _ *DrawerState) error {
 			field, ok := element.(*elements.GraphicField)
 			if !ok {
 				return nil

@@ -7,7 +7,7 @@ import (
 
 func NewGraphicCircleDrawer() *ElementDrawer {
 	return &ElementDrawer{
-		Draw: func(gCtx *gg.Context, element interface{}, _ DrawerOptions) error {
+		Draw: func(gCtx *gg.Context, element interface{}, _ DrawerOptions, _ *DrawerState) error {
 			circle, ok := element.(*elements.GraphicCircle)
 			if !ok {
 				return nil

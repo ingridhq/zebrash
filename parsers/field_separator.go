@@ -60,6 +60,8 @@ func NewFieldSeparatorParser() *CommandParser {
 						Position:  printer.NextElementPosition,
 						Data:      text,
 					}, nil
+				case *elements.GraphicSymbol:
+					return toGraphicSymbolTextField(text, printer, fe)
 				case *elements.FieldBlock:
 					return toTextField(text, printer, fe)
 				}
@@ -68,6 +70,31 @@ func NewFieldSeparatorParser() *CommandParser {
 			return toTextField(text, printer, nil)
 		},
 	}
+}
+
+var graphicSymbols = map[byte]string{
+	'A': "®",
+	'B': "©",
+	'C': "™",
+}
+
+func toGraphicSymbolTextField(text string, printer *printers.VirtualPrinter, fe *elements.GraphicSymbol) (*elements.TextField, error) {
+	if text == "" {
+		return nil, nil
+	}
+
+	return &elements.TextField{
+		Font: elements.FontInfo{
+			Name:        "GS",
+			Width:       fe.Width,
+			Height:      fe.Height,
+			Orientation: fe.Orientation,
+		}.WithAdjustedSizes(),
+		Position:     printer.NextElementPosition,
+		Alignment:    printer.GetNextElementAlignmentOrDefault(),
+		Text:         graphicSymbols[text[0]],
+		ReversePrint: printer.GetReversePrint(),
+	}, nil
 }
 
 func toTextField(text string, printer *printers.VirtualPrinter, fe *elements.FieldBlock) (*elements.TextField, error) {
