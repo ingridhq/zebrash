@@ -14,7 +14,7 @@ type FontInfo struct {
 func (font FontInfo) GetSize() float64 {
 	switch font.Orientation {
 	case FieldOrientation90, FieldOrientation270:
-		return font.Width
+		return font.getWidthToHeightRatio() * font.Width
 	default:
 		return font.Height
 	}
@@ -23,7 +23,7 @@ func (font FontInfo) GetSize() float64 {
 func (font FontInfo) GetScaleX() float64 {
 	scaleX := 1.0
 	if font.Width != 0 {
-		scaleX = font.Width / font.GetSize()
+		scaleX = font.getWidthToHeightRatio() * font.Width / font.GetSize()
 	}
 
 	return scaleX
@@ -82,4 +82,12 @@ func (font FontInfo) WithAdjustedSizes() FontInfo {
 	}
 
 	return font
+}
+
+func (font FontInfo) getWidthToHeightRatio() float64 {
+	if font.Name == "0" || font.Name == "GS" {
+		return 1.0
+	}
+
+	return 2.0
 }

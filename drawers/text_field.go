@@ -40,7 +40,6 @@ func NewTextFieldDrawer() *ElementDrawer {
 			ax, ay := getTextAxAy(text)
 
 			if scaleX != 1.0 {
-				scaleX = text.Font.Width / fontSize
 				gCtx.ScaleAbout(scaleX, 1, x, y)
 			}
 
@@ -66,11 +65,6 @@ func NewTextFieldDrawer() *ElementDrawer {
 func adjustTextField(text *elements.TextField) *elements.TextField {
 	fontName := text.Font.Name
 	res := *text
-
-	if fontName != "0" && fontName != "GS" {
-		// For some reason width of DejavuSansMono needs to be scaled by 2
-		res.Font.Width *= 2
-	}
 
 	switch fontName {
 	case "B":
