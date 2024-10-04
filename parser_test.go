@@ -22,6 +22,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			dstPath: "ups.png",
 		},
 		{
+			name:    "UPS Surepost label",
+			srcPath: "ups_surepost.zpl",
+			dstPath: "ups_surepost.png",
+		},
+		{
 			name:    "USPS label",
 			srcPath: "usps.zpl",
 			dstPath: "usps.png",

@@ -2,12 +2,13 @@ package drawers
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/fogleman/gg"
+	"github.com/ingridhq/zebrash/barcodes/datamatrix"
+	"github.com/ingridhq/zebrash/barcodes/datamatrix/encoder"
 	"github.com/ingridhq/zebrash/elements"
-	"github.com/makiuchi-d/gozxing"
-	"github.com/makiuchi-d/gozxing/datamatrix"
-	"github.com/makiuchi-d/gozxing/datamatrix/encoder"
+	"github.com/ingridhq/zebrash/images"
 )
 
 func NewBarcodeDatamatrixDrawer() *ElementDrawer {
@@ -18,36 +19,51 @@ func NewBarcodeDatamatrixDrawer() *ElementDrawer {
 				return nil
 			}
 
+			columns := max(barcode.Columns, 1)
+			rows := max(barcode.Rows, 1)
+
 			enc := datamatrix.NewDataMatrixWriter()
 
-			dims, err := gozxing.NewDimension(barcode.Columns, barcode.Rows)
-			if err != nil {
-				return fmt.Errorf("failed to create datamatrix dimensions: %w", err)
-			}
-
-			hints := map[gozxing.EncodeHintType]interface{}{
-				gozxing.EncodeHintType_MIN_SIZE: dims,
+			opts := encoder.Options{
+				MinSize: encoder.NewDimension(columns, rows),
 			}
 
 			switch barcode.Ratio {
 			case elements.DatamatrixRatioSquare:
-				hints[gozxing.EncodeHintType_DATA_MATRIX_SHAPE] = encoder.SymbolShapeHint_FORCE_SQUARE
+				opts.Shape = encoder.SymbolShapeHint_FORCE_SQUARE
 			case elements.DatamatrixRatioRectangular:
-				hints[gozxing.EncodeHintType_DATA_MATRIX_SHAPE] = encoder.SymbolShapeHint_FORCE_RECTANGLE
+				opts.Shape = encoder.SymbolShapeHint_FORCE_RECTANGLE
 			}
 
-			ratio := max(barcode.Height, 1)
+			data := barcode.Data
 
-			img, err := enc.Encode(barcode.Data, gozxing.BarcodeFormat_DATA_MATRIX, ratio*barcode.Columns, ratio*barcode.Rows, hints)
+			const (
+				fnc1 = "_1"
+				GS   = byte(29)
+			)
+
+			// First occurrence of FNC1 triggers GS1 mode
+			if strings.HasPrefix(data, fnc1) {
+				opts.Gs1 = true
+				data = strings.TrimPrefix(data, fnc1)
+			}
+
+			// All subsequent occurrences of FNC1 are encoded as GS character
+			data = strings.ReplaceAll(data, fnc1, string(GS))
+
+			img, err := enc.Encode(data, columns, rows, opts)
 			if err != nil {
 				return fmt.Errorf("failed to encode datamatrix barcode: %w", err)
 			}
 
-			rotateImage(gCtx, img, barcode.Position, barcode.Orientation)
+			scale := float64(max(barcode.Height, 1))
+			scaledImg := images.NewScaled(img, scale, scale)
+
+			rotateImage(gCtx, scaledImg, barcode.Position, barcode.Orientation)
 
 			defer gCtx.Identity()
 
-			gCtx.DrawImage(img, barcode.Position.X, barcode.Position.Y)
+			gCtx.DrawImage(scaledImg, barcode.Position.X, barcode.Position.Y)
 
 			return nil
 		},
