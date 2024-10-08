@@ -56,7 +56,7 @@ func NewBarcodeDatamatrixDrawer() *ElementDrawer {
 				return fmt.Errorf("failed to encode datamatrix barcode: %w", err)
 			}
 
-			scale := float64(max(barcode.Height, 1))
+			scale := max(barcode.Height, 1)
 			scaledImg := images.NewScaled(img, scale, scale)
 
 			rotateImage(gCtx, scaledImg, barcode.Position, barcode.Orientation)
