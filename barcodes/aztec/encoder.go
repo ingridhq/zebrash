@@ -265,5 +265,5 @@ func Encode(data []byte, minECCPercent, userSpecifiedLayers, magnification int) 
 			}
 		}
 	}
-	return images.NewScaled(code, float64(magnification), float64(magnification)), nil
+	return images.NewScaled(code, magnification, magnification), nil
 }

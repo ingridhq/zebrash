@@ -33,7 +33,7 @@ func NewBarcodeQrDrawer() *ElementDrawer {
 				return fmt.Errorf("failed to encode qr barcode: %w", err)
 			}
 
-			scaledImg := images.NewScaled(img, float64(barcode.Magnification), float64(barcode.Magnification))
+			scaledImg := images.NewScaled(img, barcode.Magnification, barcode.Magnification)
 
 			gCtx.DrawImage(scaledImg, barcode.Position.X, barcode.Position.Y)
 
