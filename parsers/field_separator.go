@@ -2,6 +2,7 @@ package parsers
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/ingridhq/zebrash/elements"
 	"github.com/ingridhq/zebrash/printers"
@@ -102,6 +103,9 @@ func toTextField(text string, printer *printers.VirtualPrinter, fe *elements.Fie
 	if err != nil {
 		return nil, fmt.Errorf("failed to convert to unicode text: %w", err)
 	}
+
+	// \& = carriage return/line feed
+	unicodeText = strings.ReplaceAll(unicodeText, `\&`, "\n")
 
 	return &elements.TextField{
 		Font:         printer.GetNextFontOrDefault(),
