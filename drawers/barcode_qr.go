@@ -28,6 +28,7 @@ func NewBarcodeQrDrawer() *ElementDrawer {
 
 			img, err := enc.Encode(inputData, gozxing.BarcodeFormat_QR_CODE, 1, 1, map[gozxing.EncodeHintType]interface{}{
 				gozxing.EncodeHintType_ERROR_CORRECTION: mapQrErrorCorrectionLevel(ec),
+				gozxing.EncodeHintType_MARGIN:           0,
 			})
 			if err != nil {
 				return fmt.Errorf("failed to encode qr barcode: %w", err)
