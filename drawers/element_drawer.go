@@ -4,7 +4,6 @@ import (
 	"image"
 
 	"github.com/fogleman/gg"
-	"github.com/golang/freetype/truetype"
 	"github.com/ingridhq/zebrash/elements"
 	"github.com/ingridhq/zebrash/images"
 )
@@ -34,13 +33,6 @@ func rotateImage(gCtx *gg.Context, img image.Image, pos elements.LabelPosition, 
 	}
 }
 
-func drawRectangle(gCtx *gg.Context, x, y, w, h float64) {
-	gCtx.DrawLine(x, y, x+w, y)
-	gCtx.DrawLine(x+w, y, x+w, y+h)
-	gCtx.DrawLine(x+w, y+h, x, y+h)
-	gCtx.DrawLine(x, y+h, x, y)
-}
-
 func setLineColor(gCtx *gg.Context, color elements.LineColor) {
 	switch color {
 	case elements.LineColorBlack:
@@ -48,13 +40,4 @@ func setLineColor(gCtx *gg.Context, color elements.LineColor) {
 	case elements.LineColorWhite:
 		gCtx.SetColor(images.ColorWhite)
 	}
-}
-
-func mustLoadFont(fontData []byte) *truetype.Font {
-	font, err := truetype.Parse(fontData)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	return font
 }

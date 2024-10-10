@@ -24,21 +24,22 @@ func NewGraphicBoxParser() *CommandParser {
 			}
 
 			parts := splitCommand(command, code, 0)
+
+			if len(parts) > 2 {
+				if v, err := toPositiveIntField(parts[2]); err == nil && v > 0 {
+					result.BorderThickness = v
+				}
+			}
+
 			if len(parts) > 0 {
 				if v, err := toPositiveIntField(parts[0]); err == nil && v > 0 {
-					result.Width = v
+					result.Width = max(v, result.BorderThickness)
 				}
 			}
 
 			if len(parts) > 1 {
 				if v, err := toPositiveIntField(parts[1]); err == nil && v > 0 {
-					result.Height = v
-				}
-			}
-
-			if len(parts) > 2 {
-				if v, err := toPositiveIntField(parts[2]); err == nil && v > 0 {
-					result.BorderThickness = v
+					result.Height = max(v, result.BorderThickness)
 				}
 			}
 
@@ -47,7 +48,7 @@ func NewGraphicBoxParser() *CommandParser {
 			}
 
 			if len(parts) > 4 {
-				if v, err := strconv.Atoi(parts[4]); err == nil {
+				if v, err := strconv.Atoi(parts[4]); err == nil && v > 0 && v < 9 {
 					result.CornerRounding = v
 				}
 			}

@@ -150,3 +150,12 @@ func getTextBlockAlign(block *elements.FieldBlock) gg.Align {
 		return gg.AlignLeft
 	}
 }
+
+func mustLoadFont(fontData []byte) *truetype.Font {
+	font, err := truetype.Parse(fontData)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return font
+}

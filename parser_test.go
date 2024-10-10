@@ -202,6 +202,26 @@ func TestDrawLabelAsPng(t *testing.T) {
 			srcPath: "barcode128_rotated.zpl",
 			dstPath: "barcode128_rotated.png",
 		},
+		{
+			name:    "Graphic box normal",
+			srcPath: "gb_normal.zpl",
+			dstPath: "gb_normal.png",
+		},
+		{
+			name:    "Graphic box with 0 height",
+			srcPath: "gb_0_height.zpl",
+			dstPath: "gb_0_height.png",
+		},
+		{
+			name:    "Graphic box with 0 width",
+			srcPath: "gb_0_width.zpl",
+			dstPath: "gb_0_width.png",
+		},
+		{
+			name:    "Graphic box with corner-rounding",
+			srcPath: "gb_rounded.zpl",
+			dstPath: "gb_rounded.png",
+		},
 	}
 
 	for _, tC := range testCases {

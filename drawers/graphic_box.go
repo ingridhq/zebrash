@@ -35,14 +35,40 @@ func NewGraphicBoxDrawer() *ElementDrawer {
 				w, h = 1, 1
 			}
 
-			drawRectangle(gCtx, x, y, w, h)
 			setLineColor(gCtx, box.LineColor)
-
 			gCtx.SetLineCapSquare()
 			gCtx.SetLineWidth(border)
-			gCtx.Stroke()
+
+			if box.CornerRounding > 0 {
+				drawRoundedRectangle(gCtx, float64(box.Position.X), float64(box.Position.Y), width, height, float64(box.CornerRounding), border)
+			} else {
+				drawRectangle(gCtx, x, y, w, h)
+			}
 
 			return nil
 		},
 	}
+}
+
+func drawRectangle(gCtx *gg.Context, x, y, w, h float64) {
+	gCtx.DrawLine(x, y, x+w, y)
+	gCtx.DrawLine(x+w, y, x+w, y+h)
+	gCtx.DrawLine(x+w, y+h, x, y+h)
+	gCtx.DrawLine(x, y+h, x, y)
+	gCtx.Stroke()
+}
+
+func drawRoundedRectangle(gCtx *gg.Context, x, y, w, h, rounding, border float64) {
+	defer gCtx.ResetClip()
+
+	r2 := rounding * (min(w-2*border, h-2*border)) / 16
+	if r2 > 0 {
+		gCtx.DrawRoundedRectangle(x+border, y+border, w-2*border, h-2*border, r2)
+		gCtx.Clip()
+		gCtx.InvertMask()
+	}
+
+	r1 := rounding * (min(w, h)) / 16
+	gCtx.DrawRoundedRectangle(x, y, w, h, r1)
+	gCtx.Fill()
 }
