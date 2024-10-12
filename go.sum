@@ -4,8 +4,8 @@ github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 h1:DACJavvAHhabrF0
 github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0/go.mod h1:E/TSTwGwJL78qG/PmXZO1EjYhfJinVAhrmmHX6Z8B9k=
 github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=
 github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
-github.com/ingridhq/maxicode v1.3.0 h1:po5vUhrqV2fB7UENU4cm9Mnb+ikN4SH0JralRZp6A28=
-github.com/ingridhq/maxicode v1.3.0/go.mod h1:GLpBZPEHER1a3vNIRV5EbeBDy7XYanIQOWqesrwZpeo=
+github.com/ingridhq/maxicode v1.4.0 h1:VV5GR0t+o0QN8OqdVFYKJQ2QC9o474OLzMBhlm/1Ud0=
+github.com/ingridhq/maxicode v1.4.0/go.mod h1:GLpBZPEHER1a3vNIRV5EbeBDy7XYanIQOWqesrwZpeo=
 github.com/makiuchi-d/gozxing v0.1.1 h1:xxqijhoedi+/lZlhINteGbywIrewVdVv2wl9r5O9S1I=
 github.com/makiuchi-d/gozxing v0.1.1/go.mod h1:eRIHbOjX7QWxLIDJoQuMLhuXg9LAuw6znsUtRkNw9DU=
 golang.org/x/image v0.15.0 h1:kOELfmgrmJlw4Cdb7g/QGuB3CvDrXbqEIww/pNtNBm8=
