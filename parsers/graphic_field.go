@@ -54,7 +54,7 @@ func NewGraphicFieldParser() *CommandParser {
 			}
 
 			if len(parts) > 4 {
-				data := strings.Join(parts[4:], ",")
+				data := strings.Trim(strings.Join(parts[4:], ","), " ")
 
 				switch result.Format {
 				case elements.GraphicFieldFormatHex:
