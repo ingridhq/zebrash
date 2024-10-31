@@ -113,6 +113,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			dstPath: "reverse.png",
 		},
 		{
+			name:    "Swiss Post",
+			srcPath: "swisspost.zpl",
+			dstPath: "swisspost.png",
+		},
+		{
 			name:    "Text Field Typeset Normal rotation",
 			srcPath: "text_ft_n.zpl",
 			dstPath: "text_ft_n.png",

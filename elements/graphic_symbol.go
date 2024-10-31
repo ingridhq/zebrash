@@ -5,9 +5,3 @@ type GraphicSymbol struct {
 	Height      float64
 	Orientation FieldOrientation
 }
-
-type GraphicSymbolWithData struct {
-	GraphicSymbol
-	Position LabelPosition
-	Data     string
-}
