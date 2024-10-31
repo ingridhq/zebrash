@@ -16,6 +16,7 @@ func NewRecallGraphicsParser() *CommandParser {
 			parts := splitCommand(command, code, 0)
 
 			result := &elements.GraphicField{
+				Position:       printer.NextElementPosition,
 				MagnificationX: 1,
 				MagnificationY: 1,
 				ReversePrint:   printer.GetReversePrint(),
