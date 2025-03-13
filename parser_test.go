@@ -103,6 +103,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			dstPath: "porterbuddy.png",
 		},
 		{
+			name:    "Bring Posten",
+			srcPath: "posten.zpl",
+			dstPath: "posten.png",
+		},
+		{
 			name:    "Return With QR Code",
 			srcPath: "return_qrcode.zpl",
 			dstPath: "return_qrcode.png",

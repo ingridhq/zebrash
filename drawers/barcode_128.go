@@ -72,7 +72,7 @@ func NewBarcode128Drawer() *ElementDrawer {
 
 			gCtx.DrawImage(img, barcode.Position.X, barcode.Position.Y)
 			if barcode.Line {
-				applyLineTextToCtx(gCtx, text, barcode, width, height)
+				applyLineTextToCtx(gCtx, text, barcode.Position, barcode.LineAbove, width, height)
 			}
 
 			return nil
@@ -80,17 +80,17 @@ func NewBarcode128Drawer() *ElementDrawer {
 	}
 }
 
-func applyLineTextToCtx(gCtx *gg.Context, content string, barcodeElement *elements.Barcode128WithData, width, height float64) {
+func applyLineTextToCtx(gCtx *gg.Context, content string, pos elements.LabelPosition, lineAbove bool, width, height float64) {
 	gCtx.SetColor(color.Black)
 	fontSize := width / barcodeLineFontSizeScaleFactor
 
 	face := truetype.NewFace(font0, &truetype.Options{Size: fontSize})
 	gCtx.SetFontFace(face)
 
-	x := float64(barcodeElement.Position.X) + float64(width)/2
-	y := float64(barcodeElement.Position.Y) - fontSize
-	if !barcodeElement.LineAbove {
-		y = float64(barcodeElement.Position.Y) + height + fontSize
+	x := float64(pos.X) + float64(width)/2
+	y := float64(pos.Y) - fontSize
+	if !lineAbove {
+		y = float64(pos.Y) + height + fontSize
 	}
 	gCtx.DrawStringAnchored(content, x, y, 0.5, 0.5)
 }
