@@ -126,7 +126,7 @@ func toTextField(text string, printer *printers.VirtualPrinter, fe *elements.Fie
 
 func toUnicodeText(text string, printer *printers.VirtualPrinter) (string, error) {
 	switch printer.CurrentCharset {
-	case 0:
+	case 0, 13:
 		return charmap.CodePage850.NewDecoder().String(text)
 	case 27:
 		return charmap.Windows1252.NewDecoder().String(text)
