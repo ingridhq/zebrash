@@ -116,22 +116,25 @@ func splitZplCommands(zplData []byte) ([]string, error) {
 
 	for i := 0; i < len(data); i++ {
 		c := data[i]
+		command := buff.String()
 
-		if c == caret || c == tilde {
-			command := buff.String()
+		var isCt, isCC bool
+		if buff.Len() == 4 {
+			isCt = strings.Index(command, changeTildeCode) == 1
+			isCC = strings.Index(command, changeCaretCode) == 1
+		}
+
+		if c == caret || c == tilde || isCt || isCC {
 			buff.Reset()
+			command = normalizeCommand(command, tilde, caret)
 
-			if len(command) > 2 {
-				command = normalizeCommand(command, tilde, caret)
-
-				switch {
-				case strings.Index(command, changeTildeCode) == 1:
-					tilde = command[3]
-				case strings.Index(command, changeCaretCode) == 1:
-					caret = command[3]
-				default:
-					results = append(results, command)
-				}
+			switch {
+			case isCt:
+				tilde = command[3]
+			case isCC:
+				caret = command[3]
+			default:
+				results = append(results, command)
 			}
 		}
 
