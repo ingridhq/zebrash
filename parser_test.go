@@ -232,6 +232,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			srcPath: "gb_rounded.zpl",
 			dstPath: "gb_rounded.png",
 		},
+		{
+			name:    "Text encodings 0-13",
+			srcPath: "encodings_013.zpl",
+			dstPath: "encodings_013.png",
+		},
 	}
 
 	for _, tC := range testCases {
