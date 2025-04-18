@@ -21,6 +21,7 @@ type VirtualPrinter struct {
 	LabelReverse             bool
 	DefaultBarcodeDimensions elements.BarcodeDimensions
 	CurrentCharset           int
+	PrintWidth               int
 }
 
 func NewVirtualPrinter() *VirtualPrinter {

@@ -12,6 +12,33 @@ type ElementDrawer struct {
 	Draw func(gCtx *gg.Context, element interface{}, options DrawerOptions, state *DrawerState) error
 }
 
+func adjustImageTypeSetPosition(img image.Image, pos elements.LabelPosition, ori elements.FieldOrientation) elements.LabelPosition {
+	if !pos.CalculateFromBottom {
+		return pos
+	}
+
+	width := img.Bounds().Dx()
+	height := img.Bounds().Dy()
+
+	x := pos.X
+	y := pos.Y
+
+	switch ori {
+	case elements.FieldOrientationNormal:
+		y = max(y-height, 0)
+	case elements.FieldOrientation180:
+		x -= width
+	case elements.FieldOrientation270:
+		x = max(x-height, 0)
+		y -= width
+	}
+
+	return elements.LabelPosition{
+		X: x,
+		Y: y,
+	}
+}
+
 func rotateImage(gCtx *gg.Context, img image.Image, pos elements.LabelPosition, ori elements.FieldOrientation) {
 	width := float64(img.Bounds().Dx())
 	height := float64(img.Bounds().Dy())

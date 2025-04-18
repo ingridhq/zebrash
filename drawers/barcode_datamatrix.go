@@ -58,12 +58,13 @@ func NewBarcodeDatamatrixDrawer() *ElementDrawer {
 
 			scale := max(barcode.Height, 1)
 			scaledImg := images.NewScaled(img, scale, scale)
+			pos := adjustImageTypeSetPosition(scaledImg, barcode.Position, barcode.Orientation)
 
-			rotateImage(gCtx, scaledImg, barcode.Position, barcode.Orientation)
+			rotateImage(gCtx, scaledImg, pos, barcode.Orientation)
 
 			defer gCtx.Identity()
 
-			gCtx.DrawImage(scaledImg, barcode.Position.X, barcode.Position.Y)
+			gCtx.DrawImage(scaledImg, pos.X, pos.Y)
 
 			return nil
 		},

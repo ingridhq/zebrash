@@ -37,11 +37,13 @@ func NewBarcodeAztecDrawer() *ElementDrawer {
 				return fmt.Errorf("failed to encode aztec barcode: %w", err)
 			}
 
-			rotateImage(gCtx, img, barcode.Position, barcode.Orientation)
+			pos := adjustImageTypeSetPosition(img, barcode.Position, barcode.Orientation)
+
+			rotateImage(gCtx, img, pos, barcode.Orientation)
 
 			defer gCtx.Identity()
 
-			gCtx.DrawImage(img, barcode.Position.X, barcode.Position.Y)
+			gCtx.DrawImage(img, pos.X, pos.Y)
 
 			return nil
 		},

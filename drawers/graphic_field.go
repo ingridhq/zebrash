@@ -17,8 +17,8 @@ func NewGraphicFieldDrawer() *ElementDrawer {
 			}
 
 			dataLen := len(field.Data)
-			if field.DataBytes > 0 {
-				dataLen = min(field.DataBytes, dataLen)
+			if field.TotalBytes > 0 {
+				dataLen = min(field.TotalBytes, dataLen)
 			}
 
 			width := field.RowBytes * 8

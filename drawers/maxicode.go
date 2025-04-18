@@ -27,8 +27,9 @@ func NewMaxicodeDrawer() *ElementDrawer {
 			}
 
 			img := grid.Draw(float64(options.Dpmm)).Image()
+			pos := adjustImageTypeSetPosition(img, barcode.Position, elements.FieldOrientationNormal)
 
-			gCtx.DrawImage(img, barcode.Position.X, barcode.Position.Y)
+			gCtx.DrawImage(img, pos.X, pos.Y)
 
 			return nil
 		},

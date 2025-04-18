@@ -47,6 +47,7 @@ func NewParser() *Parser {
 			parsers.NewDownloadGraphicsParser(),
 			parsers.NewRecallGraphicsParser(),
 			parsers.NewBarcodeFieldDefaults(),
+			parsers.NewPrintWidthParser(),
 		},
 	}
 }
@@ -73,6 +74,7 @@ func (p *Parser) Parse(zplData []byte) ([]elements.LabelInfo, error) {
 			if len(resultElements) > 0 {
 				results = append(results, elements.LabelInfo{
 					DownloadFormatName: p.printer.NextDownloadFormatName,
+					PrintWidth:         p.printer.PrintWidth,
 					Elements:           resultElements,
 				})
 			}
