@@ -21,11 +21,13 @@ func NewBarcodePdf417Drawer() *ElementDrawer {
 				return fmt.Errorf("failed to encode pdf417 barcode: %w", err)
 			}
 
-			rotateImage(gCtx, img, barcode.Position, barcode.Orientation)
+			pos := adjustImageTypeSetPosition(img, barcode.Position, barcode.Orientation)
+
+			rotateImage(gCtx, img, pos, barcode.Orientation)
 
 			defer gCtx.Identity()
 
-			gCtx.DrawImage(img, barcode.Position.X, barcode.Position.Y)
+			gCtx.DrawImage(img, pos.X, pos.Y)
 
 			return nil
 		},

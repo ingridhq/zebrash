@@ -46,10 +46,15 @@ func (d *Drawer) DrawLabelAsPng(label elements.LabelInfo, output io.Writer, opti
 	heightMm := options.LabelHeightMm
 	dpmm := options.Dpmm
 
-	imageWidth := math.Ceil(widthMm * float64(dpmm))
-	imageHeight := math.Ceil(heightMm * float64(dpmm))
+	labelWidth := int(math.Ceil(widthMm * float64(dpmm)))
+	imageWidth := labelWidth
+	if label.PrintWidth > 0 {
+		imageWidth = min(labelWidth, label.PrintWidth)
+	}
 
-	gCtx := gg.NewContext(int(imageWidth), int(imageHeight))
+	imageHeight := int(math.Ceil(heightMm * float64(dpmm)))
+
+	gCtx := gg.NewContext(imageWidth, imageHeight)
 	gCtx.SetColor(images.ColorWhite)
 	gCtx.Clear()
 
@@ -62,7 +67,7 @@ func (d *Drawer) DrawLabelAsPng(label elements.LabelInfo, output io.Writer, opti
 
 		gCtx2 := gCtx
 		if reversePrint {
-			gCtx2 = gg.NewContext(int(imageWidth), int(imageHeight))
+			gCtx2 = gg.NewContext(imageWidth, imageHeight)
 		}
 
 		for _, drawer := range d.elementDrawers {
@@ -77,6 +82,18 @@ func (d *Drawer) DrawLabelAsPng(label elements.LabelInfo, output io.Writer, opti
 				return err
 			}
 		}
+	}
+
+	// If print width was less than label width
+	// Draw everything onto the new, wider image and center the content
+	if imageWidth != labelWidth {
+		imgCtx := gCtx
+		gCtx = gg.NewContext(labelWidth, imageHeight)
+		gCtx.SetColor(images.ColorWhite)
+		gCtx.Clear()
+
+		img := imgCtx.Image()
+		gCtx.DrawImage(img, (labelWidth-imageWidth)/2, 0)
 	}
 
 	return images.EncodeMonochrome(output, gCtx.Image())

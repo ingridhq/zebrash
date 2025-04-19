@@ -36,17 +36,17 @@ func NewBarcode39Drawer() *ElementDrawer {
 			}
 
 			img = images.NewScaled(img, barcode.Width, barcode.Height)
-
 			width := float64(img.Bounds().Dx())
 			height := float64(img.Bounds().Dy())
+			pos := adjustImageTypeSetPosition(img, barcode.Position, barcode.Orientation)
 
-			rotateImage(gCtx, img, barcode.Position, barcode.Orientation)
+			rotateImage(gCtx, img, pos, barcode.Orientation)
 
 			defer gCtx.Identity()
 
-			gCtx.DrawImage(img, barcode.Position.X, barcode.Position.Y)
+			gCtx.DrawImage(img, pos.X, pos.Y)
 			if barcode.Line {
-				applyLineTextToCtx(gCtx, text, barcode.Position, barcode.LineAbove, width, height)
+				applyLineTextToCtx(gCtx, text, pos, barcode.LineAbove, width, height)
 			}
 
 			return nil
