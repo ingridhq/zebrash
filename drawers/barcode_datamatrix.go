@@ -13,7 +13,7 @@ import (
 
 func NewBarcodeDatamatrixDrawer() *ElementDrawer {
 	return &ElementDrawer{
-		Draw: func(gCtx *gg.Context, element interface{}, _ DrawerOptions, _ *DrawerState) error {
+		Draw: func(gCtx *gg.Context, element any, _ DrawerOptions, _ *DrawerState) error {
 			barcode, ok := element.(*elements.BarcodeDatamatrixWithData)
 			if !ok {
 				return nil

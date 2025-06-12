@@ -12,7 +12,7 @@ func NewFieldBlockParser() *CommandParser {
 
 	return &CommandParser{
 		CommandCode: code,
-		Parse: func(command string, printer *printers.VirtualPrinter) (interface{}, error) {
+		Parse: func(command string, printer *printers.VirtualPrinter) (any, error) {
 			block := elements.FieldBlock{
 				MaxWidth:      0,
 				MaxLines:      1,

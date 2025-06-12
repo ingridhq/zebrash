@@ -2,37 +2,27 @@ package drawers
 
 import (
 	"fmt"
-	"image"
 
 	"github.com/fogleman/gg"
+	"github.com/ingridhq/zebrash/barcodes/twooffive"
 	"github.com/ingridhq/zebrash/elements"
 	"github.com/ingridhq/zebrash/images"
-	"github.com/makiuchi-d/gozxing"
-	"github.com/makiuchi-d/gozxing/oned"
 )
 
-func NewBarcode39Drawer() *ElementDrawer {
+func NewBarcode2of5Drawer() *ElementDrawer {
 	return &ElementDrawer{
 		Draw: func(gCtx *gg.Context, element any, _ DrawerOptions, _ *DrawerState) error {
-			barcode, ok := element.(*elements.Barcode39WithData)
+			barcode, ok := element.(*elements.Barcode2of5WithData)
 			if !ok {
 				return nil
 			}
 
 			// data to encode into barcode
 			content := barcode.Data
-			// human-readable text
-			text := barcode.Data
 
-			var (
-				img image.Image
-				err error
-			)
-
-			enc := oned.NewCode39Writer()
-			img, err = enc.Encode(content, gozxing.BarcodeFormat_CODE_39, 1, 1, nil)
+			img, text, err := twooffive.EncodeInterleaved(content, barcode.WidthRatio, barcode.CheckDigit)
 			if err != nil {
-				return fmt.Errorf("failed to encode code39 barcode: %w", err)
+				return fmt.Errorf("failed to encode 2 of 5 barcode: %w", err)
 			}
 
 			img = images.NewScaled(img, barcode.Width, barcode.Height)

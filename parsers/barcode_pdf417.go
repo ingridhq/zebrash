@@ -12,7 +12,7 @@ func NewBarcodePdf417Parser() *CommandParser {
 
 	return &CommandParser{
 		CommandCode: code,
-		Parse: func(command string, printer *printers.VirtualPrinter) (interface{}, error) {
+		Parse: func(command string, printer *printers.VirtualPrinter) (any, error) {
 			barcode := &elements.BarcodePdf417{
 				Orientation: printer.DefaultOrientation,
 			}

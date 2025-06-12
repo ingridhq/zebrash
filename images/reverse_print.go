@@ -16,10 +16,12 @@ func ReversePrint(mask, background image.Image) error {
 		return fmt.Errorf("img is not an RGBA image")
 	}
 
+	const alphaThreshold = 30
+
 	for i := 3; i < len(rgba1.Pix); i += 4 {
 		a1 := rgba1.Pix[i]
 
-		if a1 == 0 {
+		if a1 < alphaThreshold {
 			continue
 		}
 

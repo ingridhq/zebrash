@@ -13,7 +13,7 @@ func NewGraphicSymbolParser() *CommandParser {
 
 	return &CommandParser{
 		CommandCode: code,
-		Parse: func(command string, printer *printers.VirtualPrinter) (interface{}, error) {
+		Parse: func(command string, printer *printers.VirtualPrinter) (any, error) {
 			symbol := &elements.GraphicSymbol{
 				Width:       printer.DefaultFont.Width,
 				Height:      printer.DefaultFont.Height,

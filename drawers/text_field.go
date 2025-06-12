@@ -17,7 +17,7 @@ var (
 
 func NewTextFieldDrawer() *ElementDrawer {
 	return &ElementDrawer{
-		Draw: func(gCtx *gg.Context, element interface{}, _ DrawerOptions, state *DrawerState) error {
+		Draw: func(gCtx *gg.Context, element any, _ DrawerOptions, state *DrawerState) error {
 			text, ok := element.(*elements.TextField)
 			if !ok {
 				return nil

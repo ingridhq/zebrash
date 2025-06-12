@@ -14,7 +14,7 @@ func NewBarcodeDatamatrixParser() *CommandParser {
 
 	return &CommandParser{
 		CommandCode: code,
-		Parse: func(command string, printer *printers.VirtualPrinter) (interface{}, error) {
+		Parse: func(command string, printer *printers.VirtualPrinter) (any, error) {
 			barcode := &elements.BarcodeDatamatrix{
 				Orientation: printer.DefaultOrientation,
 				Height:      printer.DefaultBarcodeDimensions.Height,

@@ -11,7 +11,7 @@ import (
 
 type CommandParser struct {
 	CommandCode string
-	Parse       func(command string, printer *printers.VirtualPrinter) (interface{}, error)
+	Parse       func(command string, printer *printers.VirtualPrinter) (any, error)
 }
 
 func (p *CommandParser) CanParse(command string) bool {

@@ -12,7 +12,7 @@ func NewFieldDataParser() *CommandParser {
 
 	return &CommandParser{
 		CommandCode: code,
-		Parse: func(command string, printer *printers.VirtualPrinter) (interface{}, error) {
+		Parse: func(command string, printer *printers.VirtualPrinter) (any, error) {
 			var err error
 
 			text := commandText(command, code)

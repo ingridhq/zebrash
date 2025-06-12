@@ -39,6 +39,7 @@ func NewParser() *Parser {
 			parsers.NewHexEscapeParser(),
 			parsers.NewMaxicodeParser(),
 			parsers.NewBarcode128Parser(),
+			parsers.NewBarcode2of5Parser(),
 			parsers.NewBarcode39Parser(),
 			parsers.NewBarcodePdf417Parser(),
 			parsers.NewBarcodeAztecParser(),
@@ -54,7 +55,7 @@ func NewParser() *Parser {
 
 func (p *Parser) Parse(zplData []byte) ([]elements.LabelInfo, error) {
 	var results []elements.LabelInfo
-	var resultElements []interface{}
+	var resultElements []any
 
 	const startCode = "^XA"
 	const endCode = "^XZ"
