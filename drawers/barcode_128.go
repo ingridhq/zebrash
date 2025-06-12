@@ -26,7 +26,7 @@ var (
 
 func NewBarcode128Drawer() *ElementDrawer {
 	return &ElementDrawer{
-		Draw: func(gCtx *gg.Context, element interface{}, _ DrawerOptions, _ *DrawerState) error {
+		Draw: func(gCtx *gg.Context, element any, _ DrawerOptions, _ *DrawerState) error {
 			barcode, ok := element.(*elements.Barcode128WithData)
 			if !ok {
 				return nil

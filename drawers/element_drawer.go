@@ -9,7 +9,7 @@ import (
 )
 
 type ElementDrawer struct {
-	Draw func(gCtx *gg.Context, element interface{}, options DrawerOptions, state *DrawerState) error
+	Draw func(gCtx *gg.Context, element any, options DrawerOptions, state *DrawerState) error
 }
 
 func adjustImageTypeSetPosition(img image.Image, pos elements.LabelPosition, ori elements.FieldOrientation) elements.LabelPosition {

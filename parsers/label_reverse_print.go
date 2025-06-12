@@ -9,7 +9,7 @@ func NewLabelReversePrintParser() *CommandParser {
 
 	return &CommandParser{
 		CommandCode: code,
-		Parse: func(command string, printer *printers.VirtualPrinter) (interface{}, error) {
+		Parse: func(command string, printer *printers.VirtualPrinter) (any, error) {
 			text := commandText(command, code)
 
 			printer.LabelReverse = (text == "Y")

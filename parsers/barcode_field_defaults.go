@@ -2,6 +2,7 @@ package parsers
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/ingridhq/zebrash/printers"
 )
@@ -11,16 +12,20 @@ func NewBarcodeFieldDefaults() *CommandParser {
 
 	return &CommandParser{
 		CommandCode: code,
-		Parse: func(command string, printer *printers.VirtualPrinter) (interface{}, error) {
+		Parse: func(command string, printer *printers.VirtualPrinter) (any, error) {
 			parts := splitCommand(command, code, 0)
 			if len(parts) > 0 {
 				if v, err := strconv.Atoi(parts[0]); err == nil {
 					printer.DefaultBarcodeDimensions.ModuleWidth = v
 				}
 			}
-			// TODO: We should be parsing WideBarToNarrowBarWidthRatio from parts[1], but:
-			// 1. The libs we use for encoding barcodes does not support this
-			// 2. We don't need it at the moment
+
+			if len(parts) > 1 {
+				if v, err := strconv.ParseFloat(strings.Trim(parts[1], " "), 32); err == nil {
+					printer.DefaultBarcodeDimensions.WidthRatio = max(2, min(v, 3))
+				}
+			}
+
 			if len(parts) > 2 {
 				if v, err := strconv.Atoi(parts[2]); err == nil {
 					printer.DefaultBarcodeDimensions.Height = v

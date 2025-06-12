@@ -13,7 +13,7 @@ import (
 
 func NewBarcodeQrDrawer() *ElementDrawer {
 	return &ElementDrawer{
-		Draw: func(gCtx *gg.Context, element interface{}, _ DrawerOptions, _ *DrawerState) error {
+		Draw: func(gCtx *gg.Context, element any, _ DrawerOptions, _ *DrawerState) error {
 			barcode, ok := element.(*elements.BarcodeQrWithData)
 			if !ok {
 				return nil
@@ -26,7 +26,7 @@ func NewBarcodeQrDrawer() *ElementDrawer {
 				return err
 			}
 
-			img, err := enc.Encode(inputData, gozxing.BarcodeFormat_QR_CODE, 1, 1, map[gozxing.EncodeHintType]interface{}{
+			img, err := enc.Encode(inputData, gozxing.BarcodeFormat_QR_CODE, 1, 1, map[gozxing.EncodeHintType]any{
 				gozxing.EncodeHintType_ERROR_CORRECTION: mapQrErrorCorrectionLevel(ec),
 				gozxing.EncodeHintType_MARGIN:           0,
 			})

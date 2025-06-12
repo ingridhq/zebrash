@@ -12,7 +12,7 @@ type VirtualPrinter struct {
 	DefaultOrientation       elements.FieldOrientation
 	DefaultAlignment         elements.TextAlignment
 	NextElementAlignment     *elements.TextAlignment
-	NextElementFieldElement  interface{}
+	NextElementFieldElement  any
 	NextElementFieldData     string
 	NextFont                 *elements.FontInfo
 	NextDownloadFormatName   string
@@ -33,6 +33,7 @@ func NewVirtualPrinter() *VirtualPrinter {
 		DefaultBarcodeDimensions: elements.BarcodeDimensions{
 			ModuleWidth: 2,
 			Height:      10,
+			WidthRatio:  3,
 		},
 	}
 }

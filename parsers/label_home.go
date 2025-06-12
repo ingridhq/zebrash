@@ -11,7 +11,7 @@ func NewLabelHomeParser() *CommandParser {
 
 	return &CommandParser{
 		CommandCode: code,
-		Parse: func(command string, printer *printers.VirtualPrinter) (interface{}, error) {
+		Parse: func(command string, printer *printers.VirtualPrinter) (any, error) {
 			pos := printer.LabelHomePosition
 
 			parts := splitCommand(command, code, 0)

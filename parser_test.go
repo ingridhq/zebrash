@@ -78,6 +78,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			dstPath: "dbs.png",
 		},
 		{
+			name:    "GLS DK Return",
+			srcPath: "glsdk_return.zpl",
+			dstPath: "glsdk_return.png",
+		},
+		{
 			name:    "JCPenney",
 			srcPath: "jcpenney.zpl",
 			dstPath: "jcpenney.png",
