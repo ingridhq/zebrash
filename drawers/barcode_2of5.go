@@ -6,7 +6,6 @@ import (
 	"github.com/fogleman/gg"
 	"github.com/ingridhq/zebrash/barcodes/twooffive"
 	"github.com/ingridhq/zebrash/elements"
-	"github.com/ingridhq/zebrash/images"
 )
 
 func NewBarcode2of5Drawer() *ElementDrawer {
@@ -20,12 +19,11 @@ func NewBarcode2of5Drawer() *ElementDrawer {
 			// data to encode into barcode
 			content := barcode.Data
 
-			img, text, err := twooffive.EncodeInterleaved(content, barcode.WidthRatio, barcode.CheckDigit)
+			img, text, err := twooffive.EncodeInterleaved(content, barcode.Width, barcode.Height, barcode.WidthRatio, barcode.CheckDigit)
 			if err != nil {
 				return fmt.Errorf("failed to encode 2 of 5 barcode: %w", err)
 			}
 
-			img = images.NewScaled(img, barcode.Width, barcode.Height)
 			width := float64(img.Bounds().Dx())
 			height := float64(img.Bounds().Dy())
 			pos := adjustImageTypeSetPosition(img, barcode.Position, barcode.Orientation)

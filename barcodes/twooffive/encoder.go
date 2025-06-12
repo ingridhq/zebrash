@@ -35,7 +35,7 @@ var (
 	}
 )
 
-func EncodeInterleaved(content string, widthRatio float64, checkDigit bool) (image.Image, string, error) {
+func EncodeInterleaved(content string, width, height int, widthRatio float64, checkDigit bool) (image.Image, string, error) {
 	var err error
 
 	if checkDigit {
@@ -82,7 +82,7 @@ func EncodeInterleaved(content string, widthRatio float64, checkDigit bool) (ima
 
 	resBits.AddBit(endPattern...)
 
-	return newCode2of5(resBits, widthRatio), content, nil
+	return newCode2of5(resBits, width, height, widthRatio), content, nil
 }
 
 func addCheckDigit(content string) (string, error) {
