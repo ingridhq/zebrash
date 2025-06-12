@@ -13,7 +13,7 @@ import (
 // It is done because widthRatio increases with 0.1 steps
 const minBarWidth = 10
 
-func newCode2of5(resBits *utils.BitList, widthRatio float64) image.Image {
+func newCode2of5(resBits *utils.BitList, width, height int, widthRatio float64) image.Image {
 	img := image.NewRGBA(image.Rect(0, 0, minBarWidth*resBits.Len(), 1))
 
 	widthRatio = max(min(3, widthRatio), 2)
@@ -43,7 +43,7 @@ func newCode2of5(resBits *utils.BitList, widthRatio float64) image.Image {
 		px++
 	}
 
-	return images.NewScaledFloat(img, 0.1, 0.1)
+	return images.NewScaledFloat(img, float64(width)*0.1, float64(height))
 }
 
 func getColor(b bool) color.RGBA {
