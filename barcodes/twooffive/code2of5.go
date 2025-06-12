@@ -17,7 +17,7 @@ func newCode2of5(resBits *utils.BitList, width, height int, widthRatio float64) 
 	img := image.NewRGBA(image.Rect(0, 0, minBarWidth*resBits.Len(), 1))
 
 	widthRatio = max(min(3, widthRatio), 2)
-	ratio := int(widthRatio * minBarWidth)
+	wideBarWidth := int(widthRatio * minBarWidth)
 	prevB := resBits.GetBit(0)
 	px := 0
 	c := 0
@@ -29,7 +29,7 @@ func newCode2of5(resBits *utils.BitList, width, height int, widthRatio float64) 
 			continue
 		}
 
-		for range getBarWidth(c > 1, ratio) {
+		for range getBarWidth(c > 1, wideBarWidth) {
 			img.Set(px, 0, getColor(prevB))
 			px++
 		}
@@ -38,7 +38,7 @@ func newCode2of5(resBits *utils.BitList, width, height int, widthRatio float64) 
 		c = 1
 	}
 
-	for range getBarWidth(c > 1, ratio) {
+	for range getBarWidth(c > 1, wideBarWidth) {
 		img.Set(px, 0, getColor(prevB))
 		px++
 	}
@@ -54,9 +54,9 @@ func getColor(b bool) color.RGBA {
 	return images.ColorTransparent
 }
 
-func getBarWidth(isWide bool, ratio int) int {
+func getBarWidth(isWide bool, wideBarWidth int) int {
 	if isWide {
-		return ratio
+		return wideBarWidth
 	}
 
 	return minBarWidth
