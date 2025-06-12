@@ -81,7 +81,7 @@ func ParseStringToBitMatrix(stringRepresentation, setString, unsetString string)
 			bits[bitsPos] = false
 			bitsPos++
 		} else {
-			return nil, fmt.Errorf("illegal character encountered: " + stringRepresentation[pos:])
+			return nil, fmt.Errorf("illegal character encountered: %v", stringRepresentation[pos:])
 		}
 	}
 
