@@ -82,7 +82,7 @@ func EncodeInterleaved(content string, width, height int, widthRatio float64, ch
 
 	resBits.AddBit(endPattern...)
 
-	return newCode2of5(resBits, width, height, widthRatio), content, nil
+	return resBits.ToImage(width, height, widthRatio), content, nil
 }
 
 func addCheckDigit(content string) (string, error) {

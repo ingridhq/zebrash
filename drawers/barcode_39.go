@@ -5,10 +5,8 @@ import (
 	"image"
 
 	"github.com/fogleman/gg"
+	"github.com/ingridhq/zebrash/barcodes/code39"
 	"github.com/ingridhq/zebrash/elements"
-	"github.com/ingridhq/zebrash/images"
-	"github.com/makiuchi-d/gozxing"
-	"github.com/makiuchi-d/gozxing/oned"
 )
 
 func NewBarcode39Drawer() *ElementDrawer {
@@ -29,13 +27,11 @@ func NewBarcode39Drawer() *ElementDrawer {
 				err error
 			)
 
-			enc := oned.NewCode39Writer()
-			img, err = enc.Encode(content, gozxing.BarcodeFormat_CODE_39, 1, 1, nil)
+			img, err = code39.Encode(content, barcode.Width, barcode.Height, barcode.WidthRatio)
 			if err != nil {
 				return fmt.Errorf("failed to encode code39 barcode: %w", err)
 			}
 
-			img = images.NewScaled(img, barcode.Width, barcode.Height)
 			width := float64(img.Bounds().Dx())
 			height := float64(img.Bounds().Dy())
 			pos := adjustImageTypeSetPosition(img, barcode.Position, barcode.Orientation)

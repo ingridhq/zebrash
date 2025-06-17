@@ -22,7 +22,8 @@ type Barcode39 struct {
 
 type Barcode39WithData struct {
 	Barcode39
-	Width    int
-	Position LabelPosition
-	Data     string
+	Width      int
+	WidthRatio float64
+	Position   LabelPosition
+	Data       string
 }

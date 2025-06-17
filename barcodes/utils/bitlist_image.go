@@ -1,10 +1,9 @@
-package twooffive
+package utils
 
 import (
 	"image"
 	"image/color"
 
-	"github.com/ingridhq/zebrash/barcodes/utils"
 	"github.com/ingridhq/zebrash/images"
 )
 
@@ -13,7 +12,7 @@ import (
 // It is done because widthRatio increases with 0.1 steps
 const minBarWidth = 10
 
-func newCode2of5(resBits *utils.BitList, width, height int, widthRatio float64) image.Image {
+func (resBits *BitList) ToImage(width, height int, widthRatio float64) image.Image {
 	img := image.NewRGBA(image.Rect(0, 0, minBarWidth*resBits.Len(), 1))
 
 	widthRatio = max(min(3, widthRatio), 2)
