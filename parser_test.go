@@ -17,6 +17,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 		labelIdx int
 	}{
 		{
+			name:    "Amazon label",
+			srcPath: "amazon.zpl",
+			dstPath: "amazon.png",
+		},
+		{
 			name:    "UPS label",
 			srcPath: "ups.zpl",
 			dstPath: "ups.png",

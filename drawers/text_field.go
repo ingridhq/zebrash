@@ -52,7 +52,7 @@ func NewTextFieldDrawer() *ElementDrawer {
 			if text.Block != nil {
 				maxWidth := float64(text.Block.MaxWidth) / scaleX
 				align := getTextBlockAlign(text.Block)
-				gCtx.DrawStringWrapped(text.Text, x, y, ax, ay, maxWidth, float64(text.Block.LineSpacing), align)
+				gCtx.DrawStringWrapped(text.Text, x, y-h, ax, ay, maxWidth, 1+float64(text.Block.LineSpacing), align)
 			} else {
 				gCtx.DrawStringAnchored(text.Text, x, y, ax, ay)
 			}
@@ -92,13 +92,13 @@ func getTextTopLeftPos(text *elements.TextField, w, h float64, state *DrawerStat
 	if !text.Position.CalculateFromBottom {
 		switch text.Font.Orientation {
 		case elements.FieldOrientation90:
-			return x + 3*h/4, y
+			return x + h/4, y
 		case elements.FieldOrientation180:
-			return x + w, y + 3*h/4
+			return x + w, y + h/4
 		case elements.FieldOrientation270:
-			return x + h/4, y + w
+			return x + 3*h/4, y + w
 		default:
-			return x, y + h/4
+			return x, y + 3*h/4
 		}
 	}
 
@@ -110,7 +110,7 @@ func getTextTopLeftPos(text *elements.TextField, w, h float64, state *DrawerStat
 		spacing = float64(text.Block.LineSpacing)
 	}
 
-	offset := h/2 + (lines-1)*(h+spacing)
+	offset := (lines - 1) * (h + spacing)
 
 	switch text.Font.Orientation {
 	case elements.FieldOrientation90:
@@ -126,7 +126,7 @@ func getTextTopLeftPos(text *elements.TextField, w, h float64, state *DrawerStat
 
 func getTextAxAy(text *elements.TextField) (float64, float64) {
 	ax := 0.0
-	ay := 0.5
+	ay := 0.0
 
 	switch text.Alignment {
 	case elements.TextAlignmentLeft:
