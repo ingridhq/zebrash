@@ -16,7 +16,8 @@ func NewDownloadGraphicsParser() *CommandParser {
 	return &CommandParser{
 		CommandCode: code,
 		Parse: func(command string, printer *printers.VirtualPrinter) (any, error) {
-			parts := splitCommand(command, code, 0)
+			data := command[len(code):]
+			parts := strings.SplitN(data, ",", 4)
 
 			graphics := elements.StoredGraphics{
 				RowBytes: 1,
@@ -41,13 +42,17 @@ func NewDownloadGraphicsParser() *CommandParser {
 			}
 
 			if len(parts) > 3 {
-				data, err := hex.DecodeEmbeddedImage(strings.Join(parts[3:], ""))
+				data, err := hex.DecodeGraphicFieldData(parts[3], graphics.RowBytes)
 				if err != nil {
 					return nil, fmt.Errorf("failed to decode embedded graphics: %w", err)
 				}
 
 				graphics.Data = data
 			}
+
+			pathParts := strings.SplitN(path, ".", 2)
+			// If some extension other than .GRF was provided we need to overwrite it
+			path = pathParts[0] + ".GRF"
 
 			printer.StoredGraphics[path] = graphics
 

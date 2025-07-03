@@ -31,14 +31,6 @@ func DecodeEscapedString(value string, escapeChar byte) (string, error) {
 	return res, nil
 }
 
-func DecodeEmbeddedImage(value string) ([]byte, error) {
-	if z64Encoded(value) {
-		return decodeZ64(value)
-	}
-
-	return hx.DecodeString(value)
-}
-
 var compressCounts = map[byte]int{
 	'G': 1,
 	'H': 2,
