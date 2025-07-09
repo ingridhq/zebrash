@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ingridhq/zebrash/elements"
-	"github.com/ingridhq/zebrash/parsers"
-	"github.com/ingridhq/zebrash/printers"
+	"github.com/ingridhq/zebrash/internal/elements"
+	"github.com/ingridhq/zebrash/internal/parsers"
+	"github.com/ingridhq/zebrash/internal/printers"
 )
 
 type Parser struct {
