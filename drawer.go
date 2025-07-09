@@ -6,8 +6,9 @@ import (
 	"math"
 
 	"github.com/fogleman/gg"
-	"github.com/ingridhq/zebrash/internal/drawers"
-	"github.com/ingridhq/zebrash/internal/elements"
+	"github.com/ingridhq/zebrash/drawers"
+	"github.com/ingridhq/zebrash/elements"
+	drawers_internal "github.com/ingridhq/zebrash/internal/drawers"
 	"github.com/ingridhq/zebrash/internal/images"
 )
 
@@ -16,32 +17,32 @@ type reversePrintable interface {
 }
 
 type Drawer struct {
-	elementDrawers []*drawers.ElementDrawer
+	elementDrawers []*drawers_internal.ElementDrawer
 }
 
 func NewDrawer() *Drawer {
 	return &Drawer{
-		elementDrawers: []*drawers.ElementDrawer{
-			drawers.NewGraphicBoxDrawer(),
-			drawers.NewGraphicCircleDrawer(),
-			drawers.NewGraphicFieldDrawer(),
-			drawers.NewGraphicDiagonalLineDrawer(),
-			drawers.NewTextFieldDrawer(),
-			drawers.NewMaxicodeDrawer(),
-			drawers.NewBarcode128Drawer(),
-			drawers.NewBarcode2of5Drawer(),
-			drawers.NewBarcode39Drawer(),
-			drawers.NewBarcodePdf417Drawer(),
-			drawers.NewBarcodeAztecDrawer(),
-			drawers.NewBarcodeDatamatrixDrawer(),
-			drawers.NewBarcodeQrDrawer(),
+		elementDrawers: []*drawers_internal.ElementDrawer{
+			drawers_internal.NewGraphicBoxDrawer(),
+			drawers_internal.NewGraphicCircleDrawer(),
+			drawers_internal.NewGraphicFieldDrawer(),
+			drawers_internal.NewGraphicDiagonalLineDrawer(),
+			drawers_internal.NewTextFieldDrawer(),
+			drawers_internal.NewMaxicodeDrawer(),
+			drawers_internal.NewBarcode128Drawer(),
+			drawers_internal.NewBarcode2of5Drawer(),
+			drawers_internal.NewBarcode39Drawer(),
+			drawers_internal.NewBarcodePdf417Drawer(),
+			drawers_internal.NewBarcodeAztecDrawer(),
+			drawers_internal.NewBarcodeDatamatrixDrawer(),
+			drawers_internal.NewBarcodeQrDrawer(),
 		},
 	}
 }
 
 func (d *Drawer) DrawLabelAsPng(label elements.LabelInfo, output io.Writer, options drawers.DrawerOptions) error {
 	options = options.WithDefaults()
-	state := &drawers.DrawerState{}
+	state := &drawers_internal.DrawerState{}
 
 	widthMm := options.LabelWidthMm
 	heightMm := options.LabelHeightMm

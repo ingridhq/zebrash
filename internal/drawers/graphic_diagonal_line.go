@@ -2,12 +2,13 @@ package drawers
 
 import (
 	"github.com/fogleman/gg"
+	"github.com/ingridhq/zebrash/drawers"
 	"github.com/ingridhq/zebrash/internal/elements"
 )
 
 func NewGraphicDiagonalLineDrawer() *ElementDrawer {
 	return &ElementDrawer{
-		Draw: func(gCtx *gg.Context, element any, _ DrawerOptions, _ *DrawerState) error {
+		Draw: func(gCtx *gg.Context, element any, _ drawers.DrawerOptions, _ *DrawerState) error {
 			line, ok := element.(*elements.GraphicDiagonalLine)
 			if !ok {
 				return nil

@@ -5,13 +5,14 @@ import (
 	"image"
 
 	"github.com/fogleman/gg"
+	"github.com/ingridhq/zebrash/drawers"
 	"github.com/ingridhq/zebrash/internal/barcodes/code39"
 	"github.com/ingridhq/zebrash/internal/elements"
 )
 
 func NewBarcode39Drawer() *ElementDrawer {
 	return &ElementDrawer{
-		Draw: func(gCtx *gg.Context, element any, _ DrawerOptions, _ *DrawerState) error {
+		Draw: func(gCtx *gg.Context, element any, _ drawers.DrawerOptions, _ *DrawerState) error {
 			barcode, ok := element.(*elements.Barcode39WithData)
 			if !ok {
 				return nil

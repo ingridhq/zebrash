@@ -5,6 +5,7 @@ import (
 
 	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
+	"github.com/ingridhq/zebrash/drawers"
 	"github.com/ingridhq/zebrash/internal/assets"
 	"github.com/ingridhq/zebrash/internal/elements"
 )
@@ -17,7 +18,7 @@ var (
 
 func NewTextFieldDrawer() *ElementDrawer {
 	return &ElementDrawer{
-		Draw: func(gCtx *gg.Context, element any, _ DrawerOptions, state *DrawerState) error {
+		Draw: func(gCtx *gg.Context, element any, _ drawers.DrawerOptions, state *DrawerState) error {
 			text, ok := element.(*elements.TextField)
 			if !ok {
 				return nil

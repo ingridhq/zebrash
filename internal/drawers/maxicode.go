@@ -5,12 +5,13 @@ import (
 
 	"github.com/fogleman/gg"
 	"github.com/ingridhq/maxicode"
+	"github.com/ingridhq/zebrash/drawers"
 	"github.com/ingridhq/zebrash/internal/elements"
 )
 
 func NewMaxicodeDrawer() *ElementDrawer {
 	return &ElementDrawer{
-		Draw: func(gCtx *gg.Context, element any, options DrawerOptions, _ *DrawerState) error {
+		Draw: func(gCtx *gg.Context, element any, options drawers.DrawerOptions, _ *DrawerState) error {
 			barcode, ok := element.(*elements.MaxicodeWithData)
 			if !ok {
 				return nil
