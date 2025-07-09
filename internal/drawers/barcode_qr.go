@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/fogleman/gg"
+	"github.com/ingridhq/zebrash/drawers"
 	"github.com/ingridhq/zebrash/internal/elements"
 	"github.com/ingridhq/zebrash/internal/images"
 	"github.com/makiuchi-d/gozxing"
@@ -13,7 +14,7 @@ import (
 
 func NewBarcodeQrDrawer() *ElementDrawer {
 	return &ElementDrawer{
-		Draw: func(gCtx *gg.Context, element any, _ DrawerOptions, _ *DrawerState) error {
+		Draw: func(gCtx *gg.Context, element any, _ drawers.DrawerOptions, _ *DrawerState) error {
 			barcode, ok := element.(*elements.BarcodeQrWithData)
 			if !ok {
 				return nil

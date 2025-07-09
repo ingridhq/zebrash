@@ -4,12 +4,13 @@ import (
 	"image"
 
 	"github.com/fogleman/gg"
+	"github.com/ingridhq/zebrash/drawers"
 	"github.com/ingridhq/zebrash/internal/elements"
 	"github.com/ingridhq/zebrash/internal/images"
 )
 
 type ElementDrawer struct {
-	Draw func(gCtx *gg.Context, element any, options DrawerOptions, state *DrawerState) error
+	Draw func(gCtx *gg.Context, element any, options drawers.DrawerOptions, state *DrawerState) error
 }
 
 func adjustImageTypeSetPosition(img image.Image, pos elements.LabelPosition, ori elements.FieldOrientation) elements.LabelPosition {

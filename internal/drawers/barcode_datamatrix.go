@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/fogleman/gg"
+	"github.com/ingridhq/zebrash/drawers"
 	"github.com/ingridhq/zebrash/internal/barcodes/datamatrix"
 	"github.com/ingridhq/zebrash/internal/barcodes/datamatrix/encoder"
 	"github.com/ingridhq/zebrash/internal/elements"
@@ -13,7 +14,7 @@ import (
 
 func NewBarcodeDatamatrixDrawer() *ElementDrawer {
 	return &ElementDrawer{
-		Draw: func(gCtx *gg.Context, element any, _ DrawerOptions, _ *DrawerState) error {
+		Draw: func(gCtx *gg.Context, element any, _ drawers.DrawerOptions, _ *DrawerState) error {
 			barcode, ok := element.(*elements.BarcodeDatamatrixWithData)
 			if !ok {
 				return nil

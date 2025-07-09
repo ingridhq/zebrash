@@ -4,13 +4,14 @@ import (
 	"fmt"
 
 	"github.com/fogleman/gg"
+	"github.com/ingridhq/zebrash/drawers"
 	"github.com/ingridhq/zebrash/internal/barcodes/pdf417"
 	"github.com/ingridhq/zebrash/internal/elements"
 )
 
 func NewBarcodePdf417Drawer() *ElementDrawer {
 	return &ElementDrawer{
-		Draw: func(gCtx *gg.Context, element any, _ DrawerOptions, _ *DrawerState) error {
+		Draw: func(gCtx *gg.Context, element any, _ drawers.DrawerOptions, _ *DrawerState) error {
 			barcode, ok := element.(*elements.BarcodePdf417WithData)
 			if !ok {
 				return nil

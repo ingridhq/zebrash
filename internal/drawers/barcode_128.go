@@ -10,6 +10,7 @@ import (
 
 	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
+	"github.com/ingridhq/zebrash/drawers"
 	"github.com/ingridhq/zebrash/internal/barcodes/code128"
 	"github.com/ingridhq/zebrash/internal/elements"
 )
@@ -26,7 +27,7 @@ var (
 
 func NewBarcode128Drawer() *ElementDrawer {
 	return &ElementDrawer{
-		Draw: func(gCtx *gg.Context, element any, _ DrawerOptions, _ *DrawerState) error {
+		Draw: func(gCtx *gg.Context, element any, _ drawers.DrawerOptions, _ *DrawerState) error {
 			barcode, ok := element.(*elements.Barcode128WithData)
 			if !ok {
 				return nil

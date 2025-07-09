@@ -4,13 +4,14 @@ import (
 	"fmt"
 
 	"github.com/fogleman/gg"
+	"github.com/ingridhq/zebrash/drawers"
 	"github.com/ingridhq/zebrash/internal/barcodes/twooffive"
 	"github.com/ingridhq/zebrash/internal/elements"
 )
 
 func NewBarcode2of5Drawer() *ElementDrawer {
 	return &ElementDrawer{
-		Draw: func(gCtx *gg.Context, element any, _ DrawerOptions, _ *DrawerState) error {
+		Draw: func(gCtx *gg.Context, element any, _ drawers.DrawerOptions, _ *DrawerState) error {
 			barcode, ok := element.(*elements.Barcode2of5WithData)
 			if !ok {
 				return nil
