@@ -60,6 +60,8 @@ func (d *Drawer) DrawLabelAsPng(label elements.LabelInfo, output io.Writer, opti
 	gCtx.SetColor(images.ColorWhite)
 	gCtx.Clear()
 
+	var gReversePrintBuff *gg.Context
+
 	for _, element := range label.Elements {
 		reversePrint := false
 
@@ -69,7 +71,13 @@ func (d *Drawer) DrawLabelAsPng(label elements.LabelInfo, output io.Writer, opti
 
 		gCtx2 := gCtx
 		if reversePrint {
-			gCtx2 = gg.NewContext(imageWidth, imageHeight)
+			if gReversePrintBuff == nil {
+				gReversePrintBuff = gg.NewContext(imageWidth, imageHeight)
+			} else if err := images.Zerofill(gReversePrintBuff.Image()); err != nil {
+				return fmt.Errorf("failed to clear reverse print buffer: %w", err)
+			}
+
+			gCtx2 = gReversePrintBuff
 		}
 
 		for _, drawer := range d.elementDrawers {
