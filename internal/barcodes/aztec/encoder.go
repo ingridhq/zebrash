@@ -4,13 +4,14 @@ package aztec
 import (
 	"fmt"
 	"image"
+	"math"
 
 	"github.com/ingridhq/zebrash/internal/barcodes/utils"
 	"github.com/ingridhq/zebrash/internal/images"
 )
 
 const (
-	DEFAULT_EC_PERCENT  = 33
+	DEFAULT_EC_PERCENT  = 23 // ZPL Default
 	DEFAULT_LAYERS      = 0
 	max_nb_bits         = 32
 	max_nb_bits_compact = 4
@@ -120,18 +121,18 @@ func drawBullsEye(matrix *aztecCode, center, size int) {
 	matrix.set(center-size, center-size+1)
 	matrix.set(center+size, center-size)
 	matrix.set(center+size, center-size+1)
-	matrix.set(center+size, center+size-1)
+	matrix.set(center+size, center-size-1)
 }
 
 // Encode returns an aztec barcode with the given content
 func Encode(data []byte, minECCPercent, userSpecifiedLayers, magnification int) (image.Image, error) {
 	bits := highlevelEncode(data)
-	eccBits := ((bits.Len() * minECCPercent) / 100) + 11
-	totalSizeBits := bits.Len() + eccBits
 	var layers, TotalBitsInLayer, wordSize int
 	var compact bool
 	var stuffedBits *utils.BitList
+
 	if userSpecifiedLayers != DEFAULT_LAYERS {
+		// This branch handles fixed layers (compact/full-range modes).
 		compact = userSpecifiedLayers < 0
 		if compact {
 			layers = -userSpecifiedLayers
@@ -145,18 +146,17 @@ func Encode(data []byte, minECCPercent, userSpecifiedLayers, magnification int) 
 		wordSize = word_size[layers]
 		usableBitsInLayers := TotalBitsInLayer - (TotalBitsInLayer % wordSize)
 		stuffedBits = stuffBits(bits, wordSize)
-		if stuffedBits.Len()+eccBits > usableBitsInLayers {
-			return nil, fmt.Errorf("data to large for user specified layer")
+
+		if stuffedBits.Len()*4/3 > usableBitsInLayers {
+			return nil, fmt.Errorf("data too large for user specified layer")
 		}
 		if compact && stuffedBits.Len() > wordSize*64 {
-			return nil, fmt.Errorf("data to large for user specified layer")
+			return nil, fmt.Errorf("data too large for user specified layer")
 		}
 	} else {
+		// This branch handles dynamic sizing based on the ZPL ECC formula.
 		wordSize = 0
 		stuffedBits = nil
-		// We look at the possible table sizes in the order Compact1, Compact2, Compact3,
-		// Compact4, Normal4,...  Normal(i) for i < 4 isn't typically used since Compact(i+1)
-		// is the same size, but has more data.
 		for i := 0; ; i++ {
 			if i > max_nb_bits {
 				return nil, fmt.Errorf("data too large for an aztec code")
@@ -166,31 +166,42 @@ func Encode(data []byte, minECCPercent, userSpecifiedLayers, magnification int) 
 			if compact {
 				layers = i + 1
 			}
-			TotalBitsInLayer = totalBitsInLayer(layers, compact)
-			if totalSizeBits > TotalBitsInLayer {
-				continue
-			}
-			// [Re]stuff the bits if this is the first opportunity, or if the
-			// wordSize has changed
-			if wordSize != word_size[layers] {
-				wordSize = word_size[layers]
+			currentWordSize := word_size[layers]
+
+			if wordSize != currentWordSize {
+				wordSize = currentWordSize
 				stuffedBits = stuffBits(bits, wordSize)
 			}
-			usableBitsInLayers := TotalBitsInLayer - (TotalBitsInLayer % wordSize)
-			if compact && stuffedBits.Len() > wordSize*64 {
-				// Compact format only allows 64 data words, though C4 can hold more words than that
+
+			if compact && (stuffedBits.Len()/wordSize) > 64 {
 				continue
 			}
-			if stuffedBits.Len()+eccBits <= usableBitsInLayers {
-				break
+
+			TotalBitsInLayer = totalBitsInLayer(layers, compact)
+			usableBitsInLayers := TotalBitsInLayer - (TotalBitsInLayer % wordSize)
+			totalSymbolWords := float64(usableBitsInLayers / wordSize)
+
+			if totalSymbolWords == 0 {
+				continue
+			}
+
+			requiredDataWords := float64((stuffedBits.Len() + wordSize - 1) / wordSize)
+
+			// ZPL Logic: Find smallest symbol where data fits into the space *not* reserved for ECC.
+			// ECC is calculated based on the *total capacity* of the candidate symbol, using floating point math.
+			eccWordsToReserve := math.Ceil(totalSymbolWords*float64(minECCPercent)/100.0) + 3.0
+			availableDataWords := totalSymbolWords - eccWordsToReserve
+
+			if requiredDataWords <= availableDataWords {
+				break // We found the smallest symbol that satisfies the condition.
 			}
 		}
 	}
+
 	messageBits := generateCheckWords(stuffedBits, TotalBitsInLayer, wordSize)
 	messageSizeInWords := stuffedBits.Len() / wordSize
 	modeMessage := generateModeMessage(compact, layers, messageSizeInWords)
 
-	// allocate symbol
 	var baseMatrixSize int
 	if compact {
 		baseMatrixSize = 11 + layers*4
@@ -201,7 +212,6 @@ func Encode(data []byte, minECCPercent, userSpecifiedLayers, magnification int) 
 	var matrixSize int
 
 	if compact {
-		// no alignment marks in compact mode, alignmentMap is a no-op
 		matrixSize = baseMatrixSize
 		for i := 0; i < len(alignmentMap); i++ {
 			alignmentMap[i] = i
@@ -248,10 +258,8 @@ func Encode(data []byte, minECCPercent, userSpecifiedLayers, magnification int) 
 		rowOffset += rowSize * 8
 	}
 
-	// draw mode message
 	drawModeMessage(code, compact, matrixSize, modeMessage)
 
-	// draw alignment marks
 	if compact {
 		drawBullsEye(code, matrixSize/2, 5)
 	} else {
