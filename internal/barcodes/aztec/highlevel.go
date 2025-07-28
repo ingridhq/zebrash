@@ -104,15 +104,22 @@ func updateStateForChar(s *state, data []byte, index int) stateSlice {
 				// Only create stateNoBinary the first time it's required.
 				stateNoBinary = s.endBinaryShift(index)
 			}
+			// --- START OF CORRECTED LOGIC ---
 			// Try generating the character by latching to its mode
-			if !charInCurrentTable || mode == s.mode || mode == mode_digit {
+			if mode == s.mode {
 				// If the character is in the current table, we don't want to latch to
 				// any other mode except possibly digit (which uses only 4 bits).  Any
 				// other latch would be equally successful *after* this character, and
 				// so wouldn't save any bits.
 				res := stateNoBinary.latchAndAppend(mode, charInMode)
 				result = append(result, res)
+			} else if !charInCurrentTable {
+				// If the character is not in the current table, we must latch to a new mode.
+				res := stateNoBinary.latchAndAppend(mode, charInMode)
+				result = append(result, res)
 			}
+			// --- END OF CORRECTED LOGIC ---
+
 			// Try generating the character by switching to its mode.
 			if _, ok := shiftTable[s.mode][mode]; !charInCurrentTable && ok {
 				// It never makes sense to temporarily shift to another mode if the
