@@ -247,6 +247,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			srcPath: "encodings_013.zpl",
 			dstPath: "encodings_013.png",
 		},
+		{
+			name:    "Aztec barcode error correction",
+			srcPath: "aztec_ec.zpl",
+			dstPath: "aztec_ec.png",
+		},
 	}
 
 	for _, tC := range testCases {

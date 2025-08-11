@@ -43,13 +43,15 @@ func stuffBits(bits *utils.BitList, wordSize int) *utils.BitList {
 				word |= 1 << uint(wordSize-1-j)
 			}
 		}
-		if (word & mask) == mask {
+
+		switch word & mask {
+		case mask:
 			out.AddBits(word&mask, byte(wordSize))
 			i--
-		} else if (word & mask) == 0 {
+		case 0:
 			out.AddBits(word|1, byte(wordSize))
 			i--
-		} else {
+		default:
 			out.AddBits(word, byte(wordSize))
 		}
 	}
@@ -179,21 +181,22 @@ func Encode(data []byte, minECCPercent, userSpecifiedLayers, magnification int) 
 
 			TotalBitsInLayer = totalBitsInLayer(layers, compact)
 			usableBitsInLayers := TotalBitsInLayer - (TotalBitsInLayer % wordSize)
-			totalSymbolWords := float64(usableBitsInLayers / wordSize)
+			totalSymbolWords := usableBitsInLayers / wordSize
 
 			if totalSymbolWords == 0 {
 				continue
 			}
 
-			requiredDataWords := float64((stuffedBits.Len() + wordSize - 1) / wordSize)
+			requiredDataWords := (stuffedBits.Len() + wordSize - 1) / wordSize
 
 			// ZPL Logic: Find smallest symbol where data fits into the space *not* reserved for ECC.
 			// ECC is calculated based on the *total capacity* of the candidate symbol, using floating point math.
-			eccWordsToReserve := math.Ceil(totalSymbolWords*float64(minECCPercent)/100.0) + 3.0
+			eccWordsToReserve := int(math.Ceil(float64(totalSymbolWords*minECCPercent)/100.0)) + 3
 			availableDataWords := totalSymbolWords - eccWordsToReserve
 
 			if requiredDataWords <= availableDataWords {
-				break // We found the smallest symbol that satisfies the condition.
+				// We found the smallest symbol that satisfies the condition.
+				break
 			}
 		}
 	}
