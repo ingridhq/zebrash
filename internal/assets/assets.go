@@ -4,8 +4,8 @@ import (
 	_ "embed"
 )
 
-//go:embed fonts/HelveticaBoldCondensed.ttf
-var FontHelveticaBold []byte
+//go:embed fonts/ArialCondensedBoldRegular.ttf
+var FontArialCondensedBold []byte
 
 //go:embed fonts/DejaVuSansMono.ttf
 var FontDejavuSansMono []byte

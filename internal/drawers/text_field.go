@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	font0 = mustLoadFont(assets.FontHelveticaBold)
+	font0 = mustLoadFont(assets.FontArialCondensedBold)
 	font1 = mustLoadFont(assets.FontDejavuSansMono)
 	fontB = mustLoadFont(assets.FontDejavuSansMonoBold)
 )
