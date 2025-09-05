@@ -30,10 +30,10 @@ func NewBarcodeDatamatrixDrawer() *ElementDrawer {
 			}
 
 			switch barcode.Ratio {
-			case elements.DatamatrixRatioSquare:
-				opts.Shape = encoder.SymbolShapeHint_FORCE_SQUARE
 			case elements.DatamatrixRatioRectangular:
 				opts.Shape = encoder.SymbolShapeHint_FORCE_RECTANGLE
+			default: // This includes 0 (unset) and 1 (square) - default to square like Labelary
+				opts.Shape = encoder.SymbolShapeHint_FORCE_SQUARE
 			}
 
 			data := barcode.Data
