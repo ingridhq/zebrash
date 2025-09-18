@@ -73,6 +73,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			dstPath: "dhlparceluk.png",
 		},
 		{
+			name:    "DHL ECommerce TR",
+			srcPath: "dhlecommercetr.zpl",
+			dstPath: "dhlecommercetr.png",
+		},
+		{
 			name:    "ICA Paket",
 			srcPath: "icapaket.zpl",
 			dstPath: "icapaket.png",

@@ -4,7 +4,9 @@ import (
 	_ "embed"
 )
 
-//go:embed fonts/HelveticaBoldCondensed.ttf
+// Slightly modified HelveticaBoldCondensed with some added glyphs for Polish and Turkish
+//
+//go:embed fonts/HelveticaBoldCondensedCustom.ttf
 var FontHelveticaBold []byte
 
 //go:embed fonts/DejaVuSansMono.ttf
