@@ -38,7 +38,7 @@ func NewBarcodeQrDrawer() *ElementDrawer {
 			scaledImg := images.NewScaled(img, barcode.Magnification, barcode.Magnification)
 			pos := adjustImageTypeSetPosition(scaledImg, barcode.Position, elements.FieldOrientationNormal)
 
-			gCtx.DrawImage(scaledImg, pos.X, pos.Y)
+			gCtx.DrawImage(scaledImg, pos.X, pos.Y+barcode.Height)
 
 			return nil
 		},

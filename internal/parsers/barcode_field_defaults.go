@@ -27,7 +27,7 @@ func NewBarcodeFieldDefaults() *CommandParser {
 			}
 
 			if len(parts) > 2 {
-				if v, err := strconv.Atoi(parts[2]); err == nil {
+				if v, err := strconv.Atoi(strings.Trim(parts[2], " ")); err == nil {
 					printer.DefaultBarcodeDimensions.Height = v
 				}
 			}

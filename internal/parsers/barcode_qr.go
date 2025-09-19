@@ -16,6 +16,7 @@ func NewBarcodeQrParser() *CommandParser {
 		Parse: func(command string, printer *printers.VirtualPrinter) (any, error) {
 			barcode := &elements.BarcodeQr{
 				Magnification: 1,
+				Height:        printer.DefaultBarcodeDimensions.Height,
 			}
 
 			parts := splitCommand(command, code, 0)
