@@ -1,0 +1,4 @@
+^XA
+^BY3,2,100       
+^FO0,0^BQN,2,8^FDEXAMPLE CODE^FS
+^XZ

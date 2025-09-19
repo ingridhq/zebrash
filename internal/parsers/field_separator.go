@@ -74,6 +74,7 @@ func NewFieldSeparatorParser() *CommandParser {
 			case *elements.BarcodeQr:
 				return &elements.BarcodeQrWithData{
 					BarcodeQr: *fe,
+					Height:    printer.DefaultBarcodeDimensions.Height,
 					Position:  printer.NextElementPosition,
 					Data:      text,
 				}, nil
