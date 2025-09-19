@@ -9,11 +9,11 @@ type BarcodeQr struct {
 	// Any number between 1 and 10 may be used.
 	// The default value depends on the print density being used.
 	Magnification int
-	Height        int
 }
 
 type BarcodeQrWithData struct {
 	BarcodeQr
+	Height   int
 	Position LabelPosition
 	Data     string
 }

@@ -257,6 +257,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			srcPath: "aztec_ec.zpl",
 			dstPath: "aztec_ec.png",
 		},
+		{
+			name:    "QR code with offset",
+			srcPath: "qr_code_offset.zpl",
+			dstPath: "qr_code_offset.png",
+		},
 	}
 
 	for _, tC := range testCases {
