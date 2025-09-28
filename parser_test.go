@@ -183,6 +183,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			dstPath: "text_fo_b.png",
 		},
 		{
+			name:    "Text Field Multi-line",
+			srcPath: "text_multiline.zpl",
+			dstPath: "text_multiline.png",
+		},
+		{
 			name:    "Barcode128 with 'line' and 'line above' set",
 			srcPath: "barcode128_line_above.zpl",
 			dstPath: "barcode128_line_above.png",

@@ -115,13 +115,13 @@ func toGraphicSymbolTextField(text string, printer *printers.VirtualPrinter, fe 
 }
 
 func toTextField(text string, printer *printers.VirtualPrinter, fe *elements.FieldBlock) (*elements.TextField, error) {
+	// \& = carriage return/line feed
+	text = strings.ReplaceAll(text, `\&`, "\n")
+
 	unicodeText, err := toUnicodeText(text, printer)
 	if err != nil {
 		return nil, fmt.Errorf("failed to convert to unicode text: %w", err)
 	}
-
-	// \& = carriage return/line feed
-	unicodeText = strings.ReplaceAll(unicodeText, `\&`, "\n")
 
 	return &elements.TextField{
 		Font:         printer.GetNextFontOrDefault(),
