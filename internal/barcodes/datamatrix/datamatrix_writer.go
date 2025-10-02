@@ -4,16 +4,10 @@ import (
 	"fmt"
 
 	"github.com/ingridhq/zebrash/internal/barcodes/datamatrix/encoder"
+	"github.com/ingridhq/zebrash/internal/barcodes/utils"
 )
 
-// DataMatrixWriter This object renders a Data Matrix code as a BitMatrix 2D array of greyscale values.
-type DataMatrixWriter struct{}
-
-func NewDataMatrixWriter() *DataMatrixWriter {
-	return &DataMatrixWriter{}
-}
-
-func (writer *DataMatrixWriter) Encode(contents string, width, height int, opts encoder.Options) (*BitMatrix, error) {
+func Encode(contents string, width, height int, opts encoder.Options) (*utils.BitMatrix, error) {
 	if contents == "" {
 		return nil, fmt.Errorf("found empty contents")
 	}
@@ -39,7 +33,7 @@ func (writer *DataMatrixWriter) Encode(contents string, width, height int, opts 
 }
 
 // encodeLowLevel Encode the given symbol info to a bit matrix.
-func encodeLowLevel(placement *encoder.DefaultPlacement, symbolInfo *encoder.SymbolInfo, width, height int) *BitMatrix {
+func encodeLowLevel(placement *encoder.DefaultPlacement, symbolInfo *encoder.SymbolInfo, width, height int) *utils.BitMatrix {
 
 	symbolWidth := symbolInfo.GetSymbolDataWidth()
 	symbolHeight := symbolInfo.GetSymbolDataHeight()
@@ -90,7 +84,7 @@ func encodeLowLevel(placement *encoder.DefaultPlacement, symbolInfo *encoder.Sym
 }
 
 // convertByteMatrixToBitMatrix Convert the ByteMatrix to BitMatrix.
-func convertByteMatrixToBitMatrix(matrix *encoder.ByteMatrix, reqWidth, reqHeight int) *BitMatrix {
+func convertByteMatrixToBitMatrix(matrix *encoder.ByteMatrix, reqWidth, reqHeight int) *utils.BitMatrix {
 	matrixWidth := matrix.GetWidth()
 	matrixHeight := matrix.GetHeight()
 	outputWidth := reqWidth
@@ -110,15 +104,15 @@ func convertByteMatrixToBitMatrix(matrix *encoder.ByteMatrix, reqWidth, reqHeigh
 	leftPadding := (outputWidth - (matrixWidth * multiple)) / 2
 	topPadding := (outputHeight - (matrixHeight * multiple)) / 2
 
-	var output *BitMatrix
+	var output *utils.BitMatrix
 
 	// remove padding if requested width and height are too small
 	if reqHeight < matrixHeight || reqWidth < matrixWidth {
 		leftPadding = 0
 		topPadding = 0
-		output, _ = NewBitMatrix(matrixWidth, matrixHeight)
+		output, _ = utils.NewBitMatrix(matrixWidth, matrixHeight)
 	} else {
-		output, _ = NewBitMatrix(reqWidth, reqHeight)
+		output, _ = utils.NewBitMatrix(reqWidth, reqHeight)
 	}
 
 	output.Clear()

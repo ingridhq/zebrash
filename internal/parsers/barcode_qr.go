@@ -22,7 +22,7 @@ func NewBarcodeQrParser() *CommandParser {
 
 			if len(parts) > 2 {
 				if v, err := strconv.Atoi(parts[2]); err == nil {
-					barcode.Magnification = min(max(v, 1), 10)
+					barcode.Magnification = min(max(v, 1), 100)
 				}
 			}
 

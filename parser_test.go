@@ -267,6 +267,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			srcPath: "qr_code_offset.zpl",
 			dstPath: "qr_code_offset.png",
 		},
+		{
+			name:    "QR code with field typeset and manual binary mode",
+			srcPath: "qr_code_ft_manual.zpl",
+			dstPath: "qr_code_ft_manual.png",
+		},
 	}
 
 	for _, tC := range testCases {

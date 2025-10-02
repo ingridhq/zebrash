@@ -23,8 +23,6 @@ func NewBarcodeDatamatrixDrawer() *ElementDrawer {
 			columns := max(barcode.Columns, 1)
 			rows := max(barcode.Rows, 1)
 
-			enc := datamatrix.NewDataMatrixWriter()
-
 			opts := encoder.Options{
 				MinSize: encoder.NewDimension(columns, rows),
 			}
@@ -52,7 +50,7 @@ func NewBarcodeDatamatrixDrawer() *ElementDrawer {
 			// All subsequent occurrences of FNC1 are encoded as GS character
 			data = strings.ReplaceAll(data, fnc1, string(GS))
 
-			img, err := enc.Encode(data, columns, rows, opts)
+			img, err := datamatrix.Encode(data, columns, rows, opts)
 			if err != nil {
 				return fmt.Errorf("failed to encode datamatrix barcode: %w", err)
 			}

@@ -1,4 +1,4 @@
-package datamatrix
+package utils
 
 import (
 	"fmt"
