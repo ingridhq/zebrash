@@ -1,4 +1,4 @@
-package datamatrix
+package utils
 
 import (
 	"fmt"
@@ -6,6 +6,8 @@ import (
 	"image/color"
 	"math/bits"
 	"strings"
+
+	"github.com/ingridhq/zebrash/internal/images"
 )
 
 type BitMatrix struct {
@@ -106,7 +108,7 @@ func ParseStringToBitMatrix(stringRepresentation, setString, unsetString string)
 }
 
 func (b *BitMatrix) ColorModel() color.Model {
-	return color.GrayModel
+	return color.RGBAModel
 }
 
 func (b *BitMatrix) Bounds() image.Rectangle {
@@ -114,11 +116,10 @@ func (b *BitMatrix) Bounds() image.Rectangle {
 }
 
 func (b *BitMatrix) At(x, y int) color.Color {
-	c := color.Gray{0}
 	if !b.Get(x, y) {
-		c.Y = 255
+		return images.ColorTransparent
 	}
-	return c
+	return images.ColorBlack
 }
 
 func (b *BitMatrix) Get(x, y int) bool {
