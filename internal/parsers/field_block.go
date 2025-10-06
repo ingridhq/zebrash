@@ -17,7 +17,7 @@ func NewFieldBlockParser() *CommandParser {
 				MaxWidth:      0,
 				MaxLines:      1,
 				LineSpacing:   0,
-				Alignment:     printer.GetNextElementAlignmentOrDefault(),
+				Alignment:     elements.TextAlignmentLeft,
 				HangingIndent: 0,
 			}
 

@@ -17,7 +17,9 @@ func NewFieldOrientationParser() *CommandParser {
 			}
 
 			if len(parts) > 1 && len(parts[1]) > 0 {
-				printer.DefaultAlignment = toTextAlignment(parts[1][0])
+				if val, ok := toFieldAlignment(parts[1]); ok {
+					printer.DefaultAlignment = val
+				}
 			}
 
 			return nil, nil

@@ -10,8 +10,8 @@ type VirtualPrinter struct {
 	NextElementPosition      elements.LabelPosition
 	DefaultFont              elements.FontInfo
 	DefaultOrientation       elements.FieldOrientation
-	DefaultAlignment         elements.TextAlignment
-	NextElementAlignment     *elements.TextAlignment
+	DefaultAlignment         elements.FieldAlignment
+	NextElementAlignment     *elements.FieldAlignment
 	NextElementFieldElement  any
 	NextElementFieldData     string
 	NextFont                 *elements.FontInfo
@@ -30,6 +30,7 @@ func NewVirtualPrinter() *VirtualPrinter {
 		DefaultFont: elements.FontInfo{
 			Name: "A",
 		}.WithAdjustedSizes(),
+		DefaultAlignment: elements.FieldAlignmentLeft,
 		DefaultBarcodeDimensions: elements.BarcodeDimensions{
 			ModuleWidth: 2,
 			Height:      10,
@@ -54,7 +55,7 @@ func (p *VirtualPrinter) GetNextFontOrDefault() elements.FontInfo {
 	return p.DefaultFont
 }
 
-func (p *VirtualPrinter) GetNextElementAlignmentOrDefault() elements.TextAlignment {
+func (p *VirtualPrinter) GetNextElementAlignmentOrDefault() elements.FieldAlignment {
 	if p.NextElementAlignment != nil {
 		return *p.NextElementAlignment
 	}

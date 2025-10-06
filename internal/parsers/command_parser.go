@@ -43,6 +43,23 @@ func toFieldOrientation(orientation byte) elements.FieldOrientation {
 	}
 }
 
+func toFieldAlignment(alignment string) (elements.FieldAlignment, bool) {
+	v, err := strconv.Atoi(alignment)
+
+	if err == nil {
+		switch v {
+		case 0:
+			return elements.FieldAlignmentLeft, true
+		case 1:
+			return elements.FieldAlignmentRight, true
+		case 2:
+			return elements.FieldAlignmentAuto, true
+		}
+	}
+
+	return elements.FieldAlignmentLeft, false
+}
+
 func toTextAlignment(alignment byte) elements.TextAlignment {
 	switch alignment {
 	case 'L':
