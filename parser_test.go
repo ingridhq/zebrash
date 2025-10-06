@@ -15,6 +15,8 @@ func TestDrawLabelAsPng(t *testing.T) {
 		srcPath  string
 		dstPath  string
 		labelIdx int
+		widthMm  float64
+		heightMm float64
 	}{
 		{
 			name:    "Amazon label",
@@ -188,6 +190,13 @@ func TestDrawLabelAsPng(t *testing.T) {
 			dstPath: "text_multiline.png",
 		},
 		{
+			name:     "Text with non-existing font that falls back to default",
+			srcPath:  "text_fallback_default.zpl",
+			dstPath:  "text_fallback_default.png",
+			widthMm:  160,
+			heightMm: 230,
+		},
+		{
 			name:    "Barcode128 with 'line' and 'line above' set",
 			srcPath: "barcode128_line_above.zpl",
 			dstPath: "barcode128_line_above.png",
@@ -296,7 +305,10 @@ func TestDrawLabelAsPng(t *testing.T) {
 				t.Fatal("no labels in the response")
 			}
 
-			err = drawer.DrawLabelAsPng(res[tC.labelIdx], &buff, drawers.DrawerOptions{})
+			err = drawer.DrawLabelAsPng(res[tC.labelIdx], &buff, drawers.DrawerOptions{
+				LabelWidthMm:  tC.widthMm,
+				LabelHeightMm: tC.heightMm,
+			})
 			if err != nil {
 				t.Fatal(err)
 			}

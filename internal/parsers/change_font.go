@@ -26,6 +26,10 @@ func NewChangeFontParser() *CommandParser {
 				Orientation: printer.DefaultFont.Orientation,
 			}
 
+			if !font.IsStandardFont() {
+				font.Name = printer.DefaultFont.Name
+			}
+
 			if len(parts[0]) > 1 {
 				font.Orientation = toFieldOrientation(parts[0][1])
 			}

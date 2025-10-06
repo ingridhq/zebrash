@@ -41,6 +41,11 @@ var bitmapFontSizes = map[string][2]float64{
 	"GS": {24, 24},
 }
 
+func (font FontInfo) IsStandardFont() bool {
+	_, ok := bitmapFontSizes[font.Name]
+	return font.Name == "0" || ok
+}
+
 // Bitmap fonts (everything other than font 0)
 // cannot be freely scaled
 // their size should always divide by their base size without remainder
