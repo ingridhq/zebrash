@@ -129,13 +129,8 @@ func getTextAxAy(text *elements.TextField) (float64, float64) {
 	ax := 0.0
 	ay := 0.0
 
-	switch text.Alignment {
-	case elements.TextAlignmentLeft, elements.TextAlignmentJustified:
-		ax = 0
-	case elements.TextAlignmentRight:
+	if text.Alignment == elements.FieldAlignmentRight {
 		ax = 1
-	case elements.TextAlignmentCenter:
-		ax = 0.5
 	}
 
 	return ax, ay

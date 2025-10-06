@@ -5,7 +5,7 @@ type TextField struct {
 
 	Font      FontInfo
 	Position  LabelPosition
-	Alignment TextAlignment
+	Alignment FieldAlignment
 	Text      string
 	Block     *FieldBlock
 }
