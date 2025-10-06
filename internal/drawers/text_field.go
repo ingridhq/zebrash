@@ -52,8 +52,7 @@ func NewTextFieldDrawer() *ElementDrawer {
 
 			if text.Block != nil {
 				maxWidth := float64(text.Block.MaxWidth) / scaleX
-				align := getTextBlockAlign(text.Block)
-				gCtx.DrawStringWrapped(text.Text, x, y-h, ax, ay, maxWidth, 1+float64(text.Block.LineSpacing), align)
+				drawStringWrapped(gCtx, text.Text, x, y-h, ax, ay, maxWidth, 1+float64(text.Block.LineSpacing)/h, text.Block.Alignment)
 			} else {
 				gCtx.DrawStringAnchored(text.Text, x, y, ax, ay)
 			}
@@ -90,6 +89,15 @@ func getTffFont(font elements.FontInfo) *truetype.Font {
 func getTextTopLeftPos(text *elements.TextField, w, h float64, state *DrawerState) (float64, float64) {
 	x, y := state.GetTextPosition(text)
 
+	lines := 1.0
+	spacing := 0.0
+
+	if text.Block != nil {
+		lines = float64(max(text.Block.MaxLines, 1))
+		spacing = float64(text.Block.LineSpacing)
+		w = float64(text.Block.MaxWidth)
+	}
+
 	if !text.Position.CalculateFromBottom {
 		switch text.Font.Orientation {
 		case elements.FieldOrientation90:
@@ -101,14 +109,6 @@ func getTextTopLeftPos(text *elements.TextField, w, h float64, state *DrawerStat
 		default:
 			return x, y + 3*h/4
 		}
-	}
-
-	lines := 1.0
-	spacing := 0.0
-
-	if text.Block != nil {
-		lines = float64(max(text.Block.MaxLines, 1))
-		spacing = float64(text.Block.LineSpacing)
 	}
 
 	offset := (lines - 1) * (h + spacing)
@@ -130,26 +130,15 @@ func getTextAxAy(text *elements.TextField) (float64, float64) {
 	ay := 0.0
 
 	switch text.Alignment {
-	case elements.TextAlignmentLeft:
+	case elements.TextAlignmentLeft, elements.TextAlignmentJustified:
 		ax = 0
 	case elements.TextAlignmentRight:
 		ax = 1
-	case elements.TextAlignmentJustified, elements.TextAlignmentCenter:
+	case elements.TextAlignmentCenter:
 		ax = 0.5
 	}
 
 	return ax, ay
-}
-
-func getTextBlockAlign(block *elements.FieldBlock) gg.Align {
-	switch block.Alignment {
-	case elements.TextAlignmentRight:
-		return gg.AlignRight
-	case elements.TextAlignmentJustified, elements.TextAlignmentCenter:
-		return gg.AlignCenter
-	default:
-		return gg.AlignLeft
-	}
 }
 
 func mustLoadFont(fontData []byte) *truetype.Font {
@@ -159,4 +148,68 @@ func mustLoadFont(fontData []byte) *truetype.Font {
 	}
 
 	return font
+}
+
+// Similar to gCtx.DrawStringWrapped but supports justified alignment
+func drawStringWrapped(gCtx *gg.Context, s string, x, y, ax, ay, width, lineSpacing float64, align elements.TextAlignment) {
+	fontHeight := gCtx.FontHeight()
+	lines := gCtx.WordWrap(s, width)
+
+	h := float64(len(lines)) * fontHeight * lineSpacing
+	h -= (lineSpacing - 1) * fontHeight
+
+	x -= ax * width
+	y -= ay * h
+	switch align {
+	case elements.TextAlignmentLeft, elements.TextAlignmentJustified:
+		ax = 0
+	case elements.TextAlignmentCenter:
+		ax = 0.5
+		x += width / 2
+	case elements.TextAlignmentRight:
+		ax = 1
+		x += width
+	}
+	ay = 1
+
+	lastLine := len(lines) - 1
+
+	for i, line := range lines {
+		switch {
+		case align == elements.TextAlignmentJustified && i < lastLine:
+			drawStringJustified(gCtx, line, x, y, ax, ay, width)
+		default:
+			gCtx.DrawStringAnchored(line, x, y, ax, ay)
+		}
+
+		y += fontHeight * lineSpacing
+	}
+}
+
+func drawStringJustified(gCtx *gg.Context, line string, x, y, ax, ay, maxWidth float64) {
+	words := strings.Fields(line)
+	fontHeight := gCtx.FontHeight()
+
+	totalWordWidth := 0.0
+	wordsWidth := make([]float64, len(words))
+	for i, word := range words {
+		w, _ := gCtx.MeasureString(word)
+		wordsWidth[i] = w
+		totalWordWidth += w
+	}
+
+	spaceCount := len(words) - 1
+	spaceWidth := 0.0
+	if spaceCount > 0 {
+		spaceWidth = (maxWidth - totalWordWidth) / float64(spaceCount)
+		if spaceWidth < 0 {
+			spaceWidth = fontHeight * 0.3
+		}
+	}
+
+	cx := x
+	for i, word := range words {
+		gCtx.DrawStringAnchored(word, cx, y, ax, ay)
+		cx += wordsWidth[i] + spaceWidth
+	}
 }
