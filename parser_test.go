@@ -95,6 +95,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			dstPath: "glsdk_return.png",
 		},
 		{
+			name:    "GLS MyGLS CZ API",
+			srcPath: "glscz.zpl",
+			dstPath: "glscz.png",
+		},
+		{
 			name:    "JCPenney",
 			srcPath: "jcpenney.zpl",
 			dstPath: "jcpenney.png",
