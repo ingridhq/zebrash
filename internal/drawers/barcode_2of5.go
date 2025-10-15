@@ -2,12 +2,15 @@ package drawers
 
 import (
 	"fmt"
+	"regexp"
 
 	"github.com/fogleman/gg"
 	"github.com/ingridhq/zebrash/drawers"
 	"github.com/ingridhq/zebrash/internal/barcodes/twooffive"
 	"github.com/ingridhq/zebrash/internal/elements"
 )
+
+var digitsOnly = regexp.MustCompile(`[^0-9]+`)
 
 func NewBarcode2of5Drawer() *ElementDrawer {
 	return &ElementDrawer{
@@ -18,7 +21,7 @@ func NewBarcode2of5Drawer() *ElementDrawer {
 			}
 
 			// data to encode into barcode
-			content := barcode.Data
+			content := digitsOnly.ReplaceAllString(barcode.Data, "")
 
 			img, text, err := twooffive.EncodeInterleaved(content, barcode.Width, barcode.Height, barcode.WidthRatio, barcode.CheckDigit)
 			if err != nil {
