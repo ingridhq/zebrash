@@ -65,6 +65,10 @@ func (font FontInfo) WithAdjustedSizes() FontInfo {
 			font.Height = font.Width
 		}
 
+		// Seems like font 0 can't be smaller than 10 in width or height
+		font.Width = max(font.Width, 10)
+		font.Height = max(font.Height, 10)
+
 		return font
 	}
 
