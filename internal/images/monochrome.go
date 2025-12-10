@@ -15,7 +15,7 @@ func EncodeMonochrome(w io.Writer, img image.Image) error {
 		return fmt.Errorf("img is not an RGBA image")
 	}
 
-	return png.Encode(w, sauvolaThresholding(rgba, 15, 0.5, 128))
+	return png.Encode(w, sauvolaThresholding(rgba, 5, 0.5, 128))
 }
 
 // window = odd size of local neighborhood (e.g. 15 or 25)
