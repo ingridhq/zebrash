@@ -43,6 +43,13 @@ func NewFieldSeparatorParser() *CommandParser {
 					Position:   printer.NextElementPosition,
 					Data:       text,
 				}, nil
+			case *elements.BarcodeEan13:
+				return &elements.BarcodeEan13WithData{
+					BarcodeEan13: *fe,
+					Width:        printer.DefaultBarcodeDimensions.ModuleWidth,
+					Position:     printer.NextElementPosition,
+					Data:         text,
+				}, nil
 			case *elements.Barcode2of5:
 				return &elements.Barcode2of5WithData{
 					Barcode2of5: *fe,

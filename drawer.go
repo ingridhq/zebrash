@@ -30,6 +30,7 @@ func NewDrawer() *Drawer {
 			drawers_internal.NewTextFieldDrawer(),
 			drawers_internal.NewMaxicodeDrawer(),
 			drawers_internal.NewBarcode128Drawer(),
+			drawers_internal.NewBarcodeEan13Drawer(),
 			drawers_internal.NewBarcode2of5Drawer(),
 			drawers_internal.NewBarcode39Drawer(),
 			drawers_internal.NewBarcodePdf417Drawer(),

@@ -39,6 +39,7 @@ func NewParser() *Parser {
 			parsers.NewHexEscapeParser(),
 			parsers.NewMaxicodeParser(),
 			parsers.NewBarcode128Parser(),
+			parsers.NewBarcodeEan13Parser(),
 			parsers.NewBarcode2of5Parser(),
 			parsers.NewBarcode39Parser(),
 			parsers.NewBarcodePdf417Parser(),
