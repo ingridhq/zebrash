@@ -3,8 +3,11 @@ package drawers
 import (
 	"fmt"
 	"image"
+	"image/color"
+	"strconv"
 
 	"github.com/fogleman/gg"
+	"github.com/golang/freetype/truetype"
 	"github.com/ingridhq/zebrash/drawers"
 	"github.com/ingridhq/zebrash/internal/barcodes/ean13"
 	"github.com/ingridhq/zebrash/internal/elements"
@@ -51,10 +54,55 @@ func NewBarcodeEan13Drawer() *ElementDrawer {
 
 			gCtx.DrawImage(img, pos.X, pos.Y)
 			if barcode.Line {
-				applyLineTextToCtx(gCtx, text, pos, barcode.LineAbove, width, height)
+				applyEan13TextToCtx(gCtx, text, pos, barcode.LineAbove, width, height, barcode.Width)
 			}
 
 			return nil
 		},
 	}
+}
+
+// applyEan13TextToCtx renders the human-readable text for EAN-13 barcodes
+// The text should be positioned in the guard extension area and use a larger font
+// EAN-13 standard layout:
+// - First digit (number system) separated from the rest
+// - Digits 2-7 centered under the left half (between start and middle guard)
+// - Digits 8-13 centered under the right half (between middle and end guard)
+func applyEan13TextToCtx(gCtx *gg.Context, content string, pos elements.LabelPosition, lineAbove bool, width, height float64, barWidth int) {
+	gCtx.SetColor(color.Black)
+
+	// EAN-13 uses text size that is not relative to barcode width
+	// Font size is twice the guard extension height
+	guardExtension := float64(barWidth * 5)
+	fontSize := guardExtension * 2
+
+	face := truetype.NewFace(font0, &truetype.Options{Size: fontSize})
+	gCtx.SetFontFace(face)
+
+	// Calculate text Y position
+	var y float64
+	if lineAbove {
+		y = float64(pos.Y) - fontSize
+	} else {
+		// Place text in the guard extension area (below main bars, between guards)
+		// Leave a gap width of one module between regular bars and text
+		barcodeHeightWithoutGuard := height - guardExtension
+		y = float64(pos.Y+barWidth) + barcodeHeightWithoutGuard + guardExtension/2
+	}
+
+	// Format the text with spaces to create gaps:
+	// Original: "1234567890128"
+	// Formatted: "1 234567 890128"
+	// This creates natural gaps at the guard bars
+	var formattedText string
+	var x float64
+	if len(content) == 13 && !lineAbove {
+		formattedText = content[0:1] + "     " + content[1:7] + "       " + content[7:13]
+		x = float64(pos.X) + width/2 - 2*guardExtension
+	} else {
+		formattedText = content
+		x = float64(pos.X) + width/2
+	}
+
+	gCtx.DrawStringAnchored(formattedText, x, y, 0.5, 0.5)
 }
