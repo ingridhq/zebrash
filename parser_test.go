@@ -286,6 +286,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			srcPath: "qr_code_ft_manual.zpl",
 			dstPath: "qr_code_ft_manual.png",
 		},
+		{
+			name:    "EAN-13 barcode test",
+			srcPath: "ean13.zpl",
+			dstPath: "ean13.png",
+		},
 	}
 
 	for _, tC := range testCases {
