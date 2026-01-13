@@ -88,7 +88,7 @@ func Encode(contents string, height, barWidth int) (image.Image, error) {
 	switch length {
 	case 12:
 		// No check digit present, calculate it and add it
-		check, err := calculateChecksum(contents)
+		check, err := CalculateChecksum(contents)
 		if err != nil {
 			return nil, fmt.Errorf("failed to calculate checksum: %w", err)
 		}
@@ -167,8 +167,8 @@ func appendPattern(target []bool, pos int, pattern []int, startColor bool) int {
 	return numAdded
 }
 
-// calculateChecksum calculates the EAN-13 checksum digit
-func calculateChecksum(contents string) (int, error) {
+// CalculateChecksum calculates the EAN-13 checksum digit
+func CalculateChecksum(contents string) (int, error) {
 	if len(contents) != 12 {
 		return 0, fmt.Errorf("contents must be 12 digits for checksum calculation")
 	}
@@ -193,7 +193,7 @@ func verifyChecksum(contents string) (bool, error) {
 		return false, fmt.Errorf("contents must be 13 digits for checksum verification")
 	}
 
-	expectedCheck, err := calculateChecksum(contents[:12])
+	expectedCheck, err := CalculateChecksum(contents[:12])
 	if err != nil {
 		return false, err
 	}

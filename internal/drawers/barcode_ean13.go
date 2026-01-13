@@ -20,8 +20,16 @@ func NewBarcodeEan13Drawer() *ElementDrawer {
 
 			// data to encode into barcode
 			content := barcode.Data
-			// human-readable text
+
+			// Ensure human-readable text has checksum (convert to 13 digits if needed)
 			text := barcode.Data
+			if len(text) == 12 {
+				// Calculate and append checksum
+				checksum, err := ean13.CalculateChecksum(text)
+				if err == nil {
+					text = text + strconv.Itoa(checksum)
+				}
+			}
 
 			var (
 				img image.Image
