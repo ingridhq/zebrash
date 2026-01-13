@@ -21,7 +21,7 @@ func NewBarcode39Drawer() *ElementDrawer {
 			// data to encode into barcode
 			content := barcode.Data
 			// human-readable text
-			text := barcode.Data
+			text := fmt.Sprintf("*%s*", barcode.Data)
 
 			var (
 				img image.Image

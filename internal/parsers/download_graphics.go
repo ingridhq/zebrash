@@ -23,7 +23,7 @@ func NewDownloadGraphicsParser() *CommandParser {
 				RowBytes: 1,
 			}
 
-			path := elements.StoredGraphicsDefaultPath
+			path := printers.StoredGraphicsDefaultPath
 
 			if len(parts) > 0 && parts[0] != "" {
 				path = parts[0]
@@ -50,10 +50,7 @@ func NewDownloadGraphicsParser() *CommandParser {
 				graphics.Data = data
 			}
 
-			pathParts := strings.SplitN(path, ".", 2)
-			// If some extension other than .GRF was provided we need to overwrite it
-			path = pathParts[0] + ".GRF"
-
+			path = printers.EnsureExtension(path, "GRF")
 			printer.StoredGraphics[path] = graphics
 
 			return nil, nil

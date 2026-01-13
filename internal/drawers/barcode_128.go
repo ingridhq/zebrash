@@ -94,6 +94,7 @@ func applyLineTextToCtx(gCtx *gg.Context, content string, pos elements.LabelPosi
 	if !lineAbove {
 		y = float64(pos.Y) + height + fontSize
 	}
+
 	gCtx.DrawStringAnchored(content, x, y, 0.5, 0.5)
 }
 
