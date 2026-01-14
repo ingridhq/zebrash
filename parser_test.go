@@ -286,6 +286,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			srcPath: "qr_code_ft_manual.zpl",
 			dstPath: "qr_code_ft_manual.png",
 		},
+		{
+			name:    "Templating",
+			srcPath: "templating.zpl",
+			dstPath: "templating.png",
+		},
 	}
 
 	for _, tC := range testCases {
