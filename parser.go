@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/ingridhq/zebrash/elements"
+	elements_internal "github.com/ingridhq/zebrash/internal/elements"
 	"github.com/ingridhq/zebrash/internal/parsers"
 	"github.com/ingridhq/zebrash/internal/printers"
 )
@@ -51,6 +52,9 @@ func NewParser() *Parser {
 			parsers.NewRecallGraphicsParser(),
 			parsers.NewBarcodeFieldDefaults(),
 			parsers.NewPrintWidthParser(),
+			parsers.NewDownloadFormatParser(),
+			parsers.NewFieldNumberParser(),
+			parsers.NewRecallFormatParser(),
 		},
 	}
 }
@@ -67,19 +71,36 @@ func (p *Parser) Parse(zplData []byte) ([]elements.LabelInfo, error) {
 		return nil, fmt.Errorf("failed to split zpl commands: %w", err)
 	}
 
+	var currentRecalledFormat *elements_internal.RecalledFormat
+
 	for _, command := range commands {
 		if strings.ToUpper(command) == startCode {
 			p.printer.NextDownloadFormatName = ""
+			currentRecalledFormat = nil
 			continue
 		}
 
 		if strings.ToUpper(command) == endCode {
-			if len(resultElements) > 0 {
+			resolvedElements, err := currentRecalledFormat.ResolveElements()
+			if err != nil {
+				return nil, fmt.Errorf("failed to resolve zpl elements: %w", err)
+			}
+
+			resultElements = append(resultElements, resolvedElements...)
+
+			if len(resultElements) == 0 {
+				continue
+			}
+
+			if p.printer.NextDownloadFormatName == "" {
 				results = append(results, elements.LabelInfo{
-					DownloadFormatName: p.printer.NextDownloadFormatName,
-					PrintWidth:         p.printer.PrintWidth,
-					Elements:           resultElements,
+					PrintWidth: p.printer.PrintWidth,
+					Elements:   resultElements,
 				})
+			} else {
+				p.printer.StoredFormats[p.printer.NextDownloadFormatName] = &elements_internal.StoredFormat{
+					Elements: resultElements,
+				}
 			}
 
 			resultElements = nil
@@ -96,9 +117,28 @@ func (p *Parser) Parse(zplData []byte) ([]elements.LabelInfo, error) {
 				return nil, fmt.Errorf("failed to parse zpl command %v: %w", command, err)
 			}
 
-			if el != nil {
-				resultElements = append(resultElements, el)
+			if el == nil {
+				continue
 			}
+
+			// Template swap
+			if rf, ok := el.(*elements_internal.RecalledFormat); ok {
+				resolvedElements, err := currentRecalledFormat.ResolveElements()
+				if err != nil {
+					return nil, fmt.Errorf("failed to resolve zpl elements: %w", err)
+				}
+
+				resultElements = append(resultElements, resolvedElements)
+				currentRecalledFormat = rf
+				continue
+			}
+
+			// If template in use add elements to template instead
+			if currentRecalledFormat.AddElement(el) {
+				continue
+			}
+
+			resultElements = append(resultElements, el)
 		}
 	}
 

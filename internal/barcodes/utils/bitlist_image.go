@@ -42,7 +42,7 @@ func (resBits *BitList) ToImage(width, height int, widthRatio float64) image.Ima
 		px++
 	}
 
-	return images.NewScaledFloat(img, float64(width)*0.1, float64(height))
+	return images.NewScaledFloat(img.SubImage(image.Rect(0, 0, max(1, px-1), 1)), float64(width)*0.1, float64(height))
 }
 
 func getColor(b bool) color.RGBA {

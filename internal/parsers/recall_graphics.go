@@ -22,7 +22,7 @@ func NewRecallGraphicsParser() *CommandParser {
 				ReversePrint:   printer.GetReversePrint(),
 			}
 
-			path := elements.StoredGraphicsDefaultPath
+			path := printers.StoredGraphicsDefaultPath
 
 			if len(parts) > 0 && parts[0] != "" {
 				path = parts[0]

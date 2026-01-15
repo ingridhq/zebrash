@@ -291,6 +291,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			srcPath: "ean13.zpl",
 			dstPath: "ean13.png",
 		},
+		{
+			name:    "Templating",
+			srcPath: "templating.zpl",
+			dstPath: "templating.png",
+		},
 	}
 
 	for _, tC := range testCases {

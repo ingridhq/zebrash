@@ -1,7 +1,5 @@
 package elements
 
-const StoredGraphicsDefaultPath = "R:UNKNOWN.GRF"
-
 type StoredGraphics struct {
 	// The image data, in hexadecimal format. There is no default value.
 	Data []byte

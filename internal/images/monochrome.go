@@ -13,7 +13,7 @@ func EncodeMonochrome(w io.Writer, img image.Image) error {
 		return fmt.Errorf("img is not an RGBA image")
 	}
 
-	const threshold = 125
+	const threshold = 128
 
 	result := image.NewGray(rgba.Rect)
 

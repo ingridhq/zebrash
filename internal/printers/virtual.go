@@ -5,16 +5,19 @@ import (
 )
 
 type VirtualPrinter struct {
-	StoredGraphics           map[string]elements.StoredGraphics
-	LabelHomePosition        elements.LabelPosition
-	NextElementPosition      elements.LabelPosition
-	DefaultFont              elements.FontInfo
-	DefaultOrientation       elements.FieldOrientation
-	DefaultAlignment         elements.FieldAlignment
-	NextElementAlignment     *elements.FieldAlignment
-	NextElementFieldElement  any
-	NextElementFieldData     string
-	NextFont                 *elements.FontInfo
+	StoredGraphics          map[string]elements.StoredGraphics
+	StoredFormats           map[string]*elements.StoredFormat
+	LabelHomePosition       elements.LabelPosition
+	NextElementPosition     elements.LabelPosition
+	DefaultFont             elements.FontInfo
+	DefaultOrientation      elements.FieldOrientation
+	DefaultAlignment        elements.FieldAlignment
+	NextElementAlignment    *elements.FieldAlignment
+	NextElementFieldElement any
+	NextElementFieldData    string
+	NextElementFieldNumber  int
+	NextFont                *elements.FontInfo
+	// When not empty ZPL elements are parsed into the stored template instead of the output
 	NextDownloadFormatName   string
 	NextHexEscapeChar        byte
 	NextElementFieldReverse  bool
@@ -26,7 +29,8 @@ type VirtualPrinter struct {
 
 func NewVirtualPrinter() *VirtualPrinter {
 	return &VirtualPrinter{
-		StoredGraphics: map[string]elements.StoredGraphics{},
+		StoredGraphics: make(map[string]elements.StoredGraphics),
+		StoredFormats:  make(map[string]*elements.StoredFormat),
 		DefaultFont: elements.FontInfo{
 			Name: "A",
 		}.WithAdjustedSizes(),
@@ -36,6 +40,7 @@ func NewVirtualPrinter() *VirtualPrinter {
 			Height:      10,
 			WidthRatio:  3,
 		},
+		NextElementFieldNumber: -1,
 	}
 }
 
@@ -69,10 +74,25 @@ func (p *VirtualPrinter) GetReversePrint() elements.ReversePrint {
 	}
 }
 
+func (p *VirtualPrinter) GetFieldInfo() elements.FieldInfo {
+	return elements.FieldInfo{
+		ReversePrint:   p.GetReversePrint(),
+		Element:        p.NextElementFieldElement,
+		Font:           p.GetNextFontOrDefault(),
+		Position:       p.NextElementPosition,
+		Alignment:      p.GetNextElementAlignmentOrDefault(),
+		Width:          p.DefaultBarcodeDimensions.ModuleWidth,
+		WidthRatio:     p.DefaultBarcodeDimensions.WidthRatio,
+		Height:         p.DefaultBarcodeDimensions.Height,
+		CurrentCharset: p.CurrentCharset,
+	}
+}
+
 func (p *VirtualPrinter) ResetState() {
 	p.NextElementPosition = elements.LabelPosition{}
 	p.NextElementFieldElement = nil
 	p.NextElementFieldData = ""
+	p.NextElementFieldNumber = -1
 	p.NextElementAlignment = nil
 	p.NextFont = nil
 	p.NextElementFieldReverse = false
