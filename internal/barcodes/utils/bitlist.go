@@ -10,7 +10,7 @@ type BitList struct {
 // all bits are initialize with false
 func NewBitList(capacity int) *BitList {
 	bl := new(BitList)
-	bl.count = capacity
+	bl.count = 0
 	x := 0
 	if capacity%32 != 0 {
 		x = 1

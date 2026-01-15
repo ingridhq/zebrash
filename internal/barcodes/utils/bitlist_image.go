@@ -3,22 +3,21 @@ package utils
 import (
 	"image"
 	"image/color"
+	"math"
 
 	"github.com/ingridhq/zebrash/internal/images"
 )
 
-// Allocate at least 10 pixels for each bar in the barcode
-// then we downscale the result image to 1/10th
-// It is done because widthRatio increases with 0.1 steps
-const minBarWidth = 10
+type WideNarrowList struct {
+	Data           [][2]bool
+	narrowBarWidth int
+	wideBarWidth   int
+}
 
-func (resBits *BitList) ToImage(width, height int, widthRatio float64) image.Image {
-	img := image.NewRGBA(image.Rect(0, 0, minBarWidth*resBits.Len(), 1))
+func (resBits *BitList) ToWideNarrowList(wideBarWidth, narrowBarWidth int) *WideNarrowList {
+	var res [][2]bool
 
-	widthRatio = max(min(3, widthRatio), 2)
-	wideBarWidth := int(widthRatio * minBarWidth)
 	prevB := resBits.GetBit(0)
-	px := 0
 	c := 0
 
 	for i := range resBits.Len() {
@@ -28,21 +27,55 @@ func (resBits *BitList) ToImage(width, height int, widthRatio float64) image.Ima
 			continue
 		}
 
-		for range getBarWidth(c > 1, wideBarWidth) {
-			img.Set(px, 0, getColor(prevB))
-			px++
-		}
+		res = append(res, [2]bool{c > 1, prevB})
 
 		prevB = b
 		c = 1
 	}
 
-	for range getBarWidth(c > 1, wideBarWidth) {
-		img.Set(px, 0, getColor(prevB))
-		px++
+	res = append(res, [2]bool{c > 1, prevB})
+
+	return &WideNarrowList{
+		Data:           res,
+		wideBarWidth:   wideBarWidth,
+		narrowBarWidth: narrowBarWidth,
+	}
+}
+
+func (list *WideNarrowList) GetTotalWidth() int {
+	width := 0
+
+	for i := range list.Data {
+		width += list.GetBarWidth(i)
 	}
 
-	return images.NewScaledFloat(img.SubImage(image.Rect(0, 0, max(1, px-1), 1)), float64(width)*0.1, float64(height))
+	return max(1, width)
+}
+
+func (list *WideNarrowList) GetBarWidth(idx int) int {
+	if list.Data[idx][0] {
+		return list.wideBarWidth
+	}
+
+	return list.narrowBarWidth
+}
+
+func (resBits *BitList) ToImage(width, height int, widthRatio float64) image.Image {
+	widthRatio = max(min(3, widthRatio), 2)
+	wideBarWidth := int(math.Round(widthRatio * float64(width)))
+
+	barsList := resBits.ToWideNarrowList(wideBarWidth, width)
+	img := image.NewRGBA(image.Rect(0, 0, barsList.GetTotalWidth(), 1))
+
+	px := 0
+	for i, v := range barsList.Data {
+		for range barsList.GetBarWidth(i) {
+			img.Set(px, 0, getColor(v[1]))
+			px++
+		}
+	}
+
+	return images.NewScaled1DHeight(img, height)
 }
 
 func getColor(b bool) color.RGBA {
@@ -51,12 +84,4 @@ func getColor(b bool) color.RGBA {
 	}
 
 	return images.ColorTransparent
-}
-
-func getBarWidth(isWide bool, wideBarWidth int) int {
-	if isWide {
-		return wideBarWidth
-	}
-
-	return minBarWidth
 }

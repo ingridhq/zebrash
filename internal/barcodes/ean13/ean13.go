@@ -4,31 +4,28 @@ import (
 	"image"
 	"image/color"
 
+	"github.com/ingridhq/zebrash/internal/barcodes/utils"
 	"github.com/ingridhq/zebrash/internal/images"
 )
 
 type ean13 struct {
-	code           []bool
+	code           *utils.BitList
 	width          int
 	height         int
 	barWidth       int
 	guardExtension int // Extra height for guard bars
 }
 
-func newEan13(code []bool, height, barWidth int) *ean13 {
+func newEan13(code *utils.BitList, height, barWidth int) *ean13 {
 	barWidth = max(1, barWidth)
 	height = max(1, height)
 
-	// Guard bars are typically extended by about 5 times the X-dimension (module width)
-	// This makes them visually distinctive per EAN-13 standard
-	guardExtension := barWidth * 5
-
 	return &ean13{
 		code:           code,
-		width:          len(code) * barWidth,
-		height:         height + guardExtension,
+		width:          code.Len() * barWidth,
+		height:         height,
 		barWidth:       barWidth,
-		guardExtension: guardExtension,
+		guardExtension: CalculateGuardExtension(barWidth),
 	}
 }
 
@@ -37,30 +34,27 @@ func (c *ean13) ColorModel() color.Model {
 }
 
 func (c *ean13) Bounds() image.Rectangle {
-	return image.Rect(0, 0, c.width, c.height)
+	return image.Rect(0, 0, c.width, c.height+c.guardExtension)
 }
 
 func (c *ean13) At(x, y int) color.Color {
 	x /= c.barWidth
 
-	if x < 0 || x >= len(c.code) {
+	if x < 0 || x >= c.code.Len() {
 		return images.ColorTransparent
 	}
 
-	if !c.code[x] {
+	if !c.code.GetBit(x) {
 		return images.ColorTransparent
 	}
 
-	// Check if this is a guard bar (start, middle, or end guard)
-	isGuard := c.isGuardBar(x)
-
-	if isGuard {
+	if isGuardBar(x) {
 		// Guard bars extend the full height
 		return images.ColorBlack
 	}
 
 	// Regular bars only draw in the upper portion (leaving room for guard extension at bottom)
-	if y < c.height-c.guardExtension {
+	if y < c.height {
 		return images.ColorBlack
 	}
 	return images.ColorTransparent
@@ -73,7 +67,7 @@ func (c *ean13) At(x, y int) color.Color {
 // - Middle guard: modules 45-49 (5 modules)
 // - Right digits: modules 50-91 (42 modules = 6 digits * 7)
 // - End guard: modules 92-94 (3 modules)
-func (c *ean13) isGuardBar(x int) bool {
+func isGuardBar(x int) bool {
 	// Start guard (first 3 modules)
 	if x >= 0 && x <= 2 {
 		return true
@@ -87,4 +81,10 @@ func (c *ean13) isGuardBar(x int) bool {
 		return true
 	}
 	return false
+}
+
+func CalculateGuardExtension(barWidth int) int {
+	// Guard bars are typically extended by about 5 times the X-dimension (module width)
+	// This makes them visually distinctive per EAN-13 standard
+	return barWidth * 5
 }
