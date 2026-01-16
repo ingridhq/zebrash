@@ -106,11 +106,14 @@ func sanitizeContent(content string) string {
 	}, content)
 
 	content = fmt.Sprintf("%012s", content)
-
-	if len(content) > 12 {
+	if len(content) > 13 {
 		content = content[0:1] + content[len(content)-11:]
 	}
 
+	return withCheckDigit(content[0:12])
+}
+
+func withCheckDigit(content string) string {
 	return content + string(calcCheckNum(content))
 }
 
