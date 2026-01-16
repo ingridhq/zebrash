@@ -23,6 +23,16 @@ func TestSanitizeContent(t *testing.T) {
 			result:  "0000000001236",
 		},
 		{
+			name:    "exactly 13 digits with valid check digit",
+			content: "5901234123457",
+			result:  "5901234123457",
+		},
+		{
+			name:    "exactly 13 digits with invalid check digit",
+			content: "5901234123456",
+			result:  "5901234123457",
+		},
+		{
 			name:    "exactly 12 digits",
 			content: "123456789012",
 			result:  "1234567890128",
