@@ -66,7 +66,7 @@ func Encode(contents string, width, height int, widthRatio float64) (image.Image
 	code39ToIntArray(code39AsteriskEncoding, widths)
 	appendPattern(result, widths, true)
 
-	return result.ToImage(width, height, widthRatio), nil
+	return result.ToImageWithBarsRatio(width, height, widthRatio), nil
 }
 
 func appendPattern(target *utils.BitList, pattern []int, startColor bool) {
