@@ -1,6 +1,7 @@
 package drawers
 
 import (
+	"slices"
 	"strings"
 
 	"github.com/fogleman/gg"
@@ -172,7 +173,7 @@ func drawStringWrapped(gCtx *gg.Context, s string, x, y, ax, ay, width, lineSpac
 	for i, line := range lines {
 		switch {
 		case align == elements.TextAlignmentJustified && i < lastLine:
-			drawStringJustified(gCtx, line, x, y, ax, ay, width)
+			drawStringJustified(gCtx, line, x, y, ax, ay, width, nil)
 		default:
 			gCtx.DrawStringAnchored(line, x, y, ax, ay)
 		}
@@ -181,7 +182,7 @@ func drawStringWrapped(gCtx *gg.Context, s string, x, y, ax, ay, width, lineSpac
 	}
 }
 
-func drawStringJustified(gCtx *gg.Context, line string, x, y, ax, ay, maxWidth float64) {
+func drawStringJustified(gCtx *gg.Context, line string, x, y, ax, ay, maxWidth float64, hiddenWords []string) {
 	words := strings.Fields(line)
 	fontHeight := gCtx.FontHeight()
 
@@ -204,7 +205,10 @@ func drawStringJustified(gCtx *gg.Context, line string, x, y, ax, ay, maxWidth f
 
 	cx := x
 	for i, word := range words {
-		gCtx.DrawStringAnchored(word, cx, y, ax, ay)
+		if !slices.Contains(hiddenWords, word) {
+			gCtx.DrawStringAnchored(word, cx, y, ax, ay)
+		}
+
 		cx += wordsWidth[i] + spaceWidth
 	}
 }

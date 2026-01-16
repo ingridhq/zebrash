@@ -137,6 +137,13 @@ func (f *RecalledField) Resolve() (any, error) {
 			Position:   field.Position,
 			Data:       text,
 		}, nil
+	case *BarcodeEan13:
+		return &BarcodeEan13WithData{
+			BarcodeEan13: *fe,
+			Width:        field.Width,
+			Position:     field.Position,
+			Data:         text,
+		}, nil
 	case *Barcode2of5:
 		return &Barcode2of5WithData{
 			Barcode2of5: *fe,

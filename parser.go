@@ -40,6 +40,7 @@ func NewParser() *Parser {
 			parsers.NewHexEscapeParser(),
 			parsers.NewMaxicodeParser(),
 			parsers.NewBarcode128Parser(),
+			parsers.NewBarcodeEan13Parser(),
 			parsers.NewBarcode2of5Parser(),
 			parsers.NewBarcode39Parser(),
 			parsers.NewBarcodePdf417Parser(),
@@ -73,13 +74,13 @@ func (p *Parser) Parse(zplData []byte) ([]elements.LabelInfo, error) {
 	var currentRecalledFormat *elements_internal.RecalledFormat
 
 	for _, command := range commands {
-		if strings.ToUpper(command) == startCode {
+		if strings.HasPrefix(strings.ToUpper(command), startCode) {
 			p.printer.NextDownloadFormatName = ""
 			currentRecalledFormat = nil
 			continue
 		}
 
-		if strings.ToUpper(command) == endCode {
+		if strings.HasPrefix(strings.ToUpper(command), endCode) {
 			resolvedElements, err := currentRecalledFormat.ResolveElements()
 			if err != nil {
 				return nil, fmt.Errorf("failed to resolve zpl elements: %w", err)
