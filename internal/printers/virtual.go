@@ -33,7 +33,7 @@ func NewVirtualPrinter() *VirtualPrinter {
 		StoredFormats:  make(map[string]*elements.StoredFormat),
 		DefaultFont: elements.FontInfo{
 			Name: "A",
-		}.WithAdjustedSizes(),
+		},
 		DefaultAlignment: elements.FieldAlignmentLeft,
 		DefaultBarcodeDimensions: elements.BarcodeDimensions{
 			ModuleWidth: 2,

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"golang.org/x/text/encoding/charmap"
+	"github.com/ingridhq/zebrash/internal/encodings"
 )
 
 type StoredFormat struct {
@@ -188,13 +188,8 @@ func (f *RecalledField) Resolve() (any, error) {
 	return toTextField(text, field, nil)
 }
 
-var graphicSymbols = map[byte]string{
-	'A': "®",
-	'B': "©",
-	'C': "™",
-}
-
-func toGraphicSymbolTextField(text string, field FieldInfo, fe *GraphicSymbol) (*TextField, error) {
+func toGraphicSymbolTextField(text string, field FieldInfo, fe *GraphicSymbol) (any, error) {
+	text = toGSText(text)
 	if text == "" {
 		return nil, nil
 	}
@@ -208,71 +203,47 @@ func toGraphicSymbolTextField(text string, field FieldInfo, fe *GraphicSymbol) (
 		}.WithAdjustedSizes(),
 		Position:     field.Position,
 		Alignment:    field.Alignment,
-		Text:         graphicSymbols[text[0]],
+		Text:         text,
 		ReversePrint: field.ReversePrint,
 	}, nil
 }
 
-func toTextField(text string, field FieldInfo, fe *FieldBlock) (*TextField, error) {
+func toGSText(text string) string {
+	var res strings.Builder
+
+	for _, r := range text {
+		// Keep leading spaces
+		if r == ' ' {
+			res.WriteRune(r)
+			continue
+		}
+
+		if r >= 'A' && r <= 'E' {
+			res.WriteRune(r)
+		}
+
+		// We stop after the first non-space character
+		break
+	}
+
+	return res.String()
+}
+
+func toTextField(text string, field FieldInfo, fe *FieldBlock) (any, error) {
 	// \& = carriage return/line feed
 	text = strings.ReplaceAll(text, `\&`, "\n")
 
-	unicodeText, err := toUnicodeText(text, field)
+	unicodeText, err := encodings.ToUnicodeText(text, field.CurrentCharset)
 	if err != nil {
 		return nil, fmt.Errorf("failed to convert to unicode text: %w", err)
 	}
 
 	return &TextField{
-		Font:         field.Font,
+		Font:         field.Font.WithAdjustedSizes(),
 		Position:     field.Position,
 		Alignment:    field.Alignment,
 		Text:         unicodeText,
 		Block:        fe,
 		ReversePrint: field.ReversePrint,
 	}, nil
-}
-
-// Encodings 0-13 are all in fact CP850 encoding
-// 13 is normal CP850
-// 0-12 have some characters replaced with other characters
-var characterSets013 = [14][11]string{
-	{"#", "0", "@", "[", "¢", "]", "^", "`", "{", "|", "}"},
-	{"#", "0", "@", "⅓", "¢", "⅔", "^", "`", "¼", "½", "¾"},
-	{"£", "0", "@", "[", "¢", "]", "^", "`", "{", "|", "}"},
-	{"ƒ", "0", "§", "[", "IJ", "]", "^", "`", "{", "ij", "}"},
-	{"#", "0", "@", "Æ", "Ø", "Å", "^", "`", "æ", "ø", "å"},
-	{"Ü", "0", "É", "Ä", "Ö", "Å", "Ü", "é", "ä", "ö", "å"},
-	{"#", "0", "§", "Ä", "Ö", "Ü", "^", "`", "ä", "ö", "ü"},
-	{"£", "0", "à", "[", "ç", "]", "^", "`", "é", "|", "ù"},
-	{"#", "0", "à", "â", "ç", "ê", "î", "ô", "é", "ù", "è"},
-	{"£", "0", "§", "[", "ç", "é", "^", "ù", "à", "ò", "è"},
-	{"#", "0", "§", "¡", "Ñ", "¿", "^", "`", "{", "ñ", "ç"},
-	{"£", "0", "É", "Ä", "Ö", "Ü", "^", "ä", "ë", "ï", "ö"},
-	{"#", "0", "@", "[", "¥", "]", "^", "`", "{", "|", "}"},
-	{"#", "0", "@", "[", "\\", "]", "^", "`", "{", "|", "}"},
-}
-
-func toUnicodeText(text string, field FieldInfo) (string, error) {
-	switch {
-	case field.CurrentCharset >= 0 && field.CurrentCharset <= 13:
-		text, err := charmap.CodePage850.NewDecoder().String(text)
-		if err != nil {
-			return "", err
-		}
-
-		if field.CurrentCharset < 13 {
-			search := characterSets013[13]
-			replace := characterSets013[field.CurrentCharset]
-
-			for i, v := range search {
-				text = strings.ReplaceAll(text, v, replace[i])
-			}
-		}
-
-		return text, nil
-	case field.CurrentCharset == 27:
-		return charmap.Windows1252.NewDecoder().String(text)
-	default:
-		return text, nil
-	}
 }

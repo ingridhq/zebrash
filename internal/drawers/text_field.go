@@ -12,9 +12,10 @@ import (
 )
 
 var (
-	font0 = mustLoadFont(assets.FontHelveticaBold)
-	font1 = mustLoadFont(assets.FontDejavuSansMono)
-	fontB = mustLoadFont(assets.FontDejavuSansMonoBold)
+	font0  = mustLoadFont(assets.FontHelveticaBold)
+	font1  = mustLoadFont(assets.FontDejavuSansMono)
+	fontB  = mustLoadFont(assets.FontDejavuSansMonoBold)
+	fontGS = mustLoadFont(assets.FontZplGS)
 )
 
 func NewTextFieldDrawer() *ElementDrawer {
@@ -82,6 +83,8 @@ func getTffFont(font elements.FontInfo) *truetype.Font {
 		return font0
 	case "B":
 		return fontB
+	case "GS":
+		return fontGS
 	default:
 		return font1
 	}

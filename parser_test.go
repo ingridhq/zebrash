@@ -296,6 +296,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			srcPath: "templating.zpl",
 			dstPath: "templating.png",
 		},
+		{
+			name:    "Graphic symbol",
+			srcPath: "gs.zpl",
+			dstPath: "gs.png",
+		},
 	}
 
 	for _, tC := range testCases {

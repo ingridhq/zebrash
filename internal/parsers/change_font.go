@@ -21,7 +21,7 @@ func NewChangeFontParser() *CommandParser {
 				return nil, nil
 			}
 
-			font := elements.FontInfo{
+			font := &elements.FontInfo{
 				Name:        strings.ToUpper(string(parts[0][0])),
 				Orientation: printer.DefaultFont.Orientation,
 			}
@@ -44,8 +44,7 @@ func NewChangeFontParser() *CommandParser {
 				font.Width = float64(v)
 			}
 
-			font = font.WithAdjustedSizes()
-			printer.NextFont = &font
+			printer.NextFont = font
 
 			return nil, nil
 		},

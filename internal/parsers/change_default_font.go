@@ -34,7 +34,7 @@ func NewChangeDefaultFontParser() *CommandParser {
 				font.Width = float64(v)
 			}
 
-			printer.DefaultFont = font.WithAdjustedSizes()
+			printer.DefaultFont = font
 
 			return nil, nil
 		},
