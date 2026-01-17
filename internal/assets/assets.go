@@ -14,3 +14,6 @@ var FontDejavuSansMono []byte
 
 //go:embed fonts/DejaVuSansMonoBold.ttf
 var FontDejavuSansMonoBold []byte
+
+//go:embed fonts/ZplGSCustom.ttf
+var FontZplGS []byte
