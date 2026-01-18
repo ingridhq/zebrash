@@ -42,12 +42,12 @@ func NewTextFieldDrawer() *ElementDrawer {
 
 			ax, ay := getTextAxAy(text)
 
-			if scaleX != 1.0 {
-				gCtx.ScaleAbout(scaleX, 1, x, y)
-			}
-
 			if rotate := text.Font.Orientation.GetDegrees(); rotate != 0 {
 				gCtx.RotateAbout(gg.Radians(rotate), x, y)
+			}
+
+			if scaleX != 1.0 {
+				gCtx.ScaleAbout(scaleX, 1, x, y)
 			}
 
 			defer gCtx.Identity()

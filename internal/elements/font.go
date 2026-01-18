@@ -12,21 +12,15 @@ type FontInfo struct {
 }
 
 func (font FontInfo) GetSize() float64 {
-	switch font.Orientation {
-	case FieldOrientation90, FieldOrientation270:
-		return font.getWidthToHeightRatio() * font.Width
-	default:
-		return font.Height
-	}
+	return font.Height
 }
 
 func (font FontInfo) GetScaleX() float64 {
-	scaleX := 1.0
-	if font.Width != 0 {
-		scaleX = font.getWidthToHeightRatio() * font.Width / font.GetSize()
+	if font.Height != 0 {
+		return font.getWidthToHeightRatio() * font.Width / font.Height
 	}
 
-	return scaleX
+	return 1.0
 }
 
 var bitmapFontSizes = map[string][2]float64{
@@ -95,8 +89,9 @@ func (font FontInfo) WithAdjustedSizes() FontInfo {
 
 func (font FontInfo) getWidthToHeightRatio() float64 {
 	if font.Name == "0" || font.Name == "GS" {
-		return 1.0
+		return 1
 	}
 
+	// TODO: figure out why we need that, might be something to do with TTF fonts we use
 	return 2.0
 }
