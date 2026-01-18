@@ -36,18 +36,19 @@ func NewTextFieldDrawer() *ElementDrawer {
 			setLineColor(gCtx, elements.LineColorBlack)
 
 			w, h := gCtx.MeasureString(text.Text)
+			w *= scaleX
 
 			x, y := getTextTopLeftPos(text, w, h, state)
-			state.UpdateAutomaticTextPosition(text, w, scaleX)
+			state.UpdateAutomaticTextPosition(text, w)
 
 			ax, ay := getTextAxAy(text)
 
-			if scaleX != 1.0 {
-				gCtx.ScaleAbout(scaleX, 1, x, y)
-			}
-
 			if rotate := text.Font.Orientation.GetDegrees(); rotate != 0 {
 				gCtx.RotateAbout(gg.Radians(rotate), x, y)
+			}
+
+			if scaleX != 1.0 {
+				gCtx.ScaleAbout(scaleX, 1, x, y)
 			}
 
 			defer gCtx.Identity()

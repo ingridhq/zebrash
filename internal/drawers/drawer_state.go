@@ -7,7 +7,7 @@ type DrawerState struct {
 	AutoPosY float64
 }
 
-func (state *DrawerState) UpdateAutomaticTextPosition(text *elements.TextField, w, scaleX float64) {
+func (state *DrawerState) UpdateAutomaticTextPosition(text *elements.TextField, w float64) {
 	if !text.Position.CalculateFromBottom {
 		return
 	}
@@ -22,13 +22,13 @@ func (state *DrawerState) UpdateAutomaticTextPosition(text *elements.TextField, 
 
 	switch text.Font.Orientation {
 	case elements.FieldOrientation90:
-		state.AutoPosY += w * scaleX
+		state.AutoPosY += w
 	case elements.FieldOrientation180:
-		state.AutoPosX -= w * scaleX
+		state.AutoPosX -= w
 	case elements.FieldOrientation270:
-		state.AutoPosY -= w * scaleX
+		state.AutoPosY -= w
 	default:
-		state.AutoPosX += w * scaleX
+		state.AutoPosX += w
 	}
 }
 
