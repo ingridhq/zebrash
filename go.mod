@@ -1,4 +1,4 @@
-module github.com/ingridhq/zebrash
+module github.com/DawidBury/zebrash
 
 go 1.24.0
 
