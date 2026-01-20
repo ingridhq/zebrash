@@ -3,7 +3,7 @@ package parsers
 import (
 	"cmp"
 
-	"github.com/ingridhq/zebrash/internal/printers"
+	"github.com/DawidBury/zebrash/internal/printers"
 )
 
 func NewRecallFormatParser() *CommandParser {

@@ -1,8 +1,8 @@
 package parsers
 
 import (
-	"github.com/ingridhq/zebrash/internal/elements"
-	"github.com/ingridhq/zebrash/internal/printers"
+	"github.com/DawidBury/zebrash/internal/elements"
+	"github.com/DawidBury/zebrash/internal/printers"
 )
 
 func NewImageLoadParser() *CommandParser {

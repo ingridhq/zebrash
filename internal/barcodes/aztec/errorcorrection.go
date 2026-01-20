@@ -1,7 +1,7 @@
 package aztec
 
 import (
-	"github.com/ingridhq/zebrash/internal/barcodes/utils"
+	"github.com/DawidBury/zebrash/internal/barcodes/utils"
 )
 
 func bitsToWords(stuffedBits *utils.BitList, wordSize int, wordCount int) []int {

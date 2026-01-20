@@ -2,8 +2,8 @@ package drawers
 
 import (
 	"github.com/fogleman/gg"
-	"github.com/ingridhq/zebrash/drawers"
-	"github.com/ingridhq/zebrash/internal/elements"
+	"github.com/DawidBury/zebrash/drawers"
+	"github.com/DawidBury/zebrash/internal/elements"
 )
 
 func NewGraphicCircleDrawer() *ElementDrawer {

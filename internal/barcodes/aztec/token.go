@@ -3,7 +3,7 @@ package aztec
 import (
 	"fmt"
 
-	"github.com/ingridhq/zebrash/internal/barcodes/utils"
+	"github.com/DawidBury/zebrash/internal/barcodes/utils"
 )
 
 type token interface {

@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ingridhq/zebrash/internal/elements"
-	"github.com/ingridhq/zebrash/internal/printers"
+	"github.com/DawidBury/zebrash/internal/elements"
+	"github.com/DawidBury/zebrash/internal/printers"
 )
 
 func NewBarcode2of5Parser() *CommandParser {

@@ -4,7 +4,7 @@ import (
 	"image"
 	"image/color"
 
-	"github.com/ingridhq/zebrash/internal/images"
+	"github.com/DawidBury/zebrash/internal/images"
 )
 
 type code128 struct {

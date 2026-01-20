@@ -4,11 +4,11 @@ import (
 	"fmt"
 
 	"github.com/fogleman/gg"
-	"github.com/ingridhq/zebrash/drawers"
-	"github.com/ingridhq/zebrash/internal/barcodes/qrcode"
-	"github.com/ingridhq/zebrash/internal/barcodes/qrcode/encoder"
-	"github.com/ingridhq/zebrash/internal/elements"
-	"github.com/ingridhq/zebrash/internal/images"
+	"github.com/DawidBury/zebrash/drawers"
+	"github.com/DawidBury/zebrash/internal/barcodes/qrcode"
+	"github.com/DawidBury/zebrash/internal/barcodes/qrcode/encoder"
+	"github.com/DawidBury/zebrash/internal/elements"
+	"github.com/DawidBury/zebrash/internal/images"
 )
 
 func NewBarcodeQrDrawer() *ElementDrawer {

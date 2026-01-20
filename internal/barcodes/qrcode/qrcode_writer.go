@@ -3,8 +3,8 @@ package qrcode
 import (
 	"fmt"
 
-	"github.com/ingridhq/zebrash/internal/barcodes/qrcode/encoder"
-	"github.com/ingridhq/zebrash/internal/barcodes/utils"
+	"github.com/DawidBury/zebrash/internal/barcodes/qrcode/encoder"
+	"github.com/DawidBury/zebrash/internal/barcodes/utils"
 )
 
 func Encode(contents string, width, height int, errorCorrectionLevel encoder.ErrorCorrectionLevel, opts encoder.Options) (*utils.BitMatrix, error) {

@@ -6,9 +6,9 @@ import (
 
 	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
-	"github.com/ingridhq/zebrash/drawers"
-	"github.com/ingridhq/zebrash/internal/assets"
-	"github.com/ingridhq/zebrash/internal/elements"
+	"github.com/DawidBury/zebrash/drawers"
+	"github.com/DawidBury/zebrash/internal/assets"
+	"github.com/DawidBury/zebrash/internal/elements"
 )
 
 var (

@@ -5,7 +5,7 @@ import (
 	"math"
 	"unicode/utf8"
 
-	"github.com/ingridhq/zebrash/internal/barcodes/utils"
+	"github.com/DawidBury/zebrash/internal/barcodes/utils"
 	textencoding "golang.org/x/text/encoding"
 	"golang.org/x/text/encoding/unicode"
 )

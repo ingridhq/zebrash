@@ -5,7 +5,7 @@ import (
 	"image/color"
 	"math"
 
-	"github.com/ingridhq/zebrash/internal/images"
+	"github.com/DawidBury/zebrash/internal/images"
 )
 
 func (resBits *BitList) ToImageWithBarsRatio(width, height int, widthRatio float64) image.Image {

@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ingridhq/zebrash/elements"
-	elements_internal "github.com/ingridhq/zebrash/internal/elements"
-	"github.com/ingridhq/zebrash/internal/parsers"
-	"github.com/ingridhq/zebrash/internal/printers"
+	"github.com/DawidBury/zebrash/elements"
+	elements_internal "github.com/DawidBury/zebrash/internal/elements"
+	"github.com/DawidBury/zebrash/internal/parsers"
+	"github.com/DawidBury/zebrash/internal/printers"
 )
 
 type Parser struct {
