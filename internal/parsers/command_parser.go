@@ -29,7 +29,9 @@ func commandText(command, prefix string) string {
 }
 
 func toFieldOrientation(orientation byte) elements.FieldOrientation {
-	switch orientation {
+    // Convert to uppercase for case-insensitive matching
+    upper := strings.ToUpper(string(orientation))[0]
+    switch upper {
 	case 'N':
 		return elements.FieldOrientationNormal
 	case 'R':
