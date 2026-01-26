@@ -340,6 +340,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 
 			if diff := cmp.Diff(buff.Bytes(), expectedPng); diff != "" {
 				t.Errorf("mismatched png output (-got,+want):\n %s", diff)
+
+				err = os.WriteFile("./testdata/modified/"+tC.dstPath, buff.Bytes(), 0755)
+				if err != nil {
+					t.Fatal(err)
+				}
 			}
 		})
 	}
