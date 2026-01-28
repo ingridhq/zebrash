@@ -55,6 +55,7 @@ func NewParser() *Parser {
 			parsers.NewDownloadFormatParser(),
 			parsers.NewFieldNumberParser(),
 			parsers.NewRecallFormatParser(),
+			parsers.NewPrintOrientationParser(),
 		},
 	}
 }
@@ -76,6 +77,7 @@ func (p *Parser) Parse(zplData []byte) ([]elements.LabelInfo, error) {
 	for _, command := range commands {
 		if strings.HasPrefix(strings.ToUpper(command), startCode) {
 			p.printer.NextDownloadFormatName = ""
+			p.printer.LabelOrientation = 0 // Reset to normal orientation
 			currentRecalledFormat = nil
 			continue
 		}
@@ -94,8 +96,9 @@ func (p *Parser) Parse(zplData []byte) ([]elements.LabelInfo, error) {
 
 			if p.printer.NextDownloadFormatName == "" {
 				results = append(results, elements.LabelInfo{
-					PrintWidth: p.printer.PrintWidth,
-					Elements:   resultElements,
+					PrintWidth:  p.printer.PrintWidth,
+					Orientation: p.printer.LabelOrientation,
+					Elements:    resultElements,
 				})
 			} else {
 				p.printer.StoredFormats[p.printer.NextDownloadFormatName] = &elements_internal.StoredFormat{

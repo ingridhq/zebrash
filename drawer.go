@@ -2,6 +2,7 @@ package zebrash
 
 import (
 	"fmt"
+	"image/draw"
 	"io"
 	"math"
 
@@ -9,6 +10,7 @@ import (
 	"github.com/ingridhq/zebrash/drawers"
 	"github.com/ingridhq/zebrash/elements"
 	drawers_internal "github.com/ingridhq/zebrash/internal/drawers"
+	internalElements "github.com/ingridhq/zebrash/internal/elements"
 	"github.com/ingridhq/zebrash/internal/images"
 )
 
@@ -105,6 +107,13 @@ func (d *Drawer) DrawLabelAsPng(label elements.LabelInfo, output io.Writer, opti
 
 		img := imgCtx.Image()
 		gCtx.DrawImage(img, (labelWidth-imageWidth)/2, 0)
+	}
+
+	// Apply label orientation (^POI rotates 180 degrees)
+	if !options.IgnoreOrientation && label.Orientation == internalElements.FieldOrientation180 {
+		if drawImg, ok := gCtx.Image().(draw.Image); ok {
+			images.Rotate180(drawImg)
+		}
 	}
 
 	return images.EncodeMonochrome(output, gCtx.Image())
