@@ -11,6 +11,7 @@ type VirtualPrinter struct {
 	NextElementPosition     elements.LabelPosition
 	DefaultFont             elements.FontInfo
 	DefaultOrientation      elements.FieldOrientation
+	LabelOrientation        elements.FieldOrientation
 	DefaultAlignment        elements.FieldAlignment
 	NextElementAlignment    *elements.FieldAlignment
 	NextElementFieldElement any

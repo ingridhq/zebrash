@@ -11,12 +11,13 @@ import (
 
 func TestDrawLabelAsPng(t *testing.T) {
 	testCases := []struct {
-		name     string
-		srcPath  string
-		dstPath  string
-		labelIdx int
-		widthMm  float64
-		heightMm float64
+		name              string
+		srcPath           string
+		dstPath           string
+		labelIdx          int
+		widthMm           float64
+		heightMm          float64
+		ignoreOrientation bool
 	}{
 		{
 			name:    "Amazon label",
@@ -24,14 +25,21 @@ func TestDrawLabelAsPng(t *testing.T) {
 			dstPath: "amazon.png",
 		},
 		{
-			name:    "UPS label",
-			srcPath: "ups.zpl",
-			dstPath: "ups.png",
+			name:              "UPS label",
+			srcPath:           "ups.zpl",
+			dstPath:           "ups.png",
+			ignoreOrientation: true,
 		},
 		{
-			name:    "UPS Surepost label",
-			srcPath: "ups_surepost.zpl",
-			dstPath: "ups_surepost.png",
+			name:    "UPS label rotated",
+			srcPath: "ups.zpl",
+			dstPath: "ups_rotated.png",
+		},
+		{
+			name:              "UPS Surepost label",
+			srcPath:           "ups_surepost.zpl",
+			dstPath:           "ups_surepost.png",
+			ignoreOrientation: true,
 		},
 		{
 			name:    "USPS label",
@@ -39,9 +47,10 @@ func TestDrawLabelAsPng(t *testing.T) {
 			dstPath: "usps.png",
 		},
 		{
-			name:    "Fedex label",
-			srcPath: "fedex.zpl",
-			dstPath: "fedex.png",
+			name:              "Fedex label",
+			srcPath:           "fedex.zpl",
+			dstPath:           "fedex.png",
+			ignoreOrientation: true,
 		},
 		{
 			name:    "Label converted from PDF via zplgrf",
@@ -331,8 +340,9 @@ func TestDrawLabelAsPng(t *testing.T) {
 			}
 
 			err = drawer.DrawLabelAsPng(res[tC.labelIdx], &buff, drawers.DrawerOptions{
-				LabelWidthMm:  tC.widthMm,
-				LabelHeightMm: tC.heightMm,
+				LabelWidthMm:      tC.widthMm,
+				LabelHeightMm:     tC.heightMm,
+				IgnoreOrientation: tC.ignoreOrientation,
 			})
 			if err != nil {
 				t.Fatal(err)
