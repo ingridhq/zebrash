@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/fogleman/gg"
+	"github.com/ingridhq/gg"
 	"github.com/ingridhq/zebrash/drawers"
 	"github.com/ingridhq/zebrash/internal/barcodes/datamatrix"
 	"github.com/ingridhq/zebrash/internal/barcodes/datamatrix/encoder"

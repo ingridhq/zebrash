@@ -5,7 +5,7 @@ import (
 	"io"
 	"math"
 
-	"github.com/fogleman/gg"
+	"github.com/ingridhq/gg"
 	"github.com/ingridhq/zebrash/drawers"
 	"github.com/ingridhq/zebrash/elements"
 	drawers_internal "github.com/ingridhq/zebrash/internal/drawers"

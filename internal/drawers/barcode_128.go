@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
+	"github.com/ingridhq/gg"
 	"github.com/ingridhq/zebrash/drawers"
 	"github.com/ingridhq/zebrash/internal/barcodes/code128"
 	"github.com/ingridhq/zebrash/internal/elements"
