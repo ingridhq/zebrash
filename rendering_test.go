@@ -100,11 +100,11 @@ func (drawer *drawer) Identity() {
 }
 
 func (drawer *drawer) Translate(x, y float64) {
-	drawer.matrix = drawer.matrix.Translate(x, y)
+	drawer.matrix = multiplyMatrices(gg.Translate(x, y), drawer.matrix)
 }
 
 func (drawer *drawer) Scale(x, y float64) {
-	drawer.matrix = drawer.matrix.Scale(x, y)
+	drawer.matrix = multiplyMatrices(gg.Scale(x, y), drawer.matrix)
 }
 
 func (drawer *drawer) ScaleAbout(sx, sy, x, y float64) {
@@ -114,7 +114,7 @@ func (drawer *drawer) ScaleAbout(sx, sy, x, y float64) {
 }
 
 func (drawer *drawer) Rotate(angle float64) {
-	drawer.matrix = drawer.matrix.Rotate(angle)
+	drawer.matrix = multiplyMatrices(gg.Rotate(angle), drawer.matrix)
 }
 
 func (drawer *drawer) RotateAbout(angle, x, y float64) {
@@ -153,4 +153,15 @@ func (iw *imageWrap) Set(x, y int, c color.Color) {
 	}
 
 	iw.img.Set(x, y, c)
+}
+
+func multiplyMatrices(a, b gg.Matrix) gg.Matrix {
+	return gg.Matrix{
+		a.XX*b.XX + a.YX*b.XY,
+		a.XX*b.YX + a.YX*b.YY,
+		a.XY*b.XX + a.YY*b.XY,
+		a.XY*b.YX + a.YY*b.YY,
+		a.X0*b.XX + math.FMA(a.Y0, b.XY, b.X0),
+		a.X0*b.YX + math.FMA(a.Y0, b.YY, b.Y0),
+	}
 }
