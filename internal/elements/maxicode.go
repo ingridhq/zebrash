@@ -17,6 +17,7 @@ type Maxicode struct {
 }
 
 type MaxicodeWithData struct {
+	ReversePrint
 	Code     Maxicode
 	Position LabelPosition
 	Data     string

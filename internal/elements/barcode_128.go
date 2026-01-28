@@ -42,6 +42,7 @@ type Barcode128 struct {
 }
 
 type Barcode128WithData struct {
+	ReversePrint
 	Barcode128
 	Width    int
 	Position LabelPosition

@@ -120,25 +120,29 @@ func (f *RecalledField) Resolve() (any, error) {
 	switch fe := field.Element.(type) {
 	case *Maxicode:
 		return &MaxicodeWithData{
-			Code:     *fe,
-			Position: field.Position,
-			Data:     text,
+			ReversePrint: field.ReversePrint,
+			Code:         *fe,
+			Position:     field.Position,
+			Data:         text,
 		}, nil
 	case *BarcodePdf417:
 		return &BarcodePdf417WithData{
+			ReversePrint:  field.ReversePrint,
 			BarcodePdf417: *fe,
 			Position:      field.Position,
 			Data:          text,
 		}, nil
 	case *Barcode128:
 		return &Barcode128WithData{
-			Barcode128: *fe,
-			Width:      field.Width,
-			Position:   field.Position,
-			Data:       text,
+			ReversePrint: field.ReversePrint,
+			Barcode128:   *fe,
+			Width:        field.Width,
+			Position:     field.Position,
+			Data:         text,
 		}, nil
 	case *BarcodeEan13:
 		return &BarcodeEan13WithData{
+			ReversePrint: field.ReversePrint,
 			BarcodeEan13: *fe,
 			Width:        field.Width,
 			Position:     field.Position,
@@ -146,38 +150,43 @@ func (f *RecalledField) Resolve() (any, error) {
 		}, nil
 	case *Barcode2of5:
 		return &Barcode2of5WithData{
-			Barcode2of5: *fe,
-			Width:       field.Width,
-			WidthRatio:  field.WidthRatio,
-			Position:    field.Position,
-			Data:        text,
+			ReversePrint: field.ReversePrint,
+			Barcode2of5:  *fe,
+			Width:        field.Width,
+			WidthRatio:   field.WidthRatio,
+			Position:     field.Position,
+			Data:         text,
 		}, nil
 	case *Barcode39:
 		return &Barcode39WithData{
-			Barcode39:  *fe,
-			Width:      field.Width,
-			WidthRatio: field.WidthRatio,
-			Position:   field.Position,
-			Data:       text,
+			ReversePrint: field.ReversePrint,
+			Barcode39:    *fe,
+			Width:        field.Width,
+			WidthRatio:   field.WidthRatio,
+			Position:     field.Position,
+			Data:         text,
 		}, nil
 	case *BarcodeAztec:
 		return &BarcodeAztecWithData{
+			ReversePrint: field.ReversePrint,
 			BarcodeAztec: *fe,
 			Position:     field.Position,
 			Data:         text,
 		}, nil
 	case *BarcodeDatamatrix:
 		return &BarcodeDatamatrixWithData{
+			ReversePrint:      field.ReversePrint,
 			BarcodeDatamatrix: *fe,
 			Position:          field.Position,
 			Data:              text,
 		}, nil
 	case *BarcodeQr:
 		return &BarcodeQrWithData{
-			BarcodeQr: *fe,
-			Height:    field.Height,
-			Position:  field.Position,
-			Data:      text,
+			ReversePrint: field.ReversePrint,
+			BarcodeQr:    *fe,
+			Height:       field.Height,
+			Position:     field.Position,
+			Data:         text,
 		}, nil
 	case *GraphicSymbol:
 		return toGraphicSymbolTextField(text, field, fe)

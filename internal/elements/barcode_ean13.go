@@ -20,6 +20,7 @@ type BarcodeEan13 struct {
 }
 
 type BarcodeEan13WithData struct {
+	ReversePrint
 	BarcodeEan13
 	Width    int
 	Position LabelPosition

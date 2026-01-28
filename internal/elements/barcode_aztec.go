@@ -23,6 +23,7 @@ type BarcodeAztec struct {
 }
 
 type BarcodeAztecWithData struct {
+	ReversePrint
 	BarcodeAztec
 	Position LabelPosition
 	Data     string

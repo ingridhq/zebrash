@@ -21,6 +21,7 @@ type Barcode2of5 struct {
 }
 
 type Barcode2of5WithData struct {
+	ReversePrint
 	Barcode2of5
 	Width      int
 	WidthRatio float64
