@@ -1,9 +1,10 @@
 package drawers
 
 type DrawerOptions struct {
-	LabelWidthMm  float64
-	LabelHeightMm float64
-	Dpmm          int
+	LabelWidthMm      float64
+	LabelHeightMm     float64
+	Dpmm              int
+	IgnoreOrientation bool
 }
 
 func (d DrawerOptions) WithDefaults() DrawerOptions {

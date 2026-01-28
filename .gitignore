@@ -20,4 +20,9 @@
 # Go workspace file
 go.work
 
+# Testdata diff files
 testdata/diff/*
+
+# Visual Studio and Visual Studio Code files
+.vs/
+.vscode/

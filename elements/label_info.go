@@ -1,6 +1,11 @@
 package elements
 
+import (
+	internalElements "github.com/ingridhq/zebrash/internal/elements"
+)
+
 type LabelInfo struct {
-	PrintWidth int
-	Elements   []any
+	PrintWidth  int
+	Orientation internalElements.FieldOrientation
+	Elements    []any
 }
