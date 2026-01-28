@@ -13,6 +13,7 @@ type BarcodeQr struct {
 }
 
 type BarcodeQrWithData struct {
+	ReversePrint
 	BarcodeQr
 	Height   int
 	Position LabelPosition

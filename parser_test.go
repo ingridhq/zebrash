@@ -140,6 +140,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			dstPath: "reverse.png",
 		},
 		{
+			name:    "Reverse print with QR code",
+			srcPath: "reverse_qr.zpl",
+			dstPath: "reverse_qr.png",
+		},
+		{
 			name:    "Swiss Post",
 			srcPath: "swisspost.zpl",
 			dstPath: "swisspost.png",

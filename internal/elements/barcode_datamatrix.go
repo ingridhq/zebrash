@@ -43,6 +43,7 @@ type BarcodeDatamatrix struct {
 }
 
 type BarcodeDatamatrixWithData struct {
+	ReversePrint
 	BarcodeDatamatrix
 	Position LabelPosition
 	Data     string

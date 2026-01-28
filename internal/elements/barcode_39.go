@@ -21,6 +21,7 @@ type Barcode39 struct {
 }
 
 type Barcode39WithData struct {
+	ReversePrint
 	Barcode39
 	Width      int
 	WidthRatio float64
