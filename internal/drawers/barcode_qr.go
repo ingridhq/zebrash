@@ -3,7 +3,7 @@ package drawers
 import (
 	"fmt"
 
-	"github.com/fogleman/gg"
+	"github.com/ingridhq/gg"
 	"github.com/ingridhq/zebrash/drawers"
 	"github.com/ingridhq/zebrash/internal/barcodes/qrcode"
 	"github.com/ingridhq/zebrash/internal/barcodes/qrcode/encoder"

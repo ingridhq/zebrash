@@ -3,7 +3,7 @@ package drawers
 import (
 	"image"
 
-	"github.com/fogleman/gg"
+	"github.com/ingridhq/gg"
 	"github.com/ingridhq/zebrash/drawers"
 	"github.com/ingridhq/zebrash/internal/elements"
 	"github.com/ingridhq/zebrash/internal/images"
