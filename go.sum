@@ -2,10 +2,10 @@ github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 h1:DACJavvAHhabrF0
 github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0/go.mod h1:E/TSTwGwJL78qG/PmXZO1EjYhfJinVAhrmmHX6Z8B9k=
 github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=
 github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
-github.com/ingridhq/gg v1.4.1 h1:Lte2PAR8bQqiVaN0PwdZYsh5PdXznlEePdyhf+Cboqs=
-github.com/ingridhq/gg v1.4.1/go.mod h1:56t1jfA5aMagD1/0QD2VbOBdHRMzEH4uwwqgYGa5gU0=
-github.com/ingridhq/maxicode v1.5.0 h1:qbvSFoWNqrX8Agn/TWwbiXLODMP5wxezieCA4FY59Fo=
-github.com/ingridhq/maxicode v1.5.0/go.mod h1:nr/WQ42hHcAg4xbmjrI3UQq44ORibqT0uC3Kk370qXk=
+github.com/ingridhq/gg v1.4.2 h1:ijvQbwJ2pyEso1/ClZCUjFSLGEpA4mO77e0wy7+Rli0=
+github.com/ingridhq/gg v1.4.2/go.mod h1:56t1jfA5aMagD1/0QD2VbOBdHRMzEH4uwwqgYGa5gU0=
+github.com/ingridhq/maxicode v1.5.1 h1:18md2sXLo3GRda9KYzI5MEApDxTATACbVSrQQw3TqZs=
+github.com/ingridhq/maxicode v1.5.1/go.mod h1:Eo4pUt4amoySDj8pPruzgKoNrbZS2bUzSYktceo13Zc=
 golang.org/x/image v0.35.0 h1:LKjiHdgMtO8z7Fh18nGY6KDcoEtVfsgLDPeLyguqb7I=
 golang.org/x/image v0.35.0/go.mod h1:MwPLTVgvxSASsxdLzKrl8BRFuyqMyGhLwmC+TO1Sybk=
 golang.org/x/text v0.33.0 h1:B3njUFyqtHDUI5jMn1YIr5B0IE2U0qck04r6d4KPAxE=

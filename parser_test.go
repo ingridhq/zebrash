@@ -2,12 +2,27 @@ package zebrash
 
 import (
 	"bytes"
+	"flag"
+	"fmt"
+	"image"
+	"image/color"
+	"image/png"
 	"os"
+	"strings"
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
 	"github.com/ingridhq/zebrash/drawers"
 )
+
+var (
+	writeImageDiff bool
+	updateDstFiles bool
+)
+
+func init() {
+	flag.BoolVar(&writeImageDiff, "write-image-diff", true, "save PNG output diff for each test case")
+	flag.BoolVar(&updateDstFiles, "update-dst-files", false, "replace destination PNGs with the ones produced during test run")
+}
 
 func TestDrawLabelAsPng(t *testing.T) {
 	testCases := []struct {
@@ -310,10 +325,10 @@ func TestDrawLabelAsPng(t *testing.T) {
 
 	for _, tC := range testCases {
 		t.Run(tC.name, func(t *testing.T) {
-			file, err := os.ReadFile("./testdata/" + tC.srcPath)
-			if err != nil {
-				t.Fatal(err)
-			}
+			fullSrcPath := "./testdata/" + tC.srcPath
+			fullDstPath := "./testdata/" + tC.dstPath
+			fullDiffPath := "./testdata/diff/" + tC.dstPath
+			file := mustReadFile(fullSrcPath, t)
 
 			parser := NewParser()
 
@@ -322,15 +337,14 @@ func TestDrawLabelAsPng(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			var buff bytes.Buffer
-
-			drawer := NewDrawer()
-
 			if len(res) == 0 {
 				t.Fatal("no labels in the response")
 			}
 
-			err = drawer.DrawLabelAsPng(res[tC.labelIdx], &buff, drawers.DrawerOptions{
+			drawer := NewDrawer()
+
+			buff := new(bytes.Buffer)
+			err = drawer.DrawLabelAsPng(res[tC.labelIdx], buff, drawers.DrawerOptions{
 				LabelWidthMm:  tC.widthMm,
 				LabelHeightMm: tC.heightMm,
 			})
@@ -338,14 +352,101 @@ func TestDrawLabelAsPng(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			expectedPng, err := os.ReadFile("./testdata/" + tC.dstPath)
-			if err != nil {
-				t.Fatal(err)
+			if updateDstFiles {
+				mustWriteFile(fullDstPath, buff.Bytes(), t)
 			}
 
-			if diff := cmp.Diff(buff.Bytes(), expectedPng); diff != "" {
-				t.Errorf("mismatched png output (-got,+want):\n %s", diff)
-			}
+			gotImg := mustDecodePng(buff.Bytes(), t)
+			wantImg := mustDecodePng(mustReadFile(fullDstPath, t), t)
+
+			compareImages(gotImg, wantImg, fullDiffPath, t)
 		})
+	}
+}
+
+func compareImages(got, want image.Image, fullDiffPath string, t *testing.T) {
+	if !got.Bounds().Eq(want.Bounds()) {
+		t.Fatalf("Image bounds differ: got=%v want=%v", got.Bounds(), want.Bounds())
+	}
+
+	gotGray, ok := got.(*image.Gray)
+	if !ok {
+		t.Fatalf("Got is not grayscale image")
+	}
+
+	wantGray, ok := want.(*image.Gray)
+	if !ok {
+		t.Fatalf("Want is not grayscale image")
+	}
+
+	bounds := got.Bounds()
+	diffImg := image.NewRGBA(bounds)
+
+	const maxReportedSampleMismatches = 5
+	var sampleMismatches []string
+
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		for x := bounds.Min.X; x < bounds.Max.X; x++ {
+			gotV := gotGray.GrayAt(x, y)
+			wantV := wantGray.GrayAt(x, y)
+
+			if gotV == wantV {
+				diffImg.Set(x, y, color.RGBA{R: gotV.Y, G: gotV.Y, B: gotV.Y, A: 255})
+				continue
+			}
+
+			if len(sampleMismatches) < maxReportedSampleMismatches {
+				sampleMismatches = append(sampleMismatches, fmt.Sprintf("(x: %d, y: %d): got=GRAY(%d) want=GRAY(%d)", x, y, gotV.Y, wantV.Y))
+			}
+
+			if wantV.Y > gotV.Y {
+				diffImg.Set(x, y, color.RGBA{R: 255, G: 0, B: 0, A: 255})
+			} else {
+				diffImg.Set(x, y, color.RGBA{R: 0, G: 255, B: 0, A: 255})
+			}
+		}
+	}
+
+	if len(sampleMismatches) == 0 {
+		return
+	}
+
+	t.Errorf("First %d sample mismatches: \n%s", maxReportedSampleMismatches, strings.Join(sampleMismatches, "\n"))
+
+	if !writeImageDiff {
+		return
+	}
+
+	buff := new(bytes.Buffer)
+	if err := png.Encode(buff, diffImg); err != nil {
+		t.Fatalf("Failed to encode diff image: %v", err)
+	}
+
+	mustWriteFile(fullDiffPath, buff.Bytes(), t)
+	t.Logf("Diff image is saved to %s", fullDiffPath)
+}
+
+func mustDecodePng(data []byte, t *testing.T) image.Image {
+	img, err := png.Decode(bytes.NewReader(data))
+	if err != nil {
+		t.Fatalf("failed to decode png: %v", err)
+	}
+
+	return img
+}
+
+func mustReadFile(path string, t *testing.T) []byte {
+	res, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatalf("Failed to read file %s: %v", path, err)
+	}
+
+	return res
+}
+
+func mustWriteFile(path string, data []byte, t *testing.T) {
+	err := os.WriteFile(path, data, 0644)
+	if err != nil {
+		t.Fatalf("Failed to write file %s: %v", path, err)
 	}
 }
