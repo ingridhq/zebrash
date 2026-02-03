@@ -38,7 +38,7 @@ func NewBarcode2of5Drawer() *ElementDrawer {
 
 			gCtx.DrawImage(img, pos.X, pos.Y)
 			if barcode.Line {
-				applyLineTextToCtx(gCtx, text, pos, barcode.LineAbove, width, height)
+				applyLineTextToCtx(gCtx, text, pos, barcode.LineAbove, float64(barcode.Width), width, height)
 			}
 
 			return nil
