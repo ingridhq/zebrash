@@ -2,6 +2,7 @@ package drawers
 
 import (
 	"fmt"
+	"math"
 
 	"github.com/ingridhq/gg"
 	"github.com/ingridhq/maxicode"
@@ -27,10 +28,14 @@ func NewMaxicodeDrawer() *ElementDrawer {
 				return fmt.Errorf("failed to encode maxicode grid: %w", err)
 			}
 
-			img := grid.Draw(float64(options.Dpmm)).Image()
+			dpmm := float64(options.Dpmm)
+			hexRectW := int(math.Round(0.76 * dpmm))
+			hexRectH := int(math.Round(0.88 * dpmm))
+
+			img := grid.Draw(dpmm).Image()
 			pos := adjustImageTypeSetPosition(img, barcode.Position, elements.FieldOrientationNormal)
 
-			gCtx.DrawImage(img, pos.X, pos.Y)
+			gCtx.DrawImage(img, pos.X-hexRectW, pos.Y-hexRectH)
 
 			return nil
 		},

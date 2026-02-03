@@ -15,10 +15,6 @@ import (
 	"github.com/ingridhq/zebrash/internal/elements"
 )
 
-const (
-	barcodeLineFontSizeScaleFactor = 20
-)
-
 var (
 	barcode128FNC1 = string(code128.ESCAPE_FNC_1)
 
@@ -74,7 +70,7 @@ func NewBarcode128Drawer() *ElementDrawer {
 
 			gCtx.DrawImage(img, pos.X, pos.Y)
 			if barcode.Line {
-				applyLineTextToCtx(gCtx, text, pos, barcode.LineAbove, width, height)
+				applyLineTextToCtx(gCtx, text, pos, barcode.LineAbove, float64(barcode.Width), width, height)
 			}
 
 			return nil
@@ -82,20 +78,20 @@ func NewBarcode128Drawer() *ElementDrawer {
 	}
 }
 
-func applyLineTextToCtx(gCtx *gg.Context, content string, pos elements.LabelPosition, lineAbove bool, width, height float64) {
+func applyLineTextToCtx(gCtx *gg.Context, content string, pos elements.LabelPosition, lineAbove bool, barWidth, width, height float64) {
 	gCtx.SetColor(color.Black)
-	fontSize := width / barcodeLineFontSizeScaleFactor
+	fontSize := max(barWidth, 1) * 10
 
 	face := truetype.NewFace(font0, &truetype.Options{Size: fontSize})
 	gCtx.SetFontFace(face)
 
 	x := float64(pos.X) + float64(width)/2
-	y := float64(pos.Y) - fontSize
+	y := float64(pos.Y) - fontSize/2
 	if !lineAbove {
 		y = float64(pos.Y) + height + fontSize
 	}
 
-	gCtx.DrawStringAnchored(content, x, y, 0.5, 0.5)
+	gCtx.DrawStringAnchored(content, x, y, 0.5, 0)
 }
 
 // Allows dealing with UCC/EAN with and without chained application identifiers.
