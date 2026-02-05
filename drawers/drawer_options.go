@@ -4,6 +4,8 @@ type DrawerOptions struct {
 	LabelWidthMm  float64
 	LabelHeightMm float64
 	Dpmm          int
+	// Render labels with inverted orientation upside-down
+	EnableInvertedLabels bool
 }
 
 func (d DrawerOptions) WithDefaults() DrawerOptions {

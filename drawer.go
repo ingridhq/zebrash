@@ -96,15 +96,21 @@ func (d *Drawer) DrawLabelAsPng(label elements.LabelInfo, output io.Writer, opti
 	}
 
 	// If print width was less than label width
-	// Draw everything onto the new, wider image and center the content
-	if imageWidth != labelWidth {
+	// or label was inverted
+	// Draw everything onto the new, wider image and center / rotate the content
+	invertLabel := (options.EnableInvertedLabels && label.Inverted)
+	if (imageWidth != labelWidth) || invertLabel {
 		imgCtx := gCtx
 		gCtx = gg.NewContext(labelWidth, imageHeight)
 		gCtx.SetColor(images.ColorWhite)
 		gCtx.Clear()
 
-		img := imgCtx.Image()
-		gCtx.DrawImage(img, (labelWidth-imageWidth)/2, 0)
+		if invertLabel {
+			gCtx.Translate(float64(labelWidth), float64(imageHeight))
+			gCtx.Scale(-1, -1)
+		}
+
+		gCtx.DrawImage(imgCtx.Image(), (labelWidth-imageWidth)/2, 0)
 	}
 
 	return images.EncodeMonochrome(output, gCtx.Image())

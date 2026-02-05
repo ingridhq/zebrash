@@ -25,6 +25,7 @@ type VirtualPrinter struct {
 	DefaultBarcodeDimensions elements.BarcodeDimensions
 	CurrentCharset           int
 	PrintWidth               int
+	LabelInverted            bool
 }
 
 func NewVirtualPrinter() *VirtualPrinter {
@@ -88,7 +89,7 @@ func (p *VirtualPrinter) GetFieldInfo() elements.FieldInfo {
 	}
 }
 
-func (p *VirtualPrinter) ResetState() {
+func (p *VirtualPrinter) ResetFieldState() {
 	p.NextElementPosition = elements.LabelPosition{}
 	p.NextElementFieldElement = nil
 	p.NextElementFieldData = ""
@@ -97,4 +98,9 @@ func (p *VirtualPrinter) ResetState() {
 	p.NextFont = nil
 	p.NextElementFieldReverse = false
 	p.NextHexEscapeChar = 0
+}
+
+func (p *VirtualPrinter) ResetLabelState() {
+	p.NextDownloadFormatName = ""
+	p.LabelInverted = false
 }

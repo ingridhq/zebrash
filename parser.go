@@ -55,6 +55,7 @@ func NewParser() *Parser {
 			parsers.NewDownloadFormatParser(),
 			parsers.NewFieldNumberParser(),
 			parsers.NewRecallFormatParser(),
+			parsers.NewPrintOrientationParser(),
 		},
 	}
 }
@@ -75,7 +76,7 @@ func (p *Parser) Parse(zplData []byte) ([]elements.LabelInfo, error) {
 
 	for _, command := range commands {
 		if strings.HasPrefix(strings.ToUpper(command), startCode) {
-			p.printer.NextDownloadFormatName = ""
+			p.printer.ResetLabelState()
 			currentRecalledFormat = nil
 			continue
 		}
@@ -95,10 +96,12 @@ func (p *Parser) Parse(zplData []byte) ([]elements.LabelInfo, error) {
 			if p.printer.NextDownloadFormatName == "" {
 				results = append(results, elements.LabelInfo{
 					PrintWidth: p.printer.PrintWidth,
+					Inverted:   p.printer.LabelInverted,
 					Elements:   resultElements,
 				})
 			} else {
 				p.printer.StoredFormats[p.printer.NextDownloadFormatName] = &elements_internal.StoredFormat{
+					Inverted: p.printer.LabelInverted,
 					Elements: resultElements,
 				}
 			}
@@ -130,6 +133,7 @@ func (p *Parser) Parse(zplData []byte) ([]elements.LabelInfo, error) {
 
 				resultElements = append(resultElements, resolvedElements)
 				currentRecalledFormat = rf
+				p.printer.LabelInverted = rf.Inverted
 				continue
 			}
 
