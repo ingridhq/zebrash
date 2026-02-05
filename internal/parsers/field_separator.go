@@ -11,7 +11,7 @@ func NewFieldSeparatorParser() *CommandParser {
 	return &CommandParser{
 		CommandCode: code,
 		Parse: func(command string, printer *printers.VirtualPrinter) (any, error) {
-			defer printer.ResetState()
+			defer printer.ResetFieldState()
 
 			if printer.NextElementFieldNumber < 0 {
 				f := &elements.RecalledField{

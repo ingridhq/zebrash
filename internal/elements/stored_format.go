@@ -8,11 +8,15 @@ import (
 )
 
 type StoredFormat struct {
+	Inverted bool
 	Elements []any
 }
 
 func (sf *StoredFormat) ToRecalledFormat() *RecalledFormat {
-	res := NewRecalledFormat()
+	res := &RecalledFormat{
+		Inverted:  sf.Inverted,
+		fieldRefs: make(map[int][]*RecalledField),
+	}
 
 	for _, el := range sf.Elements {
 		res.AddElement(el)
@@ -22,14 +26,9 @@ func (sf *StoredFormat) ToRecalledFormat() *RecalledFormat {
 }
 
 type RecalledFormat struct {
+	Inverted  bool
 	elements  []any
 	fieldRefs map[int][]*RecalledField
-}
-
-func NewRecalledFormat() *RecalledFormat {
-	return &RecalledFormat{
-		fieldRefs: make(map[int][]*RecalledField),
-	}
 }
 
 func (rf *RecalledFormat) AddElement(element any) bool {

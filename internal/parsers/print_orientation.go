@@ -5,13 +5,15 @@ import (
 )
 
 func NewPrintOrientationParser() *CommandParser {
+	const code = "^PO"
+
 	return &CommandParser{
-		CommandCode: "^PO",
+		CommandCode: code,
 		Parse: func(command string, printer *printers.VirtualPrinter) (any, error) {
-			parts := splitCommand(command, "^PO", 0)
-			if len(parts) > 0 && len(parts[0]) > 0 {
-				printer.LabelOrientation = toFieldOrientation(parts[0][0])
-			}
+			text := commandText(command, code)
+
+			printer.LabelInverted = (text == "I")
+
 			return nil, nil
 		},
 	}

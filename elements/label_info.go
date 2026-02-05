@@ -1,11 +1,10 @@
 package elements
 
-import (
-	internalElements "github.com/ingridhq/zebrash/internal/elements"
-)
-
 type LabelInfo struct {
-	PrintWidth  int
-	Orientation internalElements.FieldOrientation
-	Elements    []any
+	// Width of the label
+	PrintWidth int
+	// Inverted mode, which mirrors label content across a horizontal axis.
+	Inverted bool
+	// Label elements (barcodes, shapes, texts, etc)
+	Elements []any
 }

@@ -26,12 +26,13 @@ func init() {
 
 func TestDrawLabelAsPng(t *testing.T) {
 	testCases := []struct {
-		name     string
-		srcPath  string
-		dstPath  string
-		labelIdx int
-		widthMm  float64
-		heightMm float64
+		name           string
+		srcPath        string
+		dstPath        string
+		labelIdx       int
+		widthMm        float64
+		heightMm       float64
+		enableInverted bool
 	}{
 		{
 			name:    "Amazon label",
@@ -42,6 +43,12 @@ func TestDrawLabelAsPng(t *testing.T) {
 			name:    "UPS label",
 			srcPath: "ups.zpl",
 			dstPath: "ups.png",
+		},
+		{
+			name:           "UPS label with orientation inversion enabled",
+			srcPath:        "ups.zpl",
+			dstPath:        "ups_inverted.png",
+			enableInverted: true,
 		},
 		{
 			name:    "UPS Surepost label",
@@ -345,8 +352,9 @@ func TestDrawLabelAsPng(t *testing.T) {
 
 			buff := new(bytes.Buffer)
 			err = drawer.DrawLabelAsPng(res[tC.labelIdx], buff, drawers.DrawerOptions{
-				LabelWidthMm:  tC.widthMm,
-				LabelHeightMm: tC.heightMm,
+				LabelWidthMm:         tC.widthMm,
+				LabelHeightMm:        tC.heightMm,
+				EnableInvertedLabels: tC.enableInverted,
 			})
 			if err != nil {
 				t.Fatal(err)

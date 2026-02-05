@@ -38,9 +38,10 @@ Example of the output (more examples can be found inside `testdata` folder):
 	drawer := zebrash.NewDrawer()
 
 	err = drawer.DrawLabelAsPng(res[0], &buff, drawers.DrawerOptions{
-		LabelWidthMm:  101.6,
-		LabelHeightMm: 203.2,
-		Dpmm:          8,
+		LabelWidthMm:         101.6,
+		LabelHeightMm:        203.2,
+		Dpmm:                 8,
+		EnableInvertedLabels: true,
 	})
 	if err != nil {
 		t.Fatal(err)

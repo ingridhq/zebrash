@@ -2,7 +2,6 @@ package zebrash
 
 import (
 	"fmt"
-	"image/draw"
 	"io"
 	"math"
 
@@ -10,7 +9,6 @@ import (
 	"github.com/ingridhq/zebrash/drawers"
 	"github.com/ingridhq/zebrash/elements"
 	drawers_internal "github.com/ingridhq/zebrash/internal/drawers"
-	internalElements "github.com/ingridhq/zebrash/internal/elements"
 	"github.com/ingridhq/zebrash/internal/images"
 )
 
@@ -98,22 +96,21 @@ func (d *Drawer) DrawLabelAsPng(label elements.LabelInfo, output io.Writer, opti
 	}
 
 	// If print width was less than label width
-	// Draw everything onto the new, wider image and center the content
-	if imageWidth != labelWidth {
+	// or label was inverted
+	// Draw everything onto the new, wider image and center / rotate the content
+	invertLabel := (options.EnableInvertedLabels && label.Inverted)
+	if (imageWidth != labelWidth) || invertLabel {
 		imgCtx := gCtx
 		gCtx = gg.NewContext(labelWidth, imageHeight)
 		gCtx.SetColor(images.ColorWhite)
 		gCtx.Clear()
 
-		img := imgCtx.Image()
-		gCtx.DrawImage(img, (labelWidth-imageWidth)/2, 0)
-	}
-
-	// Apply label orientation (^POI rotates 180 degrees)
-	if !options.IgnoreOrientation && label.Orientation == internalElements.FieldOrientation180 {
-		if drawImg, ok := gCtx.Image().(draw.Image); ok {
-			images.Rotate180(drawImg)
+		if invertLabel {
+			gCtx.Translate(float64(labelWidth), float64(imageHeight))
+			gCtx.Scale(-1, -1)
 		}
+
+		gCtx.DrawImage(imgCtx.Image(), (labelWidth-imageWidth)/2, 0)
 	}
 
 	return images.EncodeMonochrome(output, gCtx.Image())
