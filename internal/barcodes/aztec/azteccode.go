@@ -23,7 +23,7 @@ func (c *aztecCode) ColorModel() color.Model {
 }
 
 func (c *aztecCode) Bounds() image.Rectangle {
-	return image.Rect(0, 0, c.size-1, c.size-1)
+	return image.Rect(0, 0, c.size, c.size)
 }
 
 func (c *aztecCode) At(x, y int) color.Color {
