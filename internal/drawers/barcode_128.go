@@ -119,7 +119,7 @@ func applyLineTextToCtx(gCtx *gg.Context, content string, pos elements.LabelPosi
 	gCtx.SetColor(color.Black)
 	fontSize := barcodeCaptionFontSize(barWidth)
 
-	face := truetype.NewFace(font0, &truetype.Options{Size: fontSize})
+	face := truetype.NewFace(getTffFont(elements.FontInfo{Name: "A"}), &truetype.Options{Size: fontSize})
 	gCtx.SetFontFace(face)
 
 	x := float64(pos.X) + width/2

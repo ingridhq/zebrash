@@ -71,7 +71,7 @@ func applyEan13TextToCtx(gCtx *gg.Context, text string, pos elements.LabelPositi
 	gCtx.SetColor(color.Black)
 
 	fontSize := float64(guardExtension) * 2
-	face := truetype.NewFace(font0, &truetype.Options{Size: fontSize})
+	face := truetype.NewFace(getTffFont(elements.FontInfo{Name: "A"}), &truetype.Options{Size: fontSize})
 	gCtx.SetFontFace(face)
 
 	if len(text) == 13 && !lineAbove {
