@@ -229,6 +229,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			heightMm: 230,
 		},
 		{
+			name:    "Barcode128 text scaling with different module widths",
+			srcPath: "barcode128_text_scaling.zpl",
+			dstPath: "barcode128_text_scaling.png",
+		},
+		{
 			name:    "Barcode128 with 'line' and 'line above' set",
 			srcPath: "barcode128_line_above.zpl",
 			dstPath: "barcode128_line_above.png",

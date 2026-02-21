@@ -80,15 +80,17 @@ func NewBarcode128Drawer() *ElementDrawer {
 
 func applyLineTextToCtx(gCtx *gg.Context, content string, pos elements.LabelPosition, lineAbove bool, barWidth, width, height float64) {
 	gCtx.SetColor(color.Black)
-	fontSize := max(barWidth, 1) * 10
+	fontSize := max(barWidth, 1) * 13
 
 	face := truetype.NewFace(font0, &truetype.Options{Size: fontSize})
 	gCtx.SetFontFace(face)
 
-	x := float64(pos.X) + float64(width)/2
-	y := float64(pos.Y) - fontSize/2
-	if !lineAbove {
-		y = float64(pos.Y) + height + fontSize
+	x := float64(pos.X) + width/2
+	var y float64
+	if lineAbove {
+		y = float64(pos.Y) - barWidth
+	} else {
+		y = float64(pos.Y) + height + fontSize*0.75 + barWidth
 	}
 
 	gCtx.DrawStringAnchored(content, x, y, 0.5, 0)
