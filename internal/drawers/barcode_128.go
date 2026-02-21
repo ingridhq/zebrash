@@ -19,7 +19,44 @@ var (
 	barcode128FNC1 = string(code128.ESCAPE_FNC_1)
 
 	parenthesisAndSpacesRegex = regexp.MustCompile(`[\(\)\s]`)
+
+	// barcodeTextGapExtra is the extra dots of space between barcode bars and human-readable text.
+	barcodeTextGapExtra = 2.0
 )
+
+// barcodeCaptionFontSize returns the caption font size for a given barcode module width (^BY first parameter).
+// Base is 10 at width 1 (same as ^CF,10); scale is non-linear per ZPL behavior.
+func barcodeCaptionFontSize(barWidth float64) float64 {
+	bw := int(barWidth)
+	if bw < 1 {
+		bw = 1
+	}
+	if bw >= 10 {
+		return float64(80 + (bw-9)*10)
+	}
+	switch bw {
+	case 1:
+		return 10
+	case 2:
+		return 20
+	case 3:
+		return 30
+	case 4:
+		return 40
+	case 5:
+		return 45
+	case 6:
+		return 50
+	case 7:
+		return 60
+	case 8:
+		return 70
+	case 9:
+		return 80
+	default:
+		return 10
+	}
+}
 
 func NewBarcode128Drawer() *ElementDrawer {
 	return &ElementDrawer{
@@ -80,7 +117,7 @@ func NewBarcode128Drawer() *ElementDrawer {
 
 func applyLineTextToCtx(gCtx *gg.Context, content string, pos elements.LabelPosition, lineAbove bool, barWidth, width, height float64) {
 	gCtx.SetColor(color.Black)
-	fontSize := max(barWidth, 1) * 13
+	fontSize := barcodeCaptionFontSize(barWidth)
 
 	face := truetype.NewFace(font0, &truetype.Options{Size: fontSize})
 	gCtx.SetFontFace(face)
@@ -88,9 +125,9 @@ func applyLineTextToCtx(gCtx *gg.Context, content string, pos elements.LabelPosi
 	x := float64(pos.X) + width/2
 	var y float64
 	if lineAbove {
-		y = float64(pos.Y) - barWidth
+		y = float64(pos.Y) - barWidth - barcodeTextGapExtra
 	} else {
-		y = float64(pos.Y) + height + fontSize*0.75 + barWidth
+		y = float64(pos.Y) + height + fontSize*0.75 + barWidth + barcodeTextGapExtra
 	}
 
 	gCtx.DrawStringAnchored(content, x, y, 0.5, 0)
