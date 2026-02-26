@@ -6,6 +6,8 @@ type DrawerOptions struct {
 	Dpmm          int
 	// Render labels with inverted orientation upside-down
 	EnableInvertedLabels bool
+	// Output 8-bit grayscale PNG preserving anti-aliasing instead of binary monochrome
+	GrayscaleOutput bool
 }
 
 func (d DrawerOptions) WithDefaults() DrawerOptions {
