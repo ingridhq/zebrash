@@ -26,3 +26,5 @@ testdata/diff/*
 # Visual Studio and Visual Studio Code files
 .vs/
 .vscode/
+# macOS
+.DS_Store
