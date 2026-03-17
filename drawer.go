@@ -113,5 +113,8 @@ func (d *Drawer) DrawLabelAsPng(label elements.LabelInfo, output io.Writer, opti
 		gCtx.DrawImage(imgCtx.Image(), (labelWidth-imageWidth)/2, 0)
 	}
 
+	if options.GrayscaleOutput {
+		return images.EncodeGrayscale(output, gCtx.Image())
+	}
 	return images.EncodeMonochrome(output, gCtx.Image())
 }
