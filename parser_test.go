@@ -26,13 +26,14 @@ func init() {
 
 func TestDrawLabelAsPng(t *testing.T) {
 	testCases := []struct {
-		name           string
-		srcPath        string
-		dstPath        string
-		labelIdx       int
-		widthMm        float64
-		heightMm       float64
-		enableInverted bool
+		name            string
+		srcPath         string
+		dstPath         string
+		labelIdx        int
+		widthMm         float64
+		heightMm        float64
+		enableInverted  bool
+		grayscaleOutput bool
 	}{
 		{
 			name:    "Amazon label",
@@ -43,6 +44,12 @@ func TestDrawLabelAsPng(t *testing.T) {
 			name:    "UPS label",
 			srcPath: "ups.zpl",
 			dstPath: "ups.png",
+		},
+		{
+			name:            "UPS label with grayscale output",
+			srcPath:         "ups.zpl",
+			dstPath:         "ups_grayscale.png",
+			grayscaleOutput: true,
 		},
 		{
 			name:           "UPS label with orientation inversion enabled",
@@ -355,6 +362,7 @@ func TestDrawLabelAsPng(t *testing.T) {
 				LabelWidthMm:         tC.widthMm,
 				LabelHeightMm:        tC.heightMm,
 				EnableInvertedLabels: tC.enableInverted,
+				GrayscaleOutput:      tC.grayscaleOutput,
 			})
 			if err != nil {
 				t.Fatal(err)
