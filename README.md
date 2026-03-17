@@ -14,7 +14,7 @@ Think of https://labelary.com/viewer.html except it is completely free for comme
 
 Example of the output (more examples can be found inside `testdata` folder):
 
-![UPS label](testdata/ups.png)
+![UPS label](testdata/ups_grayscale.png)
 
 
 ## Usage:
@@ -42,6 +42,7 @@ Example of the output (more examples can be found inside `testdata` folder):
 		LabelHeightMm:        203.2,
 		Dpmm:                 8,
 		EnableInvertedLabels: true,
+		GrayscaleOutput:      true
 	})
 	if err != nil {
 		t.Fatal(err)

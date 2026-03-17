@@ -32,8 +32,6 @@ func EncodeMonochrome(w io.Writer, img image.Image) error {
 	return png.Encode(w, result)
 }
 
-// EncodeGrayscale encodes img as an 8-bit grayscale PNG without binarisation,
-// preserving the sub-pixel anti-aliasing that gg produces during rendering.
 func EncodeGrayscale(w io.Writer, img image.Image) error {
 	rgba, ok := img.(*image.RGBA)
 	if !ok {
@@ -42,7 +40,7 @@ func EncodeGrayscale(w io.Writer, img image.Image) error {
 
 	result := image.NewGray(rgba.Rect)
 	for i := 3; i < len(rgba.Pix); i += 4 {
-		result.Pix[(i-3)/4] = rgba.Pix[i-3] // R channel; R=G=B for greyscale rendering
+		result.Pix[(i-3)/4] = rgba.Pix[i-3]
 	}
 
 	return png.Encode(w, result)
