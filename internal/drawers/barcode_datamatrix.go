@@ -35,11 +35,7 @@ func NewBarcodeDatamatrixDrawer() *ElementDrawer {
 			}
 
 			data := barcode.Data
-
-			const (
-				fnc1 = "_1"
-				GS   = byte(29)
-			)
+			fnc1 := fmt.Sprintf("%c1", barcode.Escape)
 
 			// First occurrence of FNC1 triggers GS1 mode
 			if strings.HasPrefix(data, fnc1) {
@@ -48,6 +44,7 @@ func NewBarcodeDatamatrixDrawer() *ElementDrawer {
 			}
 
 			// All subsequent occurrences of FNC1 are encoded as GS character
+			const GS = byte(29)
 			data = strings.ReplaceAll(data, fnc1, string(GS))
 
 			img, err := datamatrix.Encode(data, columns, rows, opts)
