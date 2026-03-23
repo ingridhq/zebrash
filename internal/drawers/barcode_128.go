@@ -82,7 +82,7 @@ func applyLineTextToCtx(gCtx *gg.Context, content string, pos elements.LabelPosi
 	gCtx.SetColor(color.Black)
 	fontSize := max(barWidth, 1) * 10
 
-	face := truetype.NewFace(font0, &truetype.Options{Size: fontSize})
+	face := truetype.NewFace(font1, &truetype.Options{Size: fontSize})
 	gCtx.SetFontFace(face)
 
 	x := float64(pos.X) + float64(width)/2
