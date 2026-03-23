@@ -9,6 +9,7 @@ import (
 const (
 	StoredFormatDefaultPath   = "R:UNKNOWN.ZPL"
 	StoredGraphicsDefaultPath = "R:UNKNOWN.GRF"
+	StoredFontDefaultPath     = "R:UNKNOWN.FNT"
 )
 
 var validDevices = []string{
@@ -28,7 +29,15 @@ func ValidateDevice(path string) error {
 	return nil
 }
 
-func EnsureExtension(path, ext string) string {
+func EnsureExtensions(path string, exts ...string) string {
+	if len(exts) == 0 {
+		return path
+	}
+
 	pathParts := strings.SplitN(path, ".", 2)
-	return fmt.Sprintf("%s.%s", pathParts[0], ext)
+	if len(pathParts) > 1 && slices.Contains(exts, pathParts[1]) {
+		return path
+	}
+
+	return fmt.Sprintf("%s.%s", pathParts[0], exts[0])
 }

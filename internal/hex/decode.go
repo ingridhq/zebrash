@@ -14,6 +14,7 @@ import (
 const (
 	bInMb                  = 1024 * 1024
 	maxEmbeddedImageSizeMb = 3 * bInMb
+	maxEmbeddedFontSizeMb  = 3 * bInMb
 )
 
 func DecodeEscapedString(value string, escapeChar byte) (string, error) {
@@ -34,6 +35,14 @@ func DecodeEscapedString(value string, escapeChar byte) (string, error) {
 	})
 
 	return res, nil
+}
+
+func DecodeFontData(data string, totalBytes int) ([]byte, error) {
+	return decodeFileData(data, totalBytes, maxEmbeddedFontSizeMb)
+}
+
+func DecodeGraphicFieldData(data string, rowBytes int) ([]byte, error) {
+	return decodeFileData(data, rowBytes, maxEmbeddedImageSizeMb)
 }
 
 var compressCounts = map[byte]int{
@@ -78,7 +87,7 @@ var compressCounts = map[byte]int{
 	'z': 400,
 }
 
-func DecodeGraphicFieldData(data string, rowBytes int) ([]byte, error) {
+func decodeFileData(data string, rowBytes, maxFileSizeMb int) ([]byte, error) {
 	if z64Encoded(data) {
 		return decodeZ64(data)
 	}
@@ -96,7 +105,7 @@ func DecodeGraphicFieldData(data string, rowBytes int) ([]byte, error) {
 		char := data[i]
 
 		if line.Len() >= rowHex {
-			if err := validateEmbeddedImageSize(&result, &line, 0); err != nil {
+			if err := validateEmbeddedFileSize(&result, &line, 0, maxFileSizeMb); err != nil {
 				return nil, err
 			}
 
@@ -113,7 +122,7 @@ func DecodeGraphicFieldData(data string, rowBytes int) ([]byte, error) {
 		switch char {
 		case ',':
 			l := rowHex - line.Len()
-			if err := validateEmbeddedImageSize(&result, &line, l); err != nil {
+			if err := validateEmbeddedFileSize(&result, &line, l, maxFileSizeMb); err != nil {
 				return nil, err
 			}
 
@@ -124,7 +133,7 @@ func DecodeGraphicFieldData(data string, rowBytes int) ([]byte, error) {
 			continue
 		case '!':
 			l := rowHex - line.Len()
-			if err := validateEmbeddedImageSize(&result, &line, l); err != nil {
+			if err := validateEmbeddedFileSize(&result, &line, l, maxFileSizeMb); err != nil {
 				return nil, err
 			}
 
@@ -134,7 +143,7 @@ func DecodeGraphicFieldData(data string, rowBytes int) ([]byte, error) {
 
 			continue
 		case ':':
-			if err := validateEmbeddedImageSize(&result, &line, len(prevLine)); err != nil {
+			if err := validateEmbeddedFileSize(&result, &line, len(prevLine), maxFileSizeMb); err != nil {
 				return nil, err
 			}
 
@@ -143,7 +152,7 @@ func DecodeGraphicFieldData(data string, rowBytes int) ([]byte, error) {
 		}
 
 		l := max(compressCount, 1)
-		if err := validateEmbeddedImageSize(&result, &line, l); err != nil {
+		if err := validateEmbeddedFileSize(&result, &line, l, maxFileSizeMb); err != nil {
 			return nil, err
 		}
 
@@ -152,7 +161,7 @@ func DecodeGraphicFieldData(data string, rowBytes int) ([]byte, error) {
 	}
 
 	if line.Len() > 0 {
-		if err := validateEmbeddedImageSize(&result, &line, 0); err != nil {
+		if err := validateEmbeddedFileSize(&result, &line, 0, maxFileSizeMb); err != nil {
 			return nil, err
 		}
 
@@ -162,10 +171,10 @@ func DecodeGraphicFieldData(data string, rowBytes int) ([]byte, error) {
 	return hx.DecodeString(result.String())
 }
 
-func validateEmbeddedImageSize(result, line *strings.Builder, l int) error {
+func validateEmbeddedFileSize(result, line *strings.Builder, l, maxFileSizeMb int) error {
 	totalHexL := result.Len() + line.Len() + l
-	if totalHexL > (2 * maxEmbeddedImageSizeMb) {
-		return fmt.Errorf("embedded image size cannot be greater than %d MB", maxEmbeddedImageSizeMb/bInMb)
+	if totalHexL > (2 * maxFileSizeMb) {
+		return fmt.Errorf("embedded file size cannot be greater than %d MB", maxFileSizeMb/bInMb)
 	}
 
 	return nil

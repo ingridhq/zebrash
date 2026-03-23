@@ -3,6 +3,7 @@ package drawers
 import (
 	"fmt"
 	"image/color"
+	"math"
 	"strings"
 
 	"github.com/golang/freetype/truetype"
@@ -38,7 +39,7 @@ func NewBarcodeEan13Drawer() *ElementDrawer {
 
 			gCtx.DrawImage(img, pos.X, pos.Y)
 			if barcode.Line {
-				applyEan13TextToCtx(gCtx, text, pos, barcode.LineAbove, width, height, barcode.Width, guardExtension)
+				applyEan13TextToCtx(gCtx, text, pos, barcode.LineAbove, width, height, float64(barcode.Width), float64(guardExtension))
 			}
 
 			return nil
@@ -67,10 +68,10 @@ func adjustEan13Position(pos elements.LabelPosition, ori elements.FieldOrientati
 	}
 }
 
-func applyEan13TextToCtx(gCtx *gg.Context, text string, pos elements.LabelPosition, lineAbove bool, width, height float64, barWidth, guardExtension int) {
+func applyEan13TextToCtx(gCtx *gg.Context, text string, pos elements.LabelPosition, lineAbove bool, width, height, barWidth, guardExtension float64) {
 	gCtx.SetColor(color.Black)
 
-	fontSize := float64(guardExtension) * 2
+	fontSize := math.Round(width / 13)
 	face := truetype.NewFace(font0, &truetype.Options{Size: fontSize})
 	gCtx.SetFontFace(face)
 
@@ -79,14 +80,14 @@ func applyEan13TextToCtx(gCtx *gg.Context, text string, pos elements.LabelPositi
 		formattedText := fmt.Sprintf("%s||%s||%s", text[0:1], text[1:7], text[7:13])
 		// Insert spaces between every digit so justified alignment works properly
 		formattedText = wrapWithSpaces(formattedText)
-		x := float64(pos.X) - float64(barWidth)*10
-		y := float64(pos.Y) + height + float64(guardExtension)/2 + float64(barWidth)
-		w := width + float64(barWidth)*5
+		x := float64(pos.X) - float64(barWidth*10)
+		y := float64(pos.Y) + height + fontSize - guardExtension
+		w := width + float64(barWidth*5)
 		drawStringJustified(gCtx, formattedText, x, y, 0, 0, w, []string{"|"})
 	} else {
-		x := float64(pos.X) + float64(barWidth)*8
-		y := float64(pos.Y) - float64(guardExtension)/2
-		w := width - float64(barWidth)*16
+		x := float64(pos.X) + float64(barWidth*8)
+		y := float64(pos.Y) - float64(guardExtension/2)
+		w := width - float64(barWidth*16)
 		formattedText := wrapWithSpaces(text)
 		drawStringJustified(gCtx, formattedText, x, y, 0, 0, w, nil)
 	}

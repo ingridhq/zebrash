@@ -50,7 +50,7 @@ func NewDownloadGraphicsParser() *CommandParser {
 				graphics.Data = data
 			}
 
-			path = printers.EnsureExtension(path, "GRF")
+			path = printers.EnsureExtensions(path, "GRF")
 			printer.StoredGraphics[path] = graphics
 
 			return nil, nil

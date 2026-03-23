@@ -2,6 +2,8 @@ package elements
 
 import (
 	"math"
+
+	"github.com/golang/freetype/truetype"
 )
 
 type FontInfo struct {
@@ -9,6 +11,7 @@ type FontInfo struct {
 	Width       float64
 	Height      float64
 	Orientation FieldOrientation
+	CustomFont  *truetype.Font
 }
 
 func (font FontInfo) GetSize() float64 {
@@ -35,6 +38,14 @@ var bitmapFontSizes = map[string][2]float64{
 	"GS": {24, 24},
 }
 
+func (font FontInfo) Exists() bool {
+	return font.IsStandardFont() || font.IsCustomFont()
+}
+
+func (font FontInfo) IsCustomFont() bool {
+	return font.CustomFont != nil
+}
+
 func (font FontInfo) IsStandardFont() bool {
 	_, ok := bitmapFontSizes[font.Name]
 	return font.Name == "0" || ok
@@ -50,7 +61,7 @@ func (font FontInfo) WithAdjustedSizes() FontInfo {
 	orgSize, ok := bitmapFontSizes[font.Name]
 	// Scalable font
 	// Just set width and height to the same value if one of them is zero
-	if !ok {
+	if font.IsCustomFont() || !ok {
 		if font.Width == 0 {
 			font.Width = font.Height
 		}
@@ -88,7 +99,7 @@ func (font FontInfo) WithAdjustedSizes() FontInfo {
 }
 
 func (font FontInfo) getWidthToHeightRatio() float64 {
-	if font.Name == "0" || font.Name == "GS" {
+	if font.Name == "0" || font.Name == "GS" || font.IsCustomFont() {
 		return 1.0
 	}
 

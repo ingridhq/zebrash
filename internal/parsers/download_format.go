@@ -19,7 +19,7 @@ func NewDownloadFormatParser() *CommandParser {
 				return nil, err
 			}
 
-			printer.NextDownloadFormatName = printers.EnsureExtension(path, "ZPL")
+			printer.NextDownloadFormatName = printers.EnsureExtensions(path, "ZPL")
 
 			return nil, nil
 		},

@@ -1,12 +1,15 @@
 package printers
 
 import (
+	"github.com/golang/freetype/truetype"
 	"github.com/ingridhq/zebrash/internal/elements"
 )
 
 type VirtualPrinter struct {
 	StoredGraphics          map[string]elements.StoredGraphics
 	StoredFormats           map[string]*elements.StoredFormat
+	StoredFonts             map[string]*truetype.Font
+	StoredFontAliases       map[string]string
 	LabelHomePosition       elements.LabelPosition
 	NextElementPosition     elements.LabelPosition
 	DefaultFont             elements.FontInfo
@@ -30,8 +33,10 @@ type VirtualPrinter struct {
 
 func NewVirtualPrinter() *VirtualPrinter {
 	return &VirtualPrinter{
-		StoredGraphics: make(map[string]elements.StoredGraphics),
-		StoredFormats:  make(map[string]*elements.StoredFormat),
+		StoredGraphics:    make(map[string]elements.StoredGraphics),
+		StoredFormats:     make(map[string]*elements.StoredFormat),
+		StoredFonts:       make(map[string]*truetype.Font),
+		StoredFontAliases: make(map[string]string),
 		DefaultFont: elements.FontInfo{
 			Name: "A",
 		},

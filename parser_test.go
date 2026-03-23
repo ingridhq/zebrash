@@ -340,6 +340,17 @@ func TestDrawLabelAsPng(t *testing.T) {
 			srcPath: "gs.zpl",
 			dstPath: "gs.png",
 		},
+		{
+			name:    "Custom TTF font by alias",
+			srcPath: "custom_ttf_by_alias.zpl",
+			dstPath: "custom_ttf_by_alias.png",
+			widthMm: 160,
+		},
+		{
+			name:    "Custom TTF font by path",
+			srcPath: "custom_ttf_by_path.zpl",
+			dstPath: "custom_ttf_by_path.png",
+		},
 	}
 
 	for _, tC := range testCases {
