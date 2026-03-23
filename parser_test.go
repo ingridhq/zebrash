@@ -246,6 +246,11 @@ func TestDrawLabelAsPng(t *testing.T) {
 			dstPath: "barcode128_line.png",
 		},
 		{
+			name:    "Barcode128 with 'line' and different bar and font sizes",
+			srcPath: "barcode128_line_font_sizes.zpl",
+			dstPath: "barcode128_line_font_sizes.png",
+		},
+		{
 			name:    "Barcode128 mode a",
 			srcPath: "barcode128_mode_a.zpl",
 			dstPath: "barcode128_mode_a.png",
