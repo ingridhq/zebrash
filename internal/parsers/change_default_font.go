@@ -14,14 +14,17 @@ func NewChangeDefaultFontParser() *CommandParser {
 	return &CommandParser{
 		CommandCode: code,
 		Parse: func(command string, printer *printers.VirtualPrinter) (any, error) {
+			fontName := printer.DefaultFont.Name
+
 			font := elements.FontInfo{
-				Name:        printer.DefaultFont.Name,
+				Name:        fontName,
 				Orientation: printer.DefaultOrientation,
+				CustomFont:  printer.StoredFonts[printer.StoredFontAliases[fontName]],
 			}
 
 			parts := splitCommand(command, code, 0)
 			if len(parts) > 0 {
-				font.Name = strings.ToUpper(parts[0])
+				font.Name = toValidFontName(parts[0])
 			}
 
 			if len(parts) > 1 {

@@ -79,6 +79,10 @@ func adjustTextField(text *elements.TextField) *elements.TextField {
 }
 
 func getTffFont(font elements.FontInfo) *truetype.Font {
+	if font.CustomFont != nil {
+		return font.CustomFont
+	}
+
 	switch font.Name {
 	case "0":
 		return font0

@@ -84,7 +84,5 @@ func isGuardBar(x int) bool {
 }
 
 func CalculateGuardExtension(barWidth int) int {
-	// Guard bars are typically extended by about 5 times the X-dimension (module width)
-	// This makes them visually distinctive per EAN-13 standard
-	return barWidth * 5
+	return min(barWidth*5, 20)
 }

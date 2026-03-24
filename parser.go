@@ -56,6 +56,8 @@ func NewParser() *Parser {
 			parsers.NewFieldNumberParser(),
 			parsers.NewRecallFormatParser(),
 			parsers.NewPrintOrientationParser(),
+			parsers.NewDownloadUnboundedTtfParser(),
+			parsers.NewChangeFontAliasParser(),
 		},
 	}
 }

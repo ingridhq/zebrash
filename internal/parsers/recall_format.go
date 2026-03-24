@@ -19,7 +19,7 @@ func NewRecallFormatParser() *CommandParser {
 				return nil, err
 			}
 
-			if v, ok := printer.StoredFormats[printers.EnsureExtension(path, "ZPL")]; ok {
+			if v, ok := printer.StoredFormats[printers.EnsureExtensions(path, "ZPL")]; ok {
 				return v.ToRecalledFormat(), nil
 			}
 

@@ -100,3 +100,18 @@ func toPositiveIntField(value string) (int, error) {
 
 	return int(math.Abs(math.Round(v))), nil
 }
+
+func toValidFontName(value string) string {
+	value = strings.ToUpper(strings.Trim(value, " "))
+
+	if len(value) == 0 {
+		return ""
+	}
+
+	name := value[0]
+	if (name >= 'A' && name <= 'Z') || (name >= '0' && name <= '9') {
+		return string(name)
+	}
+
+	return "A"
+}
