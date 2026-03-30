@@ -1,5 +1,17 @@
 # Zebrash
 
+> ## ⚠️ Warning
+> As I am leaving Ingrid, I am stepping back from being the maintainer of this project.
+> This repository will remain public, but I will no longer be reviewing pull requests,
+> responding to issues, or releasing updates.
+
+> It is possible that this project will get a new maintainer from Ingrid in the future.
+> In the meantime, you are welcome to open PRs or issues, though please note
+> that they are unlikely to be reviewed. You are also free to fork this project, as it is
+> released under the MIT license.
+
+> Sincerely, Fedir Kryvytskyi
+
 Library for rendering ZPL (Zebra Programming Language) files as raster images
 
 - Partially based on https://github.com/BinaryKits/BinaryKits.Zpl
