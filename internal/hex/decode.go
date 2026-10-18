@@ -120,6 +120,8 @@ func decodeFileData(data string, rowBytes, maxFileSizeMb int) ([]byte, error) {
 		}
 
 		switch char {
+		case ' ', '\t', '\r', '\n':
+			continue
 		case ',':
 			l := rowHex - line.Len()
 			if err := validateEmbeddedFileSize(&result, &line, l, maxFileSizeMb); err != nil {

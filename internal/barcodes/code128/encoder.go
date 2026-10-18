@@ -287,6 +287,7 @@ func EncodeNoMode(content string, height, barWidth int) (image.Image, string, er
 			}
 		case '5':
 			if currSet != CODE_C {
+				currSet = CODE_C
 				patternsIdx = append(patternsIdx, byte(currSet))
 			}
 		}
