@@ -107,20 +107,22 @@ func getTextTopLeftPos(text *elements.TextField, w, h float64, state *DrawerStat
 		w = float64(text.Block.MaxWidth)
 	}
 
+	offset := (lines - 1) * (h + spacing)
+
 	if !text.Position.CalculateFromBottom {
+		// Rotated 90 and 180 degrees, block lines stack towards the origin,
+		// so the first line starts (lines - 1) lines away from it
 		switch text.Font.Orientation {
 		case elements.FieldOrientation90:
-			return x + h/4, y
+			return x + h/4 + offset, y
 		case elements.FieldOrientation180:
-			return x + w, y + h/4
+			return x + w, y + h/4 + offset
 		case elements.FieldOrientation270:
 			return x + 3*h/4, y + w
 		default:
 			return x, y + 3*h/4
 		}
 	}
-
-	offset := (lines - 1) * (h + spacing)
 
 	switch text.Font.Orientation {
 	case elements.FieldOrientation90:

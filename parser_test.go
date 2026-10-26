@@ -224,6 +224,16 @@ func TestDrawLabelAsPng(t *testing.T) {
 			dstPath: "text_fo_b.png",
 		},
 		{
+			name:    "Text Field Block Origin 90 degrees rotation",
+			srcPath: "text_fb_fo_r.zpl",
+			dstPath: "text_fb_fo_r.png",
+		},
+		{
+			name:    "Text Field Block Origin 180 degrees rotation",
+			srcPath: "text_fb_fo_i.zpl",
+			dstPath: "text_fb_fo_i.png",
+		},
+		{
 			name:    "Text Field Multi-line",
 			srcPath: "text_multiline.zpl",
 			dstPath: "text_multiline.png",
