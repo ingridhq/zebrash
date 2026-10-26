@@ -15,7 +15,8 @@ const (
 // Encodes the given data as PDF417 barcode.
 // securityLevel should be between 0 and 8. The higher the number, the more
 // additional error-correction codes are added.
-func Encode(data string, securityLevel byte, targetRowHeight, targetColumns int) (image.Image, error) {
+// moduleWidth is the narrow bar width in dots (^BY), 2 is used when it is not set.
+func Encode(data string, securityLevel byte, targetRowHeight, targetColumns, moduleWidth int) (image.Image, error) {
 	if securityLevel >= 9 {
 		return nil, fmt.Errorf("invalid security level %d", securityLevel)
 	}
@@ -76,7 +77,11 @@ func Encode(data string, securityLevel byte, targetRowHeight, targetColumns int)
 		code:   codeData,
 	}
 
-	return images.NewScaled(barcode, 2, scaleY), nil
+	if moduleWidth <= 0 {
+		moduleWidth = 2
+	}
+
+	return images.NewScaled(barcode, moduleWidth, scaleY), nil
 }
 
 func encodeData(dataWords []int, columns int, sl securitylevel) ([]int, error) {

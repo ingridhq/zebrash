@@ -128,6 +128,7 @@ func (f *RecalledField) Resolve() (any, error) {
 		return &BarcodePdf417WithData{
 			ReversePrint:  field.ReversePrint,
 			BarcodePdf417: *fe,
+			Width:         field.Width,
 			Position:      field.Position,
 			Data:          text,
 		}, nil

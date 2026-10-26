@@ -17,7 +17,7 @@ func NewBarcodePdf417Drawer() *ElementDrawer {
 				return nil
 			}
 
-			img, err := pdf417.Encode(barcode.Data, byte(barcode.Security), barcode.RowHeight, barcode.Columns)
+			img, err := pdf417.Encode(barcode.Data, byte(barcode.Security), barcode.RowHeight, barcode.Columns, barcode.Width)
 			if err != nil {
 				return fmt.Errorf("failed to encode pdf417 barcode: %w", err)
 			}

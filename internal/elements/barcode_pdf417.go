@@ -42,6 +42,7 @@ type BarcodePdf417 struct {
 type BarcodePdf417WithData struct {
 	ReversePrint
 	BarcodePdf417
+	Width    int
 	Position LabelPosition
 	Data     string
 }
