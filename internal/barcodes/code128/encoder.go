@@ -437,6 +437,10 @@ func encode(patternsIdx []byte, height, barWidth int) (image.Image, error) {
 	checkSum := int(patternsIdx[0])
 
 	for i, patternIdx := range patternsIdx {
+		if int(patternIdx) >= len(CODE_PATTERNS) {
+			return nil, fmt.Errorf("barcode data contains a character that code 128 cannot encode")
+		}
+
 		result = appendPattern(result, CODE_PATTERNS[patternIdx])
 		checkSum += int(patternIdx) * i
 	}

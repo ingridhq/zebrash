@@ -89,7 +89,7 @@ var compressCounts = map[byte]int{
 
 func decodeFileData(data string, rowBytes, maxFileSizeMb int) ([]byte, error) {
 	if z64Encoded(data) {
-		return decodeZ64(data)
+		return decodeZ64(data, maxFileSizeMb)
 	}
 
 	var (
@@ -186,7 +186,7 @@ func z64Encoded(value string) bool {
 	return strings.HasPrefix(value, z64Prefix)
 }
 
-func decodeZ64(value string) ([]byte, error) {
+func decodeZ64(value string, maxFileSizeMb int) ([]byte, error) {
 	value = strings.TrimPrefix(value, z64Prefix)
 
 	idx := strings.LastIndex(value, ":")
@@ -207,5 +207,14 @@ func decodeZ64(value string) ([]byte, error) {
 
 	defer z.Close()
 
-	return io.ReadAll(z)
+	res, err := io.ReadAll(io.LimitReader(z, int64(maxFileSizeMb)+1))
+	if err != nil {
+		return nil, err
+	}
+
+	if len(res) > maxFileSizeMb {
+		return nil, fmt.Errorf("embedded file size cannot be greater than %d MB", maxFileSizeMb/bInMb)
+	}
+
+	return res, nil
 }

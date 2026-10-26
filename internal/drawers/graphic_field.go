@@ -13,7 +13,7 @@ func NewGraphicFieldDrawer() *ElementDrawer {
 	return &ElementDrawer{
 		Draw: func(gCtx *gg.Context, element any, _ drawers.DrawerOptions, _ *DrawerState) error {
 			field, ok := element.(*elements.GraphicField)
-			if !ok {
+			if !ok || field.RowBytes <= 0 {
 				return nil
 			}
 
