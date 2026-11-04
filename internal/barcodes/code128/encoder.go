@@ -166,23 +166,26 @@ func EncodeNoMode(content string, height, barWidth int) (image.Image, string, er
 
 	patternsIdx = append(patternsIdx, START_B)
 
-	for i := 1; i < len(content); i++ {
-		if content[i-1] != '>' {
+	for i := 0; i < len(content); {
+		if content[i] != '>' {
 			// Code 128 subsets A and C are programmed as pairs of digits, 00-99, in the field data string.
 			// In subset A, each pair of digits results in a single character being encoded in the barcode
 			// in subset C, they are printed as entered.
 			// Non-integers programmed as the ﬁrst character of a digit pair are ignored.
 			// However, non-integers programmed as the second character of a digit pair invalidate the entire digit pair, and the pair is ignored
 			if currSet == CODE_A || currSet == CODE_C {
-				digit1 := content[i] - '0'
+				if i+1 >= len(content) {
+					break
+				}
+				digit1 := content[i+1] - '0'
 
 				// Skip entire pair
 				if digit1 >= 10 {
-					i++
+					i += 2
 					continue
 				}
 
-				digit0 := content[i-1] - '0'
+				digit0 := content[i] - '0'
 				if digit0 >= 10 {
 					digit0 = 0
 				}
@@ -200,24 +203,22 @@ func EncodeNoMode(content string, height, barWidth int) (image.Image, string, er
 					humanReadable.WriteByte(patternIdx - 64)
 				}
 
-				i++
+				i += 2
 				continue
 			}
 
 			// Handle subset B which does not operate on pairs
-			patternsIdx = append(patternsIdx, content[i-1]-' ')
-			humanReadable.WriteByte(content[i-1])
-
-			// If last iteration add remaining character
-			if i == len(content)-1 {
-				patternsIdx = append(patternsIdx, content[i]-' ')
-				humanReadable.WriteByte(content[i])
-			}
+			patternsIdx = append(patternsIdx, content[i]-' ')
+			humanReadable.WriteByte(content[i])
+			i++
 
 			continue
 		}
 
-		switch content[i] {
+		if i+1 >= len(content) {
+			break
+		}
+		switch content[i+1] {
 		// Escape characters
 		case '<':
 			if currSet != CODE_C {
@@ -254,17 +255,17 @@ func EncodeNoMode(content string, height, barWidth int) (image.Image, string, er
 			}
 		// Start characters
 		case '9':
-			if i == 1 {
+			if i == 0 {
 				currSet = CODE_A
 				patternsIdx[0] = START_A
 			}
 		case ':':
-			if i == 1 {
+			if i == 0 {
 				currSet = CODE_B
 				patternsIdx[0] = START_B
 			}
 		case ';':
-			if i == 1 {
+			if i == 0 {
 				currSet = CODE_C
 				patternsIdx[0] = START_C
 			}
@@ -291,7 +292,7 @@ func EncodeNoMode(content string, height, barWidth int) (image.Image, string, er
 			}
 		}
 
-		i++
+		i += 2
 	}
 
 	img, err := encode(patternsIdx, height, barWidth)
